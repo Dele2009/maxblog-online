@@ -1,0 +1,71 @@
+<div class="row mb-2">
+    <% if(Blogs.length>0){ %>
+        <%Blogs.slice(0,6).map(blog=>{%>
+
+            <!-- card style 1 -->
+
+            <div class="col-6">
+                <div class="card mb-4">
+                    <a href="/blogs/<%=blog._id%>"><img class="card-img-top"
+                            src="<%=blog.heroimage_info.url%>" alt="<%=blog.title%>_img"  width="700" height="200"/></a>
+                    <div class="card-body">
+                        
+                        <%const createdAt = new Date( blog.createdAt )%>
+                        <%const relativeTime = formatDistanceToNow(createdAt, { addSuffix: true })%>
+                            
+                       
+                        <div class="small text-muted"><%=relativeTime.replace('about ', '')%></div>
+                        <h2 class="card-title h4"><%=blog.title%></h2>
+                        <p class="card-text"><%=blog.header%></p>
+                        <a class="btn btn-primary" href="/blogs/<%=blog._id%>">Read more →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- card style 2 -->
+
+            <!-- <div class="col-md-6">
+                <div
+                    class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-primary-emphasis">
+                            <%=blog.title%>
+                        </strong>
+                        <h3 class="mb-0">
+                            <%=blog.header%>
+                        </h3>
+                        <div class="mb-1 text-body-secondary">
+                            <%=blog.createdAt.toLocaleDateString()%>
+                        </div>
+                         <p><%=blog.snippet%></p>
+                        <a href="/blogs/<%=blog._id%>"
+                            class="icon-link gap-1 icon-link-hover stretched-link">
+                            Continue reading
+                            <svg class="bi">
+                                <use xlink:href="#chevron-right" />
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <img src="<%=blog.heroimage_info.url%>" width="200" height="200">
+                    </div>
+                </div>
+            </div> -->
+
+            <%})%>
+        <%} else{%>
+            <div class="col-6">
+                <div class="card mb-4">
+                    <a href="/"><img class="card-img-top"
+                            src="" alt="default_img"  width="700" height="350"/></a>
+                    <div class="card-body">
+                       
+                        <p class="card-text">No Blogs Available !!!!</p>
+                        <a class="btn btn-primary" href="/">Refresh →</a>
+                    </div>
+                </div>
+            </div>
+        <%}%>
+
+
+</div>

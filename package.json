@@ -1,0 +1,32 @@
+{
+  "name": "node-practice",
+  "version": "1.0.0",
+  "description": "This project is for learning node.js for my backend/future projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "Aminu Bamidele",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cloudinary": "^2.0.3",
+    "csurf": "^1.11.0",
+    "date-fns": "^3.6.0",
+    "dompurify": "^3.0.11",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.9",
+    "express": "^4.18.3",
+    "express-fileupload": "^1.5.0",
+    "express-session": "^1.18.0",
+    "jsdom": "^24.0.0",
+    "lodash": "^4.17.21",
+    "mongodb": "4.0",
+    "mongoose": "^8.2.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.0",
+    "string-strip-html": "^13.4.6"
+  }
+}

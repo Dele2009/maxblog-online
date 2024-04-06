@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<%-include('./components/head')%>
+
+    <body>
+        <%-include('./components/header')%>
+
+
+            <div class="container py-4">
+                <header class="pb-3 mb-4 border-bottom">
+                    <a class="d-flex flex-column  align-items-start text-body-emphasis text-decoration-none">
+                        <span class="fs-4 text-capitalize "><b>Blog Author</b>: <%=Blog.author%></span>
+                        <span class="fs-4 text-capitalize "><b>Blog category</b>: <%=Blog.category%></span>
+                    </a>
+                </header>
+
+                <div class="py-3 mb-4 bg-body-tertiary rounded-3">
+                    <div class="container-fluid">
+                        <div class="m-auto w-100 h-100">
+                            <img class="w-100" src="<%=Blog.heroimage_info.url%>" alt="<%=Blog.title%>-img">
+                        </div>
+                        <h1 class="display-5 fw-bold text-capitalize text-center py-5">
+                            <%=Blog.title%>
+                        </h1>
+                        <div class="w-100">
+                            <%-Blog.blog%>
+                        </div>
+                        <a data-route="<%=Blog._id%>" class="btn btn-primary btn-lg" id="delete-key"
+                            type="button">Delete Blog</a>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                let deleteblog = document.getElementById('delete-key')
+                deleteblog.addEventListener('click', async (e) => {
+                    // e.preventDefault()
+                    let url_endpoint = `/blogs/${deleteblog.dataset.route}`;
+
+
+
+                    try {
+                        const response = await fetch(url_endpoint, {
+                            method: 'DELETE',
+                        })
+                        const data = await response.json()
+                        window.location.href = data.redirect;
+                        console.log(data)
+                    } catch (error) {
+                        console.log(error)
+                    }
+
+                })
+            </script>
+    </body>
+
+</html>

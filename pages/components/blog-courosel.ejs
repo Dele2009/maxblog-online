@@ -1,0 +1,129 @@
+<!-- <% if(Blogs.length>0){ %>
+<div id="carouselExampleCaptions" class="carousel slide mb-4  ">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner rounded text-body-emphasis ">
+        <%Blogs.map(blog=>{%>
+            <div class="carousel-item active h-p">
+                <img src="<%=blog.heroimage_info.url%>" class="d-block w-100 h-100" alt="...">
+                <div class="carousel-caption d-none d-md-block text-start">
+                <h5><%=blog.title%></h5>
+                <p><%=blog.header%></p>
+                <small><%=blog.createdAt.toLocaleDateString()%></small>
+                <p class="lead mb-0"><a href="/blog/<%=blog._id%>" class="text-body-emphasis fw-bold">Continue Reading.....</a></p>
+                </div>
+            </div>
+      <%})%>
+      
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+ <%} else{%> 
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+        <div class="col-lg-6 px-0">
+            <h1 class="display-4 fst-italic">No blogs available</h1>
+            <p class="lead my-3">Check back later !!</p>
+            <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Refresh</a></p>
+        </div>
+    </div>
+    <%}%> -->
+
+
+
+<% if(Blogs.length>0){ %>
+  <div class="swiper w-100 h-p mb-5">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+      <!-- Slides -->
+      
+      <%Blogs.map(blog=>{%>
+        <div class="swiper-slide w-100 h-100">
+
+          <div class="slider-text w-100 h-100 ">
+            <img src="<%=blog.heroimage_info.url%>" class="w-100 h-100 position-absolute" alt="...">
+            <div class="position-absolute bottom-0 end-0 carousel-caption text-start ">
+              <h3>
+                <em>
+                  <%=blog.title%>
+                </em>
+              </h3>
+              <p>
+                <em>
+                  <%=blog.header%>
+                </em>
+              </p>
+              <small>
+                <em>
+                  <%const createdAt = new Date( blog.createdAt )%>
+                  <%const relativeTime = formatDistanceToNow(createdAt, { addSuffix: true })%>
+                  <%=relativeTime.replace('about ', '')%>
+                </em>
+              </small>
+              <p class="lead mb-0"><a href="/blogs/<%=blog._id%>" class="text-body-emphasis fw-bold">Continue
+                  Reading.....</a></p>
+            </div>
+
+          </div>
+        </div>
+        <%})%>
+
+
+    </div>
+    <!-- If we need pagination -->
+    <div class="swiper-pagination"></div>
+
+    <!-- If we need navigation buttons -->
+    <!-- <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div> -->
+
+    <!-- If we need scrollbar -->
+    <!-- <div class="swiper-scrollbar"></div> -->
+  </div>
+  <%} else{%>
+    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+      <div class="col-lg-6 px-0">
+        <h1 class="display-4 fst-italic">No blogs available</h1>
+        <p class="lead my-3">Check back later !!</p>
+        <p class="lead mb-0"><a href="/" class="text-body-emphasis fw-bold">Refresh</a></p>
+      </div>
+    </div>
+    <%}%>
+
+
+      <script>
+        const swiper = new Swiper('.swiper', {
+          // Optional parameters
+          direction: 'horizontal',
+          loop: true,
+
+          autoplay: {
+            delay: 3000,
+          },
+
+          // If we need pagination
+          pagination: {
+            el: '.swiper-pagination',
+          },
+
+          // Navigation arrows
+          // navigation: {
+          //   nextEl: '.swiper-button-next',
+          //   prevEl: '.swiper-button-prev',
+          // },
+
+          // And if we need scrollbar
+          // scrollbar: {
+          //   el: '.swiper-scrollbar',
+          // },
+        });
+      </script>

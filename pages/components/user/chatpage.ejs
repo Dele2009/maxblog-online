@@ -2,7 +2,7 @@
 <html lang="en">
     <%- include ('../main_app_head') %>
 
-<body id="">
+<body id="" class="overflow-hidden" style="">
         <%- include ('../main_app_header') %>
         <%-include('../Alertbox')%>
 <style>
@@ -12,7 +12,7 @@
 
     .message-container {
         overflow-y: scroll;
-        max-height: 400px;
+        max-height: 80dvh;
         padding: 10px;
     }
 
@@ -79,18 +79,18 @@
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column w-100">
+    <div id="content-wrapper" class="d-flex flex-column w-100" style="background: white;">
 
         <!-- Main Content -->
-        <div class="position-fixed bottom-0 w-100">
-            <div class="message-container">
+        <div class="position-fixed bottom-0 w-100 col-12 col-lg-10">
+            <div class="message-container h-100 w-100">
                 
                     
                         <% messages.map(message=> { %>
                             <% if (message.senderId==User._id) { %>
                                 <div class="own-message ms-auto bg-primary text-light ">
-                                    <div class="message-sender">
-                                        You <span class="ms-auto"><%= message.time %></span>
+                                    <div class="message-sender d-flex justify-content-between">
+                                       <span> You</span> <span class="ms-2"><%= message.time %></span>
                                     </div>
                                     <div class="message-text">
                                         <%= message.message %>
@@ -98,8 +98,8 @@
                                 </div>
                             <% } else { %>
                                     <div class="message bg-primary text-light">
-                                        <div class="message-sender">
-                                            <%= Recipient.name %> <span class="ms-auto"><%= message.time %></span>
+                                        <div class="message-sender d-flex justify-content-between">
+                                            <span><%= Recipient.name %></span> <span class="ms-2"><%= message.time %></span>
                                         </div>
                                         <div class="message-text">
                                             <%= message.message %>
@@ -119,7 +119,7 @@
         <!-- End of Main Content -->
         <%- include ('./modal')%>
         <!-- Footer -->
-        <%- include ('./footer')%>
+        
 
         <!-- End of Footer -->
 
@@ -129,10 +129,6 @@
 </div>
 <!-- End of Page Wrapper -->
 
-<!-- Scroll to Top Button-->
-<!-- <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a> -->
 
 
 <script src="/socket.io/socket.io.js"></script>
@@ -144,20 +140,36 @@
     const receiverId = "<%= Recipient._id %>"
     socket.emit('setUser', userId);
 
-
-    document.getElementById('send-btn').addEventListener('click', () => {
-        const messageInput = document.getElementById('message-input');
+    function startSocket(){
+       const messageInput = document.getElementById('message-input');
         const content = messageInput.value.trim();
+        const date = new Date()
+        const hour = date.getHours()
+        const minute = date.getMinutes()
+        const newMinute = minute < 10 ? "0" + minute : minute
+        const md = hour < 12 ? "am" : "pm";
+        const newHour = hour > 12 ? hour - 12 : hour
         if (content !== '') {
-            // socket.emit('sendMessage', { senderId: userId, receiverId, content });
             socket.emit('sendMessage', {
                 senderId: userId,
                 receiverId: receiverId,
-                message: content
+                message: content,
+                time: `${newHour}:${newMinute}${md}`
             });
             messageInput.value = '';
         }
-    });
+    }
+
+    window.addEventListener("keydown", (e) => {
+        if (e.key == "Enter") {
+            startSocket();
+        }
+    })
+
+    document.getElementById('send-btn').addEventListener('click', () => startSocket());
+
+    
+
 
     socket.on('receiveMessage', (message) => {
         if (message.senderId === receiverId || message.senderId === userId) {            
@@ -165,23 +177,31 @@
             const messageDiv = document.createElement('div');
             messageDiv.className = message.senderId === userId ? 'own-message ms-auto bg-primary text-light' : 'message bg-primary text-light';
             const messageText = document.createElement('div');
-            const date = new Date()
-            const hour = date.getHours()
-            const minute = date.getMinutes()
-            const newMinute = minute < 10 ? "0" + minute : minute
-            const md = hour < 12 ? "am" : "pm";
-            const newHour = hour > 12 ? hour - 12 : hour
+            // const date = new Date()
+            // const hour = date.getHours()
+            // const minute = date.getMinutes()
+            // const newMinute = minute < 10 ? "0" + minute : minute
+            // const md = hour < 12 ? "am" : "pm";
+            // const newHour = hour > 12 ? hour - 12 : hour
 
-            const timeElement = `<span class="ms-auto">${newHour}:${newMinute} ${md}</span>`
+            // const timeElement = `<span class="ms-auto me-3">${newHour}:${newMinute} ${md}</span>`
 
             messageText.innerHTML = message.senderId===userId ? `
-                <div class="message-sender">You ${timeElement}</div> 
-                <div class="message-text">${message.message}</div>
+                <div class="message-sender d-flex justify-content-between">
+                    <span>You</span> <span class="ms-2">${message.time}</span>
+                </div> 
+                <div class="message-text">
+                    ${message.message}
+                </div>
 
                 `:`
                 
-                <div class="message-sender"><%= Recipient.name %> ${timeElement}</div> 
-                <div class="message-text">${message.message}</div>`
+                <div class="message-sender d-flex justify-content-between">
+                    <span><%= Recipient.name %></span> <span class="ms-2">${message.time}</span>
+                </div> 
+                <div class="message-text">
+                    ${message.message}
+                </div>`
             ;
             
                 

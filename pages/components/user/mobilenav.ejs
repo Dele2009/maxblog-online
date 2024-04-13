@@ -1,0 +1,46 @@
+<div class="w-100 d-block d-lg-none position-fixed bottom-0 bg-light  navbar-nav shadow">
+    <ul class="d-flex justify-content-between align-items-center px-5 py-2" style="list-style-type: none;" id="accordionSidebar">
+        <li class="">
+            <a class="nav-link d-flex flex-column justify-content-center align-items-center" href="/user/dashboard">
+                <i class="fas fa-1x fa-tachometer-alt"></i>
+            </a>
+        </li>
+        <li class="">
+            <a class="nav-link collapsed d-flex flex-column justify-content-center align-items-center" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-1x fa-book"></i>
+                
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    
+                    <a class="collapse-item" href='/user/dashboard/create-blog'>Write A New Blog</a>
+                    <!-- <a class="collapse-item" href="">Blogs activity</a> -->
+                </div>
+            </div>
+        </li>
+        <li class="no-arrow">
+            <a class="nav-link collapsed d-flex flex-column justify-content-center align-items-center" href="" id="searchDropdown" role="button"
+                data-toggle="collapse" data-target="#trd" >
+                <i class="fas fa-search fa-1x"></i>
+                
+            </a>
+            <div id="trd" class="collapse p-3 position-fixed w-100 bg-light rounded" style="top: 90px;left:0px;z-index: 99;"
+                aria-labelledby="searchDropdown" data-parent="#accordionSidebar">
+                <form class="form-inline mr-auto w-100 navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0 small"
+                            placeholder="Search for..." aria-label="Search"
+                            aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </li>
+        <!-- <li></li> -->
+    </ul>
+</div>

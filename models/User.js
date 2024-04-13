@@ -14,11 +14,11 @@ const Userschema = new Schema(
         avatar_info: {
             public_id: {
                 type: String,
-                required: true
+                required: false
             },
             url: {
                 type: String,
-                required: true
+                required: false
             }
         },
         password: {

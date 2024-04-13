@@ -1,10 +1,10 @@
-<div class="row mb-2">
+
     <% if(Blogs.length>0){ %>
         <%Blogs.slice(0,6).map(blog=>{%>
 
             <!-- card style 1 -->
 
-            <div class="col-6">
+            <div class="col-12 col-lg-6">
                 <div class="card mb-4">
                     <a href="/blogs/<%=blog._id%>"><img class="card-img-top"
                             src="<%=blog.heroimage_info.url%>" alt="<%=blog.title%>_img"  width="700" height="200"/></a>
@@ -68,4 +68,3 @@
         <%}%>
 
 
-</div>

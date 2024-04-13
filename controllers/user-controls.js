@@ -25,9 +25,9 @@ const sign_up = async (req, res) => {
             return res.json({ message: 'User Already Exists', error: true })
 
         }
-        if (!req.file) {
+        if (!req.file || !name || !email || !password) {
             console.log('no file')
-            //return res.status(400).json({ message: 'No file uploaded' });
+            return res.json({ message: 'Error: empty field detected',error: true });
         }
         const filePath = req.file.path;
         const result = await cloudinary.uploader.upload(filePath, { folder: 'UserAvatars' });
@@ -98,14 +98,16 @@ const Show_user_dashboard = async (req, res) => {
     try {
 
         const user = req.session.user;
+        
         // const user = await Newuser.findById(userId)
         //const user = await User.findById(userId).populate('authoredBlogs');
-        if (!user) {
-            throw new Error('User not found');
-        }
-        else {
-            res.render('user_dashboard', { title: 'account', User: user });
-        }
+        // if (!user) {
+        //     throw new Error('User not found');
+        // }
+        // else {
+        //     
+        // }
+        res.render('user_dashboard', { title: 'account', User: user });
 
     } catch (error) {
         return res.status(500).send('Error fetching dashboard: ' + error.message);

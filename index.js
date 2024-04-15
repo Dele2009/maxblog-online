@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const http = require('http');
 const socketIo = require('socket.io');
 const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 require('dotenv').config()
 const Message = require('./models/message')
 
@@ -13,10 +14,10 @@ const { chat_router } = require('./routes/chatRoutes')
 
 const port = process.env.App_Port || 4000;
 //deployment key
-const mongo_url = process.env.Mongo_Url
+//const mongo_url = process.env.Mongo_Url
 //teting phase
 
-//const mongo_url = 'mongodb://localhost:27017'
+const mongo_url = 'mongodb://localhost:27017'
 //Production key
 
 
@@ -42,10 +43,16 @@ app.use(express.static('public'))
 // app.use('/uploads',express.static('uploads'))
 app.use(morgan('dev'))
 
+const store = new MongoDBStore({
+  uri: mongo_url,
+  collection: 'sessions'
+});
+
 app.use(session({
   secret: 'secret',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  store
 }));
 
 const userSockets = {};

@@ -83,15 +83,12 @@
 
         <!-- Main Content -->
         <div class="position-fixed bottom-0 w-100 col-12 col-lg-10">
-            <div class="message-container h-100 w-100 position-relative">
-                <div class="w-100 position-sticky top-0 mb-4 bg-gradient-primary rounded p-2">
-                    <img class="img-profile rounded-circle mr-2 ms-2 " src="<%=Recipient.avatar_info.url%>" width="35" height="35">
-                    <span class="text-light text-capitalize"><%= Recipient.name %></span>
-                </div>
+            <div class="message-container h-100 w-100">
+                
                     
                         <% messages.map(message=> { %>
                             <% if (message.senderId==User._id) { %>
-                                <div class="own-message ms-auto bg-gradient-primary text-light ">
+                                <div class="own-message ms-auto bg-primary text-light ">
                                     <div class="message-sender d-flex justify-content-between">
                                        <span> You</span> <span class="ms-2"><%= message.time %></span>
                                     </div>
@@ -100,7 +97,7 @@
                                     </div>
                                 </div>
                             <% } else { %>
-                                    <div class="message bg-gradient-primary text-light">
+                                    <div class="message bg-primary text-light">
                                         <div class="message-sender d-flex justify-content-between">
                                             <span><%= Recipient.name %></span> <span class="ms-2"><%= message.time %></span>
                                         </div>
@@ -178,7 +175,7 @@
         if (message.senderId === receiverId || message.senderId === userId) {            
             const messageContainer = document.querySelector('.message-container');
             const messageDiv = document.createElement('div');
-            messageDiv.className = message.senderId === userId ? 'own-message ms-auto bg-gradient-primary text-light' : 'message bg-gradient-primary text-light';
+            messageDiv.className = message.senderId === userId ? 'own-message ms-auto bg-primary text-light' : 'message bg-primary text-light';
             const messageText = document.createElement('div');
             // const date = new Date()
             // const hour = date.getHours()
@@ -211,7 +208,6 @@
         
             messageDiv.appendChild(messageText);
             messageContainer.appendChild(messageDiv);
-            messageContainer.scrollTop = messageContainer.scrollHeight
         }
 
 

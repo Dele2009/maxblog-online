@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const http = require('http');
 const socketIo = require('socket.io');
 const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 require('dotenv').config()
 const Message = require('./models/message')
 
@@ -42,10 +43,16 @@ app.use(express.static('public'))
 // app.use('/uploads',express.static('uploads'))
 app.use(morgan('dev'))
 
+const store = new MongoDBStore({
+  uri: mongo_url,
+  collection: 'sessions'
+});
+
 app.use(session({
   secret: 'secret',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  store
 }));
 
 const userSockets = {};

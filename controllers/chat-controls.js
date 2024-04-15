@@ -29,7 +29,7 @@ const startchat = async (req, res) => {
         const user = req.session.user;
         const receiver_id = req.params.id;
         const Recipient = await Newuser.findById(receiver_id)
-        const conversationId = generateConversationId(user._id, Recipient._id);
+        const conversationId = generateConversationId(user._id, receiver_id);
         const messages = await Message.find({ conversationId }).sort({ timestamp: 1 });
         //const user = await User.findById(userId).populate('authoredBlogs');
         // if (!user) {

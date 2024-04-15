@@ -13,10 +13,10 @@ const { chat_router } = require('./routes/chatRoutes')
 
 const port = process.env.App_Port || 4000;
 //deployment key
-const mongo_url = process.env.Mongo_Url
+// const mongo_url = process.env.Mongo_Url
 //teting phase
 
-//const mongo_url = 'mongodb://localhost:27017'
+const mongo_url = 'mongodb://localhost:27017'
 //Production key
 
 
@@ -57,13 +57,13 @@ io.on('connection', (socket) => {
     console.log(`User ${userId} connected`);
     console.log(userSockets)
   });
-
+  
   // socket.on('sendMessage', async ({ senderId, receiverId, content }) => {
   //   try {
   //     // Save message to database
   //     const message = new Message({ sender: senderId, receiver: receiverId, content });
   //     await message.save();
-
+      
   //     // Emit the message to the receiver
   //     io.to(receiverId).emit('newMessage', { senderId, content });
   //   } catch (error) {
@@ -74,22 +74,22 @@ io.on('connection', (socket) => {
   socket.on('sendMessage', async (messageData) => {
     try {
       console.log('Message received:', messageData);
-      const { senderId, receiverId, message, time } = messageData;
+      const { senderId, receiverId, message } = messageData;
       const conversationId = generateConversationId(senderId, receiverId);
-      const newMessage = new Message({ senderId, receiverId, message, conversationId, time });
+      const newMessage = new Message({ senderId, receiverId, message, conversationId });
       await newMessage.save();
       console.log(newMessage)
       const recipients = [senderId, receiverId];
       // Emit the message only to the sockets of the recipients
-
-      io.to(userSockets[receiverId]).emit('receiveMessage', newMessage);
-
-
-      io.to(userSockets[senderId]).emit('receiveMessage', newMessage);
-
+     
+        io.to(userSockets[receiverId]).emit('receiveMessage', newMessage);
+      
+     
+        io.to(userSockets[senderId]).emit('receiveMessage', newMessage);
+     
 
       // Emit the message to the receiver's socket
-
+      
       // io.emit('receiveMessage', ); // Send message to sender and receiver
     } catch (err) {
       console.error(err);
@@ -121,7 +121,7 @@ app.get('/', (req, res) => {
 
 app.use('/blogs', router)
 app.use('/user', user_router)
-app.use('/chats', chat_router)
+app.use('/chats',chat_router)
 
 // app.use((req, res, next) => {
 //   if (req.session && !req.session.user) {

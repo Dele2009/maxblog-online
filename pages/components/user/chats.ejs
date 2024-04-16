@@ -12,42 +12,49 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <%- include ('../sidebar')%>
+       
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="d-flex flex-column justify-content-center align-items-center ">
 
             <!-- Main Content -->
-            <div id="" class="" >
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <p>Select User:</p>
-                    <div class="input-group my-3">
+            <div id="" class="col-12 col-lg-7 mt-lg-5" >
+                <div class="bg-white py-2 collapse-inner rounded pt-5">
+
+
+                    <p class="text-center">Chats</p>
+                    <div class=" col-12 d-flex flex-column justify-content-center align-items-center mb-5">
                         
-                        <select class="form-select py-3" id="user-dropdown">
-                            <option selected>Choose...</option>
-                            <% users.forEach(user=> { %>
-                                <option value="<%= user._id %>">
-                                    <%= user.name %>
-                                </option>
-                                <% }) %>
-                        </select>
-                        <button class="btn btn-primary" type="button" id="start-chat-btn" >Chat</button>
-                        <script>
-         
-                            const startChatBtn = document.getElementById('start-chat-btn');
-                            const userId = "<%=User._id%>"
-                            startChatBtn.addEventListener('click', () => {
-                                const userDropdown = document.getElementById('user-dropdown');
-                                const receiverId = userDropdown.value;
-                                if (receiverId !== userId) {
-                                    window.location.href = `/chats/${receiverId}`;
-                                } else {
-                                    alert('Cannot select yourself for chat.');
-                                }
-                            });
-                        </script>
+                        <% users.map( user => { %>
+                            <a class="btn btn-link rounded text-light text-decoration-none" href="/chats/<%=user._id%>">
+                                            
+                                    
+                                <div class="w-100 d-flex justify-content-center align-items-center" >
+                                    <div class="m-auto mb-4 bg-gradient-primary rounded p-2">
+                                        <!-- <span class="btn btn-link rounded-circle mr-3"> -->
+                                            
+                                        <!-- </span> -->
+                                        <img class="img-profile rounded-circle mr-4 ms-2 " src="<%=user.avatar_info.url%>" width="35" height="35">
+                                        <span class="text-light text-capitalize"><%= user.name %></span>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
                     </div>
+
+
+
+                    
+                    <form method="post" action="/chats/startNewChat" class=" col-12 col-lg-7 m-auto">
+                        <p class="text-center">Enter User email to start chat:</p>
+                        <input type="text" name="email" id="email" class="form-control py-3 mb-3">
+                        <button class="btn btn-primary w-100" type="submit" id="start-chat-btn" >Start New chat</button>
+                        
+                    </form>
+
+
+                    
                 </div>
             </div>
 
@@ -75,6 +82,21 @@
 
    
    <%- include ('../scripts')%>
+
+   <script>
+         
+    <!-- const startChatBtn = document.getElementById('start-chat-btn');
+    const userId = "<%=User._id%>"
+    startChatBtn.addEventListener('click', () => {
+        const userDropdown = document.getElementById('user-dropdown');
+        const receiverId = userDropdown.value;
+        if (receiverId !== userId) {
+            window.location.href = `/chats/${receiverId}`;
+        } else {
+            alert('Cannot select yourself for chat.');
+        }
+    }); -->
+</script>
 
   
 

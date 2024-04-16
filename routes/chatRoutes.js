@@ -8,6 +8,8 @@ const chat_router = express.Router()
 
 
 chat_router.get('/',requireLogin, chatcontrols.chats );
+chat_router.post('/startNewChat', requireLogin, chatcontrols.startnewchat)
 chat_router.get('/:id',requireLogin, chatcontrols.startchat );
 
+    
 module.exports= {chat_router}

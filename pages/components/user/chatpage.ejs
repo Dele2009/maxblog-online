@@ -4,10 +4,9 @@
 
 <body id="" class="overflow-hidden" style="">
         <%- include ('../main_app_header') %>
-        <div class="w-100 position-sticky col-12 col-lg-8 m-auto mb-4 bg-gradient-primary rounded p-2" style="top: 90px;z-index: 999;">
-            <img class="img-profile rounded-circle mr-2 ms-2 " src="<%=Recipient.avatar_info.url%>" width="35" height="35">
-            <span class="text-light text-capitalize"><%= Recipient.name %></span>
-        </div>
+        
+
+        
 <style>
    
 
@@ -52,7 +51,8 @@
     .input-container {
         display: flex;
         background-color: #fff;
-        border-top: 1px solid #ccc;
+        border: 1px solid #ccc;
+        border-radius: 15px;
         padding: 10px;
     }
 
@@ -74,18 +74,30 @@
         
     }
 </style>
+<div class="w-100 position-fixed d-flex justify-content-center align-items-center" style="top: 80px;z-index: 88;">
+    <div class=" col-12 col-md-10 m-auto mb-4 bg-gradient-primary rounded p-2">
+        <!-- <span class="btn btn-link rounded-circle mr-3"> -->
+            <a class="btn btn-link rounded-circle mr-1 text-light" href="/chats">
+                <i class="fas fa-angle-left"></i>
+            </a>
+        <!-- </span> -->
+        <img class="img-profile rounded-circle mr-2 ms-2 " src="<%=Recipient.avatar_info.url%>" width="35" height="35">
+        <span class="text-light text-capitalize"><%= Recipient.name %></span>
+    </div>
+</div>
 
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <%- include ('../sidebar')%>
+   
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column w-100" style="background: white;">
+    <div id="" class="d-flex flex-column w-100 justify-content-center align-items-center" style="background: white;">
 
         <!-- Main Content -->
-        <div class="position-fixed bottom-0 w-100 col-12 col-md-10">
+        
+        <div class="position-fixed bottom-0 w-100 m-auto left-0  col-12 col-md-10">
             <div class="message-container h-100 w-100">
                 
                     
@@ -113,7 +125,7 @@
                     
             </div>
             
-            <div class="input-container ">
+            <div class="input-container mb-2">
                 <input type="text" id="message-input" class="input-field" placeholder="Type your message...">
                 <button id="send-btn" class="send-btn btn btn-primary"><i class="fa fa-paper-plane"></i></button>
             </div>

@@ -1,9 +1,40 @@
 <nav class="navbar trk navbar-expand navbar-light bg-white topbar mb-4 w-100 shadow">
 
     <!-- Sidebar Toggle (Topbar) -->
+
     <button id="sidebarToggleTop" class="btn btn-link d-lg-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
     </button>
+   
+
+    <a id="homeToggle" class="btn btn-link d-lg-none rounded-circle mr-3" href="/user/dashborad">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-2x fa-laugh-wink"></i>
+        </div>
+    </a>
+
+
+    <script>
+
+       
+        const btn = document.getElementById('sidebarToggleTop')
+        const home = document.getElementById('homeToggle')
+        const path = window.location.href;
+
+
+        if (path.includes('/chats')) {
+          btn.style.display='none'
+          home.style.display='inline'
+
+        } else {
+            btn.style.display='inline'
+            home.style.display='none'
+        }
+  
+
+    
+    </script>
+
     <!-- <a class="sidebar-brand d-flex align-items-center justify-content-center text-decoration-none text-uppercase"
         href="/">
         <div class="sidebar-brand-icon rotate-n-15">
@@ -32,26 +63,23 @@
         <li class="nav-item dropdown no-arrow d-sm-none">
 
             <!-- Dropdown - Messages -->
-            <a class="nav-link dropdown-toggle " href=""
-                id="searchDropdown" role="button" data-toggle="dropdown" >
+            <a class="nav-link dropdown-toggle " href="" id="searchDropdown" role="button" data-toggle="dropdown">
                 <i class="fas fa-search fa-1x"></i>
 
             </a>
-            <div id="trd" class="dropdown-menu w-100 " 
-            aria-labelledby="searchDropdown" >
-            <form class="form-inline mr-auto w-100 navbar-search">
-                <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small"
-                        placeholder="Search for..." aria-label="Search"
-                        aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fas fa-search fa-sm"></i>
-                        </button>
+            <div id="trd" class="dropdown-menu w-100 p-3" aria-labelledby="searchDropdown" style="z-index: 99;">
+                <form class="form-inline mr-auto w-100 navbar-search">
+                    <div class="input-group">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                            aria-label="Search" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
 
 
         </li>

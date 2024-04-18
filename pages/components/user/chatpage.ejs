@@ -15,7 +15,7 @@
     .message-container {
         overflow-y: scroll;
         max-height: 80dvh;
-        padding: 10px;
+        padding: 100px 10px 10px 10px;
     }
 
     .message {
@@ -183,12 +183,13 @@
 
     document.getElementById('send-btn').addEventListener('click', () => startSocket());
 
-    
+    const messageContainer = document.querySelector('.message-container');
+    messageContainer.scrollTop = messageContainer.scrollHeight
 
 
     socket.on('receiveMessage', (message) => {
         if (message.senderId === receiverId || message.senderId === userId) {            
-            const messageContainer = document.querySelector('.message-container');
+            
             const messageDiv = document.createElement('div');
             messageDiv.className = message.senderId === userId ? 'own-message ms-auto bg-primary text-light' : 'message bg-primary text-light';
             const messageText = document.createElement('div');

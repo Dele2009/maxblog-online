@@ -2,6 +2,8 @@ const Newuser = require('../models/User')
 const Newblogs = require('../models/newblogs')
 const Message = require('../models/message')
 
+let chatUsers
+
 
 const chats = async (req, res) => {
     try {
@@ -15,6 +17,7 @@ const chats = async (req, res) => {
         const usersChattedWith = [...new Set([...senders, ...receivers])];
         console.log(usersChattedWith)
         const users = await Newuser.find({ _id: { $in: usersChattedWith } });
+        chatUsers=users
         console.log("chatted users"," =>", users )
         // const user = await Newuser.findById(userId)
         //const user = await User.findById(userId).populate('authoredBlogs');
@@ -34,10 +37,25 @@ const chats = async (req, res) => {
 const startnewchat =  async (req, res) => {
     try {
         const {email} = req.body
+        console.log(chatUsers)
+        let proceed = true;
+        chatUsers.forEach(user=>{
+            if(user.email=== email) proceed=false
+        })
+
+        if(!proceed){
+            return res.json({ message: 'Error: chat initiated with this user Already',error: true });
+        }
+
+        //console.log('process started')
         const Recipient = await Newuser.findOne({email})
         const id = Recipient._id
 
-        res.redirect(`/chats/${id}`)
+        //res.redirect(`/chats/${id}`)
+        return res.json({ redirectTo: `/chats/${id}`, message: 'chat Initiated', error: false })
+        
+        
+        
 
         // const user = req.session.user;
         // const receiver_id = req.params.id;
@@ -54,7 +72,7 @@ const startnewchat =  async (req, res) => {
         // res.render('components/user/chatpage', { title: 'Chats', User: user, Recipient,messages });
 
     } catch (error) {
-        return res.status(500).send('Error fetching chats: ' + error.message);
+        return res.status(500).send('Process Failed' + error.message);
     }
 }
 
@@ -83,7 +101,7 @@ const startchat = async (req, res) => {
 function generateConversationId(sender, receiver) {
     const participants = [sender, receiver].sort();
     return participants.join('_');
-  }
+}
 
 module.exports = {
     chats,

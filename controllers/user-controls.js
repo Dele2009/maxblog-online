@@ -3,6 +3,8 @@ const Newblogs = require('../models/newblogs')
 const cloudinary = require('../middleware/cloudinary')
 const bcrypt = require('bcrypt')
 
+let labels, data;
+
 const sign_up = async (req, res) => {
     try {
         const { name, email, password } = req.body
@@ -25,20 +27,23 @@ const sign_up = async (req, res) => {
             return res.json({ message: 'User Already Exists', error: true })
 
         }
-        if (!req.file || !name || !email || !password) {
+        if (!name || !email || !password) {
             console.log('no file')
-            return res.json({ message: 'Error: empty field detected',error: true });
+            return res.json({ message: 'Error: empty field detected', error: true });
         }
-        const filePath = req.file.path;
-        const result = await cloudinary.uploader.upload(filePath, { folder: 'UserAvatars' });
+        let result;
+        if (req.file) {
+            const filePath = req.file.path;
+            result = await cloudinary.uploader.upload(filePath, { folder: 'UserAvatars' });
+        }
         const hashpassword = await bcrypt.hash(password, 15);
 
         const _user_account_info = new Newuser({
             name,
             email,
             avatar_info: {
-                public_id: result.public_id,
-                url: result.secure_url
+                public_id: result ? result.public_id : null,
+                url: result ? result.secure_url : null
             },
             password: hashpassword
         })
@@ -47,7 +52,7 @@ const sign_up = async (req, res) => {
         //   }
 
         await _user_account_info.save()
-        console.log(req.body)
+        console.log(req.body, req.file)
         console.log(result)
         console.log(_user_account_info)
         return res.json({ redirectTo: '/user/log-in', message: 'Account Created Successfully', error: false })
@@ -83,14 +88,14 @@ const log_in = async (req, res) => {
         };
 
         console.log(req.session);
-        if (req.session.user) {
-            return res.json({ redirectTo: '/user/dashboard', message: 'Login successfully', error: false });
-        }
+
+        return res.json({ redirectTo: '/user/dashboard', message: 'Login successful', error: false });
+
 
         // res.redirect('/user/dashboard')
     } catch (error) {
         console.error('Login error:', error);
-        // return res.status(500).json({ message: 'Internal server error' });
+        return res.status(500).json({ message: 'Internal server error try again later' });
     }
 };
 
@@ -98,7 +103,45 @@ const Show_user_dashboard = async (req, res) => {
     try {
 
         const user = req.session.user;
-        
+        // const lastMonthStartDate = moment().subtract(1, 'month').startOf('month').toDate();
+        const currentMonthStartDate = new Date(); // Get current date
+        currentMonthStartDate.setDate(1); // Set the date to the first day of the month
+
+        // Initialize an array to store the start dates of the previous five months
+        const startDates = [currentMonthStartDate];
+        // Calculate the start dates for the previous five months
+        for (let i = 1; i <= 5; i++) {
+            const startDate = new Date(currentMonthStartDate);
+            startDate.setMonth(currentMonthStartDate.getMonth() - i);
+            startDates.push(startDate);
+        }
+        // Group blogs by month and count the number of blogs for each month
+        const blogActivity = await Newblogs.aggregate([
+            {
+                $match: {
+                    createdAt: { $gte: startDates[5] },
+                    author_id: user._id // Filter blogs created since last month
+                }
+            },
+            {
+                $group: {
+                    _id: { $month: '$createdAt' },
+                    count: { $sum: 1 }
+                }
+            }
+        ]);
+
+        // Prepare data for Chart.js
+        // const labels = blogActivity.map(data => moment().month(data._id - 1).format('MMM')); // Format month labels
+        labels = blogActivity.map(data => {
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return monthNames[data._id - 1];
+        });
+        data = blogActivity.map(data => data.count); // Blog counts
+
+        console.log(labels, data)
+
+
         // const user = await Newuser.findById(userId)
         //const user = await User.findById(userId).populate('authoredBlogs');
         // if (!user) {
@@ -107,7 +150,7 @@ const Show_user_dashboard = async (req, res) => {
         // else {
         //     
         // }
-        res.render('user_dashboard', { title: 'account', User: user });
+        res.render('user_dashboard', { title: 'account', User: user, labels, data });
 
     } catch (error) {
         return res.status(500).send('Error fetching dashboard: ' + error.message);
@@ -116,7 +159,7 @@ const Show_user_dashboard = async (req, res) => {
 
 const load_blogCreate = async (req, res) => {
     try {
-       
+
         const user = req.session.user;
         // const user = await Newuser.findById(user.id)
         // const Author_name = user.name;
@@ -195,5 +238,7 @@ module.exports = {
     Show_user_dashboard,
     load_blogCreate,
     create_blog,
-    log_out
+    log_out,
+    labels,
+    data
 }

@@ -76,6 +76,9 @@
 }
 
 
+
+
+
 .h-p{
     height: 40dvh !important;
 }
@@ -120,12 +123,20 @@
     margin-top: 40px !important;
 }
 
-.mybtn:active{
-    transform: scale(0.8);
+.mybtn2{
+    display: grid !important;
+    place-items: center;
 }
+
+
 
 .alert-wd{
     width: fit-content;
+}
+
+.alert-dismissed{
+    visibility: hidden !important;
+    transition: all 0s 300ms ease !important;
 }
 #Message{
     font-size: 25px;

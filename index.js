@@ -132,7 +132,7 @@ app.use('/chats', chat_router)
 // });
 
 server.listen(port, () => {
-  console.log('App running on localhost:', port)
+  console.log('App running on localhost:',port)
 })
 
 

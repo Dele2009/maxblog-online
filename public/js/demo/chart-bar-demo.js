@@ -1,3 +1,5 @@
+const fields = require('../../../controllers/user-controls')
+
 // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
@@ -32,13 +34,13 @@ var ctx = document.getElementById("myBarChart");
 var myBarChart = new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: ["January", "February", "March", "April", "May", "June"],
+    labels: fields.labels,
     datasets: [{
-      label: "Revenue",
+      label: "Blog Activity",
       backgroundColor: "#4e73df",
       hoverBackgroundColor: "#2e59d9",
       borderColor: "#4e73df",
-      data: [4215, 5312, 6251, 7841, 9821, 14984],
+      data: fields.data,
     }],
   },
   options: {
@@ -60,21 +62,15 @@ var myBarChart = new Chart(ctx, {
           display: false,
           drawBorder: false
         },
-        ticks: {
-          maxTicksLimit: 6
-        },
+        
         maxBarThickness: 25,
       }],
       yAxes: [{
         ticks: {
           min: 0,
-          max: 15000,
+          max: 10,
           maxTicksLimit: 5,
-          padding: 10,
-          // Include a dollar sign in the ticks
-          callback: function(value, index, values) {
-            return '$' + number_format(value);
-          }
+          padding: 10
         },
         gridLines: {
           color: "rgb(234, 236, 244)",

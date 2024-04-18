@@ -41,7 +41,22 @@ export const handleFormSubmission = async (form, url) => {
                 body: JSON.stringify(Body)
             }
 
-        }else{
+        }
+        else if(form.id==="chatForm"){
+            const email = form.querySelector('#email').value;
+            
+            const Body = {
+                email: email
+            };
+            transferInfo = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(Body)
+            }
+        }
+        else{
             transferInfo = {
                 method: 'POST',
                 body: formData
@@ -75,13 +90,18 @@ export const handleFormSubmission = async (form, url) => {
                     mainAlert.style.visibility = 'visible';
                     message.textContent = data.message;
                     if (data.error === true) {
+                        mainAlert.classList.remove('alert-dismissed');
                         mainAlert.classList.add('alert-danger');
                         useElement.setAttribute('xlink:href', '#exclamation-triangle-fill');
                     } else {
+                        mainAlert.classList.remove('alert-dismissed');
                         mainAlert.classList.remove('alert-danger');
                         mainAlert.classList.add('alert-success');
                         useElement.setAttribute('xlink:href', '#check-circle-fill');
                     }
+                    setTimeout(()=>{
+                        mainAlert.classList.add('alert-dismissed');
+                    },4000)
                 }
                 count++;
             }, 1000);

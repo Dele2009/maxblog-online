@@ -46,10 +46,13 @@
 
 
                     
-                    <form method="post" action="/chats/startNewChat" class=" col-12 col-lg-7 m-auto">
+                    <form class=" col-12 col-lg-7 m-auto" id="chatForm">
                         <p class="text-center">Enter User email to start chat:</p>
                         <input type="text" name="email" id="email" class="form-control py-3 mb-3">
-                        <button class="btn btn-primary w-100" type="submit" id="start-chat-btn" >Start New chat</button>
+                        <button class="btn btn-primary w-100 mybtn2" type="submit" id="start-chat-btn" >
+                            <span id="text">Start New chat</span>
+                            <div class="spinner" id="loader" style="display: none;"></div>
+                        </button>
                         
                     </form>
 
@@ -83,9 +86,20 @@
    
    <%- include ('../scripts')%>
 
-   <script>
+<script type="module">
+    import {handleFormSubmission} from '/js/DataUploader.js'
+
+    const chatForm = document.getElementById('chatForm');
+    handleFormSubmission(chatForm, '/chats/startNewChat');
+
+</script>
+
+
+
+
+<!-- <script>
          
-    <!-- const startChatBtn = document.getElementById('start-chat-btn');
+    const startChatBtn = document.getElementById('start-chat-btn');
     const userId = "<%=User._id%>"
     startChatBtn.addEventListener('click', () => {
         const userDropdown = document.getElementById('user-dropdown');
@@ -95,8 +109,10 @@
         } else {
             alert('Cannot select yourself for chat.');
         }
-    }); -->
-</script>
+
+        
+    });
+</script> -->
 
   
 

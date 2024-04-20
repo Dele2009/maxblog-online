@@ -1,6 +1,7 @@
 const Newuser = require('../models/User')
 const Newblogs = require('../models/newblogs')
 const Message = require('../models/message')
+const {generateConversationId} = require('../middleware/generatechatid')
 
 let chatUsers
 
@@ -98,10 +99,7 @@ const startchat = async (req, res) => {
     }
 }
 
-function generateConversationId(sender, receiver) {
-    const participants = [sender, receiver].sort();
-    return participants.join('_');
-}
+
 
 module.exports = {
     chats,

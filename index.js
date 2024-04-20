@@ -6,6 +6,7 @@ const socketIo = require('socket.io');
 const session = require('express-session');
 require('dotenv').config()
 const Message = require('./models/message')
+const {generateConversationId} = require('./middleware/generatechatid')
 
 const { router } = require('./routes/routes')
 const { user_router } = require('./routes/userRoutes')
@@ -13,10 +14,10 @@ const { chat_router } = require('./routes/chatRoutes')
 
 const port = process.env.App_Port || 4000;
 //deployment key
-//const mongo_url = process.env.Mongo_Url
+const mongo_url = process.env.Mongo_Url
 //teting phase
 
-const mongo_url = 'mongodb://localhost:27017'
+//const mongo_url = 'mongodb://localhost:27017'
 //Production key
 
 
@@ -97,10 +98,7 @@ io.on('connection', (socket) => {
   })
 });
 
-function generateConversationId(sender, receiver) {
-  const participants = [sender, receiver].sort();
-  return participants.join('_');
-}
+
 
 
 // app.use(csrf());

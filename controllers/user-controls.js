@@ -70,7 +70,7 @@ const log_in = async (req, res) => {
 
         if (!user) {
             console.log('User does not exist');
-            return res.json({ message: "Invalid Credentials: Can't find user", error: true });
+            return res.json({ message: "Invalid Credentials: User not found", error: true });
         }
 
         const isMatched = await bcrypt.compare(password, user.password);
@@ -95,9 +95,36 @@ const log_in = async (req, res) => {
         // res.redirect('/user/dashboard')
     } catch (error) {
         console.error('Login error:', error);
-        return res.status(500).json({ message: 'Internal server error try again later' });
+        return res.status(500).json({ message: 'Internal server error try again later', error:true });
     }
 };
+
+const updatePassword = async (req,res)=>{
+    const {email,currentPassword,newPassword} = req.body
+
+    try{
+      const user = await Newuser.findOne({ email });
+      if(!user){
+        res.json({message: 'User not found', error:true})
+      }
+
+      const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!passwordMatch) {
+        return res.json({ message: 'Invalid Credentials: email/password error', error: true  });
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 15)
+
+      user.password = hashedPassword;
+      await user.save();
+  
+      // Send a success response
+      res.json({ redirectTo: '/user/log-in', message: 'Password updated successfully',error:false });
+
+    }catch(error){
+
+    }
+}
 
 const Show_user_dashboard = async (req, res) => {
     try {
@@ -239,6 +266,7 @@ module.exports = {
     load_blogCreate,
     create_blog,
     log_out,
+    updatePassword,
     labels,
     data
 }

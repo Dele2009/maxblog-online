@@ -42,6 +42,24 @@ export const handleFormSubmission = async (form, url) => {
             }
 
         }
+        else if(form.id==="ResetForm"){
+            const email = form.querySelector('#email').value;
+            const currentPassword = form.querySelector('#currentPassword').value;
+            const newPassword = form.querySelector('#newPassword').value;
+            const Body = {
+                email: email,
+                currentPassword,
+                newPassword
+            };
+            transferInfo = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(Body)
+            }
+
+        }
         else if(form.id==="chatForm"){
             const email = form.querySelector('#email').value;
             
@@ -106,7 +124,7 @@ export const handleFormSubmission = async (form, url) => {
                 count++;
             }, 1000);
 
-            // Redirect after a delay if necessary
+            // Redirect after a delay
             if (data.error === false && data.redirectTo) {
                 setTimeout(() => {
                     window.location.href = data.redirectTo;

@@ -17,6 +17,12 @@ user_router.get('/log-in',  (req, res) => {
     res.render('Login', { title: 'Login' })
 })
 
+user_router.get('/reset-password',  (req, res) => {
+    res.render('resetPassword', { title: 'Reset password' })
+})
+
+user_router.put('/reset-password', usercontrols.updatePassword)
+
 user_router.post('/log-in', usercontrols.log_in)
 
 user_router.get('/dashboard', requireLogin, usercontrols.Show_user_dashboard);

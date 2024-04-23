@@ -2,12 +2,56 @@ const Newuser = require('../models/User')
 const Newblogs = require('../models/newblogs')
 const cloudinary = require('../middleware/cloudinary')
 const bcrypt = require('bcrypt')
+const nodemailer = require('nodemailer');
+const fs = require('fs');
+const path = require('path');
+const { generateToken } = require('../middleware/token')
 
 let labels, data;
+
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.SECRET_KEY
+    }
+})
+
+const sendVerificationEmail = async (name, email, token) => {
+    try {
+        const templatePath = path.join(__dirname, '..', 'templates', 'email_template.html');
+        const emailTemplate = fs.readFileSync(templatePath, 'utf8');
+        const html = emailTemplate
+            .replace('[NAME]', name)
+            .replace('[TOKEN]', token)
+        // .replace('{{ verificationLink }}', verificationLink);
+
+        console.log(html)
+        const mailOptions = {
+            from: process.env.EMAIL_USERNAME,
+            to: email,
+            subject: 'Email Verification',
+            html: html
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        if (info.response) {
+            return true
+        }
+        console.log("Verfication email sent successfully:", info.response)
+    } catch (error) {
+        if (error) {
+            return false
+        }
+
+        console.log("Error sending verfication email:", error)
+    }
+}
 
 const sign_up = async (req, res) => {
     try {
         const { name, email, password } = req.body
+
         // if (!_csrf || _csrf !== req.csrfToken()) {
         //     console.log('invlid crf')
         //     res.status(403).send('CSRF token invalid');
@@ -37,7 +81,7 @@ const sign_up = async (req, res) => {
             result = await cloudinary.uploader.upload(filePath, { folder: 'UserAvatars' });
         }
         const hashpassword = await bcrypt.hash(password, 15);
-
+        const token = generateToken();
         const _user_account_info = new Newuser({
             name,
             email,
@@ -45,21 +89,57 @@ const sign_up = async (req, res) => {
                 public_id: result ? result.public_id : null,
                 url: result ? result.secure_url : null
             },
-            password: hashpassword
+            password: hashpassword,
+            verificationToken: token
         })
         //   if(req.file){
         //     _blog.heroimage=req.file.path
         //   }
 
+
+
+        const tokenSent = sendVerificationEmail(name, email, token)
+        if (!tokenSent) {
+            return res.json({ message: 'Error sending verification token, try again', error: true })
+
+        }
         await _user_account_info.save()
         console.log(req.body, req.file)
+        console.log(token)
         console.log(result)
         console.log(_user_account_info)
-        return res.json({ redirectTo: '/user/log-in', message: 'Account Created Successfully', error: false })
+
+        // return res.render("verify",{title:"verification"})
+        return res.json({ redirectTo: '/user/verify', message: 'successful redirecting', error: false })
 
     } catch (error) {
         console.log(error)
     }
+}
+
+
+
+const tokenVerify = async (req, res) => {
+    try {
+        const { token } = req.body
+        const user = await Newuser.findOne({ verificationToken: token });
+        if (!user) {
+            console.log("user does not exist")
+            return res.json({ message: 'Error: token invalid', error: true });
+        }
+        console.log(user)
+
+        user.isVerified = true;
+        user.verificationToken = null;
+        await user.save();
+        console.log(user)
+
+        return res.json({ redirectTo: '/user/log-in', message: 'Account verification Successful', error: false })
+    } catch (error) {
+        console.log(error)
+    }
+
+
 }
 
 const log_in = async (req, res) => {
@@ -73,10 +153,15 @@ const log_in = async (req, res) => {
             return res.json({ message: "Invalid Credentials: User not found", error: true });
         }
 
-        const isMatched = await bcrypt.compare(password, user.password);
-        if (!isMatched) {
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
             console.log('Invalid password');
             return res.json({ message: 'Invalid Credentials: email/password error', error: true });
+        }
+
+        if(user && user.isVerified===false){
+            console.log('Account not verified ');
+            return res.json({ message: 'Error: Account not verified ', error: true });
         }
 
         console.log('User logged in:', user);
@@ -95,34 +180,34 @@ const log_in = async (req, res) => {
         // res.redirect('/user/dashboard')
     } catch (error) {
         console.error('Login error:', error);
-        return res.status(500).json({ message: 'Internal server error try again later', error:true });
+        return res.status(500).json({ message: 'Internal server error try again later', error: true });
     }
 };
 
-const updatePassword = async (req,res)=>{
-    const {email,currentPassword,newPassword} = req.body
+const updatePassword = async (req, res) => {
+    const { email, currentPassword, newPassword } = req.body
 
-    try{
-      const user = await Newuser.findOne({ email });
-      if(!user){
-        res.json({message: 'User not found', error:true})
-      }
+    try {
+        const user = await Newuser.findOne({ email });
+        if (!user) {
+            res.json({ message: 'User not found', error: true })
+        }
 
-      const passwordMatch = await bcrypt.compare(currentPassword, user.password);
-      if (!passwordMatch) {
-        return res.json({ message: 'Invalid Credentials: email/password error', error: true  });
-      }
+        const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!passwordMatch) {
+            return res.json({ message: 'Invalid Credentials: email/password error', error: true });
+        }
 
-      const hashedPassword = await bcrypt.hash(newPassword, 15)
+        const hashedPassword = await bcrypt.hash(newPassword, 15)
 
-      user.password = hashedPassword;
-      await user.save();
-  
-      // Send a success response
-      res.json({ redirectTo: '/user/log-in', message: 'Password updated successfully',error:false });
+        user.password = hashedPassword;
+        await user.save();
 
-    }catch(error){
+        // Send a success response
+        res.json({ redirectTo: '/user/log-in', message: 'Password updated successfully', error: false });
 
+    } catch (error) {
+        console.log(error)
     }
 }
 
@@ -165,6 +250,7 @@ const Show_user_dashboard = async (req, res) => {
             return monthNames[data._id - 1];
         });
         data = blogActivity.map(data => data.count); // Blog counts
+        const authoredBlogs = await Newblogs.find({ author_id: user._id })
 
         console.log(labels, data)
 
@@ -177,7 +263,7 @@ const Show_user_dashboard = async (req, res) => {
         // else {
         //     
         // }
-        res.render('user_dashboard', { title: 'account', User: user, labels, data });
+        res.render('user_dashboard', { title: 'account', User: user, labels, data, authoredBlogs });
 
     } catch (error) {
         return res.status(500).send('Error fetching dashboard: ' + error.message);
@@ -267,6 +353,7 @@ module.exports = {
     create_blog,
     log_out,
     updatePassword,
+    tokenVerify,
     labels,
     data
 }

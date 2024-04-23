@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%-include('./components/head')%>
+
+    <body>
+        <%-include('./components/header')%>
+
+        <%-include('./components/Alertbox')%>
+         <style>
+            :root{
+                --error-color:rgb(252, 73, 73);
+            }
+            .error{
+                color:var(--error-color);
+                font-size: 13px;
+                border: none !important;
+            }
+            .input-error{
+                border: 2px solid var(--error-color) ;
+            }
+         </style>
+
+            <main class="row justify-content-center align-items-center mb-3">
+
+                <div class="col-11 col-md-8 col-lg-4 bg-light rounded shadow p-2 p-lg-5">
+                    <form id="verifyForm">
+
+                        <h1 class="h3 mb-2 fw-normal text-center mb-5">Enter verification token</h1>
+                        <div class="mt-3">
+                            <input type="text" class="form-control py-3 ps-4 rounded" id="token" name="token" placeholder="XXXXX">
+                            <i id="token-error" class="px-2"></i>
+                        </div>
+
+
+
+                        
+                        <div class="row flex-column-reverse flex-lg-row">
+                            <div class="col-lg-3">
+                                <a href="/user/sign-up" class="btn btn-outline-primary mybtn rounded">
+                                    Back
+                                </a>
+                            </div>
+                            <div class="col-lg-9">
+                                <button class="btn btn-primary w-100 mybtn rounded" type="submit">
+                                    <span id="text">verify</span>
+                                    <div class="spinner" id="loader" style="display: none;"></div>
+                                </button>
+                            </div>
+                        </div>
+                        
+
+                        
+
+                    </form>
+                    <div class="mt-3 fs-5">
+                        <p class="text-center">Check email for your Verification token</p>
+                    </div>
+                </div>
+            </main>
+           
+
+
+            <script type="module">
+                import {handleFormSubmission} from '/js/DataUploader.js'
+
+                function validateToken(){
+                   const token = document.getElementById("token")
+                   const tokenError= document.getElementById("token-error")
+                   
+
+                    if(!token.value){
+                        tokenError.textContent="Token Required"
+                        token.classList.add('input-error')
+                        tokenError.classList.add('error')
+                        return false
+                    }else if(token.value.length > 5 || token.value.length < 5){
+                        tokenError.textContent="Token Format Invalid"
+                        token.classList.add('input-error')
+                        emailError.classList.add('error')
+                        return false
+                    }else{
+                        token.classList.remove('input-error')
+                        tokenError.classList.remove('error')
+                        tokenError.textContent= null
+                        
+                        return true
+                    }
+
+                }
+
+                function startSubmission(e){
+                    e.preventDefault()
+                    let tokenValid = validateToken()
+                    if(tokenValid){
+                        const verifyForm = document.getElementById('verifyForm');
+                        handleFormSubmission(verifyForm, '/user/verify');
+
+                    }
+                }
+
+                document.getElementById('verifyForm').addEventListener('submit',(e)=>startSubmission(e))
+
+                
+            </script>
+
+
+
+            
+    </body>
+
+</html>

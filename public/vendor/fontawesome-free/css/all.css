@@ -601,10 +601,12 @@ readers do not read off random characters that represent icons */
   content: "\f6b7"; }
 
 .fa-book-medical:before {
-  content: "\f7e6"; }
+  content: "\f7e6"; 
+}
 
 .fa-book-open:before {
-  content: "\f518"; }
+  content: "\f518";
+ }
 
 .fa-book-reader:before {
   content: "\f5da"; }

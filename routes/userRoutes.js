@@ -13,6 +13,12 @@ user_router.get('/sign-up', (req, res) => {
 
 user_router.post('/sign-up',upload.single('avatar'), usercontrols.sign_up )
 
+user_router.get('/verify', (req, res) => {
+    res.render('verify', { title: 'verification' })
+})
+
+user_router.post("/verify", usercontrols.tokenVerify)
+
 user_router.get('/log-in',  (req, res) => {
     res.render('Login', { title: 'Login' })
 })

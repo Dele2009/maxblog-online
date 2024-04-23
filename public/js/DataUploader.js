@@ -30,8 +30,8 @@ export const handleFormSubmission = async (form, url) => {
             const email = form.querySelector('#email').value;
             const password = form.querySelector('#password').value;
             const Body = {
-                email: email,
-                password: password
+                email,
+                password
             };
             transferInfo = {
                 method: 'POST',
@@ -60,11 +60,23 @@ export const handleFormSubmission = async (form, url) => {
             }
 
         }
+        else if(form.id==="verifyForm"){
+            const token = form.querySelector('#token').value;
+            const Body = {token};
+            transferInfo = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(Body)
+            }
+
+        }
         else if(form.id==="chatForm"){
             const email = form.querySelector('#email').value;
             
             const Body = {
-                email: email
+                email
             };
             transferInfo = {
                 method: 'POST',

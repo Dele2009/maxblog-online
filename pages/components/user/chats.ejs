@@ -20,37 +20,42 @@
 
             <!-- Main Content -->
             <div id="" class="col-12 col-lg-7 mt-lg-5" >
-                <div class="bg-white py-2 collapse-inner rounded pt-5">
+                <div class="bg-white py-2 collapse-inner rounded pt-5 position-relative">
 
 
-                    <p class="text-center">Chats</p>
+                    <p class="text-center fs-5 position-sticky top-0">Recent Chats</p>
                     <div class=" col-12 d-flex flex-column justify-content-center align-items-center mb-5">
-                        
-                        <% users.map( user => { %>
-                            <a class="btn btn-link rounded text-light text-decoration-none" href="/chats/<%=user._id%>">
-                                            
-                                    
-                                <div class="w-100 d-flex justify-content-center align-items-center" >
-                                    <div class="m-auto mb-4 bg-gradient-primary rounded p-2">
-                                        <!-- <span class="btn btn-link rounded-circle mr-3"> -->
-                                            
-                                        <!-- </span> -->
-                                        <img class="img-profile rounded-circle mr-4 ms-2 " src="<%=user.avatar_info.url%>" width="35" height="35">
-                                        <span class="text-light text-capitalize"><%= user.name %></span>
+                        <%if(users){%>
+                            <% users.map( user => { %>
+                                <a class="btn btn-link rounded text-light text-decoration-none" href="/chats/<%=user._id%>">
+                                                
+                                        
+                                    <div class="w-100 d-flex justify-content-center align-items-center" >
+                                        <div class="m-auto mb-4 bg-gradient-primary rounded p-2">
+                                            <!-- <span class="btn btn-link rounded-circle mr-3"> -->
+                                                
+                                            <!-- </span> -->
+                                            <img class="img-profile rounded-circle mr-4 ms-2 " src="<%=user.avatar_info.url%>" width="35" height="35">
+                                            <span class="text-light text-capitalize"><%= user.name %></span>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        <% }) %>
+                                </a>
+                            <% }) %>
+                        <%}else{%>
+                            <p>No Chat Initiated Yet !!!</p>
+                        <%}%>
                     </div>
 
-
+                    <hr style="border: 1px solid;" class="border-dark">
 
                     
                     <form class=" col-12 col-lg-7 m-auto" id="chatForm">
-                        <p class="text-center">Enter User email to start chat:</p>
+
+                        <p class="text-center fs-5">Initiate A New Chat</p>
+                        <p class="">Enter the user's registered email</p>
                         <input type="text" name="email" id="email" class="form-control py-3 mb-3">
                         <button class="btn btn-primary w-100 mybtn2" type="submit" id="start-chat-btn" >
-                            <span id="text">Start New chat</span>
+                            <span id="text">Continue</span>
                             <div class="spinner" id="loader" style="display: none;"></div>
                         </button>
                         

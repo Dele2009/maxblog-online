@@ -45,7 +45,7 @@ const get_blog_category = async (req, res) => {
   try {
     // const result = await Blog.findById(id)
     const result = await Newblogs.find({ category: id })
-    res.render('blogcategory', { title: `${id}`, Blogs: result })
+    res.render('blogcategory', { title: `${id}`, Blogs: result, formatDistanceToNow })
   } catch (error) {
     console.log(error)
   }

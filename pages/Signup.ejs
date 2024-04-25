@@ -119,7 +119,7 @@
                     }
                 }
 
-                document.getElementById('SignUpForm').addEventListener('submit',(e)=>startSubmission(e))
+                document.getElementById('SignUpForm').addEventListener('submit',startSubmission)
 
                 function validateName(){
                    const name = document.getElementById("name")

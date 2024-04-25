@@ -164,17 +164,17 @@
                         }
 
                     }
-
-                    // function startSubmission(e){
-
-                    // }
                     const verifyForm = document.getElementById('verifyForm');
-
-                    verifyForm.addEventListener('submit', (e) => {
-                        e.preventDefault()
+                    function startSubmission(form, url){
                         let tokenValid = validateToken()
-                        if (tokenValid) handleFormSubmission(verifyForm, '/user/verify');
-                    })
+                        if (tokenValid) handleFormSubmission(form, url);
+                    }
+                    
+
+                    verifyForm.addEventListener('submit', (e)=>{
+                        e.preventDefault();
+                        startSubmission(e.target, '/user/verify');
+                    } )
 
 
                 </script>

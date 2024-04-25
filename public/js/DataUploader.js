@@ -1,6 +1,11 @@
 export const handleFormSubmission = async (form, url) => {
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Prevent form submission
+    // Remove any existing event listeners for form submission
+    // form.removeEventListener('submit', handleSubmission);
+
+    // // Add event listener for form submission
+    // form.addEventListener('submit', handleSubmission);
+    //async function handleSubmission(event) {
+        //event.preventDefault(); // Prevent form submission
         // Show loader
         const submitBtnText = document.getElementById('text')
         const loader = document.getElementById('loader')
@@ -152,5 +157,6 @@ export const handleFormSubmission = async (form, url) => {
         } catch (error) {
             console.log(error);
         }
-    });
+ 
+   // }
 }

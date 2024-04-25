@@ -61,10 +61,14 @@ export const handleFormSubmission = async (form, url) => {
 
         }
         else if(form.id==="verifyForm"){
-            const token = form.querySelector('#token').value;
-            const Body = {token};
+            const tokens = form.querySelectorAll('.token');
+            let Token = ""
+            tokens.forEach(token => {
+                Token += token.value
+            });
+            const Body = {token:Token.toUpperCase()};
             transferInfo = {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -129,9 +133,12 @@ export const handleFormSubmission = async (form, url) => {
                         mainAlert.classList.add('alert-success');
                         useElement.setAttribute('xlink:href', '#check-circle-fill');
                     }
-                    setTimeout(()=>{
-                        mainAlert.classList.add('alert-dismissed');
-                    },4000)
+
+                    if(form.id!=="verifyForm" && data.error !== true){
+                        setTimeout(()=>{
+                            mainAlert.classList.add('alert-dismissed');
+                        },4000)
+                    }
                 }
                 count++;
             }, 1000);

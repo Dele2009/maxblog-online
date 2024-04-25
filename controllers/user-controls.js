@@ -21,9 +21,10 @@ const sendVerificationEmail = async (name, email, token) => {
     try {
         const templatePath = path.join(__dirname, '..', 'templates', 'email_template.html');
         const emailTemplate = fs.readFileSync(templatePath, 'utf8');
+        const Token = token.split('').join('-')
         const html = emailTemplate
             .replace('[NAME]', name)
-            .replace('[TOKEN]', token)
+            .replace('[TOKEN]', Token)
         // .replace('{{ verificationLink }}', verificationLink);
 
         console.log(html)
@@ -36,15 +37,13 @@ const sendVerificationEmail = async (name, email, token) => {
 
         const info = await transporter.sendMail(mailOptions);
         if (info.response) {
+            console.log("Verfication email sent successfully:", info.response)
             return true
         }
-        console.log("Verfication email sent successfully:", info.response)
-    } catch (error) {
-        if (error) {
-            return false
-        }
 
+    } catch (error) {
         console.log("Error sending verfication email:", error)
+        return false
     }
 }
 
@@ -90,7 +89,8 @@ const sign_up = async (req, res) => {
                 url: result ? result.secure_url : null
             },
             password: hashpassword,
-            verificationToken: token
+            verificationToken: token,
+            verificationTokenExpiration: new Date().getTime() + (5 * 60 * 1000)
         })
         //   if(req.file){
         //     _blog.heroimage=req.file.path
@@ -98,18 +98,20 @@ const sign_up = async (req, res) => {
 
 
 
-        const tokenSent = sendVerificationEmail(name, email, token)
+        const tokenSent = await sendVerificationEmail(name, email, token)
         if (!tokenSent) {
             return res.json({ message: 'Error sending verification token, try again', error: true })
 
         }
-        await _user_account_info.save()
+
         console.log(req.body, req.file)
         console.log(token)
         console.log(result)
-        console.log(_user_account_info)
+
 
         // return res.render("verify",{title:"verification"})
+        await _user_account_info.save()
+        console.log(_user_account_info)
         return res.json({ redirectTo: '/user/verify', message: 'successful redirecting', error: false })
 
     } catch (error) {
@@ -127,14 +129,31 @@ const tokenVerify = async (req, res) => {
             console.log("user does not exist")
             return res.json({ message: 'Error: token invalid', error: true });
         }
+
+        const tokenExpiration = user.verificationTokenExpiration;
+        if (new Date().getTime() > tokenExpiration) {
+            // Token has expired, generate a new token and send verification email
+            const newToken = generateToken(); // Generate a new token
+            const tokenSent = await sendVerificationEmail(user.name, user.email, newToken); // Send verification email with new token
+            if (!tokenSent) {
+                return res.json({ message: 'Error sending new verification email, try again', error: true });
+            }
+            // Update user with new token and expiration time
+            user.verificationToken = newToken;
+            user.verificationTokenExpiration = new Date().getTime() + (5 * 60 * 1000); // 5 minutes expiration
+            await user.save();
+
+            return res.json({ message: 'Token Expired: New verification token sent successfully', error: true });
+        }
         console.log(user)
 
         user.isVerified = true;
         user.verificationToken = null;
+        user.verificationTokenExpiration = null;
         await user.save();
         console.log(user)
 
-        return res.json({ redirectTo: '/user/log-in', message: 'Account verification Successful', error: false })
+        return res.json({ redirectTo: '/user/log-in', message: 'Email verified successfully', error: false })
     } catch (error) {
         console.log(error)
     }
@@ -159,18 +178,21 @@ const log_in = async (req, res) => {
             return res.json({ message: 'Invalid Credentials: email/password error', error: true });
         }
 
-        if(user && user.isVerified===false){
+        if (!user.isVerified) {
             console.log('Account not verified ');
             return res.json({ message: 'Error: Account not verified ', error: true });
         }
 
         console.log('User logged in:', user);
-        req.session.user = {
+        const serializedUser = {
             _id: user._id,
             name: user.name,
             avatar_info: user.avatar_info,
             email: user.email
         };
+
+        // Set session user data
+        req.session.user = serializedUser;
 
         console.log(req.session);
 

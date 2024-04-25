@@ -30,7 +30,10 @@ const Userschema = new Schema(
             default: false
         },
         verificationToken: {
-            type: String
+            type: String,
+        },
+        verificationTokenExpiration:{
+            type: Date,
         }
     }, { timestamps: true }
 )

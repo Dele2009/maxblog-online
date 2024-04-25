@@ -4,9 +4,10 @@ const mongoose = require('mongoose')
 const http = require('http');
 const socketIo = require('socket.io');
 const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 require('dotenv').config()
 const Message = require('./models/message')
-const {generateConversationId} = require('./middleware/generatechatid')
+const { generateConversationId } = require('./middleware/generatechatid')
 
 const { router } = require('./routes/routes')
 const { user_router } = require('./routes/userRoutes')
@@ -28,8 +29,20 @@ const io = socketIo(server);
 
 mongoose
   .connect(mongo_url)
-  .then(result => console.log('database conected'))
+  .then(result => console.log('database connected'))
   .catch(err => console.log('Error Detected' + ' => ' + err))
+
+const store = new MongoDBStore({
+  uri: mongo_url,
+  collection: 'sessions'
+});
+
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: true,
+  store: store,
+}));
 
 //using the ejs template to render
 app.set('view engine', 'ejs')
@@ -43,11 +56,7 @@ app.use(express.static('public'))
 // app.use('/uploads',express.static('uploads'))
 app.use(morgan('dev'))
 
-app.use(session({
-  secret: 'secret',
-  resave: false,
-  saveUninitialized: true
-}));
+
 
 const userSockets = {};
 io.on('connection', (socket) => {
@@ -129,7 +138,7 @@ app.use('/chats', chat_router)
 // });
 
 server.listen(port, () => {
-  console.log('App running on localhost:',port)
+  console.log('App running on localhost:', port)
 })
 
 

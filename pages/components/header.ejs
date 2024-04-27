@@ -97,26 +97,101 @@
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav m-auto mb-2 mb-lg-0  fs-5">
+                <ul class="navbar-nav ms-auto fs-5">
                     <li class="nav-item"><a class="nav-link" href="/">Blogs</a></li>
                     <li class="nav-item"><a class="nav-link" href="/">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="/">Contact</a></li>
 
                 </ul>
+                <%const User = typeof user !== 'undefined' ? user : "" %>
+                <%if(User){%>
+                    <ul class="navbar-nav ml-auto">
 
-                <ul class="navbar-nav ms-lg-auto d-none d-lg-flex mb-2  mb-lg-0 fs-3">
-                    <li class="nav-item"><a class="btn btn-outline-primary mx-2" href="/user/sign-up">Become A Writer</a>
-                    </li>
-                    <li class="nav-item"><a class="btn btn-outline-primary mx-2" href="/user/log-in">Log in</a></li>
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow">
+                
+                            <!-- Dropdown - Messages -->
+                            <a class="nav-link dropdown-toggle " href="" id="searchDropdown" role="button" data-toggle="dropdown">
+                                <i class="fas fa-search fa-1x"></i>
+                
+                            </a>
+                            <div id="trd" class="dropdown-menu w-100 p-3" aria-labelledby="searchDropdown" style="z-index: 99;">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                            aria-label="Search" aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                
+                
+                        </li>
+                
+                        <!-- Nav Item - Alerts -->
+                        
+                
+                        <!-- Nav Item - Messages -->
+                       
+                
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                
+                        <!-- Nav Item - user Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <img class="img-profile rounded-circle mr-2 " src="<%=User.avatar_info.url%>">
+                                <span class="d-none d-lg-inline text-gray-600 small">
+                                    <%=User.name%>
+                                </span>
+                
+                            </a>
+                            <!-- Dropdown - user Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Activity Log
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                
+                    </ul>
 
-                </ul>
+                    <%-include('./user/modal')%>
+                <%}else{%>
+                    <ul class="navbar-nav ms-lg-auto d-none d-lg-flex mb-2  mb-lg-0 fs-3">
+                        <li class="nav-item"><a class="btn btn-outline-primary mx-2" href="/user/sign-up">Become A Writer</a>
+                        </li>
+                        <li class="nav-item"><a class="btn btn-outline-primary mx-2" href="/user/log-in">Log in</a></li>
+    
+                    </ul>
+    
+                    <ul class=" d-flex  d-lg-none w-100 align-items-center justify-content-evenly mt-5">
+                        <li class="nav-item"><a class="btn btn-outline-primary mx-2" href="/user/sign-up">Become A Writer</a>
+                        </li>
+                        <li class="nav-item"><a class="btn btn-outline-primary mx-2" href="/user/log-in">Log in</a></li>
+    
+                    </ul>
+                <%}%>        
 
-                <ul class=" d-flex  d-lg-none w-100 align-items-center justify-content-evenly mt-5">
-                    <li class="nav-item"><a class="btn btn-outline-primary mx-2" href="/user/sign-up">Become A Writer</a>
-                    </li>
-                    <li class="nav-item"><a class="btn btn-outline-primary mx-2" href="/user/log-in">Log in</a></li>
-
-                </ul>
+                
             </div>
         </div>
     </nav>

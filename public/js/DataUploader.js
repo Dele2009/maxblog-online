@@ -139,7 +139,7 @@ export const handleFormSubmission = async (form, url) => {
                         useElement.setAttribute('xlink:href', '#check-circle-fill');
                     }
 
-                    if(form.id!=="verifyForm" && data.error !== true){
+                    if(form.id!=="verifyForm"){
                         setTimeout(()=>{
                             mainAlert.classList.add('alert-dismissed');
                         },4000)
@@ -149,7 +149,7 @@ export const handleFormSubmission = async (form, url) => {
             }, 1000);
 
             // Redirect after a delay
-            if (data.error === false && data.redirectTo) {
+            if (data.redirectTo) {
                 setTimeout(() => {
                     window.location.href = data.redirectTo;
                 }, 8000);

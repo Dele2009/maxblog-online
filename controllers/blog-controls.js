@@ -16,9 +16,19 @@ const { formatDistanceToNow } = require('date-fns')
 const get_blogs = async (req, res) => {
   try {
     // const result = await Blog.find()
+    let user;
+    if(req.session && req.session.user){
+      user = req.session.user
+    }
     const result = await Newblogs.find().sort({ createdAt: -1 })
 
-    res.render('test', { title: 'Home', Blogs: result,formatDistanceToNow: formatDistanceToNow, })
+    res.render('test', { 
+      title: 'Home', 
+      Blogs: result,
+      formatDistanceToNow, 
+      user 
+    })
+
   } catch (error) {
     console.log(error)
   }

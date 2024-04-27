@@ -128,6 +128,14 @@ app.get('/', (req, res) => {
 app.use('/blogs', router)
 app.use('/user', user_router)
 app.use('/chats', chat_router)
+app.use((req,res,next)=>{
+  res.render("404")
+})
+
+// app.use((error,req,res,next)=>{
+//   console.error(error.stack)
+//   res.render("404")
+// })
 
 // app.use((req, res, next) => {
 //   if (req.session && !req.session.user) {

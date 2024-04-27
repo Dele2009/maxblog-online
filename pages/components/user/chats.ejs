@@ -3,13 +3,25 @@
 <html lang="en">
     <%- include ('../main_app_head') %>
 
-
+    <style>
+        :root{
+            --error-color:rgb(252, 73, 73);
+        }
+        .error{
+            color:var(--error-color);
+            font-size: 13px;
+            border: none !important;
+        }
+        .input-error{
+            border: 2px solid var(--error-color) ;
+        }
+    </style>
 <body id="">
       <%- include ('../main_app_header') %>
       <%-include('../Alertbox')%>
 
     <!-- Page Wrapper -->
-    <div id="wrapper">
+    <div id="">
 
         <!-- Sidebar -->
        
@@ -19,13 +31,13 @@
         <div id="content-wrapper" class="d-flex flex-column justify-content-center align-items-center ">
 
             <!-- Main Content -->
-            <div id="" class="col-12 col-lg-7 mt-lg-5" >
-                <div class="bg-white py-2 collapse-inner rounded pt-5 position-relative">
+            <div id="" class="col-12 col-lg-7" >
+                <div class="bg-white py-2 collapse-inner rounded">
 
 
-                    <p class="text-center fs-5 position-sticky top-0">Recent Chats</p>
+                    <p class="text-center fs-5 ">Recent Chats</p>
                     <div class=" col-12 d-flex flex-column justify-content-center align-items-center mb-5">
-                        <%if(users){%>
+                        <%if(users.length > 0){%>
                             <% users.map( user => { %>
                                 <a class="btn btn-link rounded text-light text-decoration-none" href="/chats/<%=user._id%>">
                                                 
@@ -42,7 +54,7 @@
                                 </a>
                             <% }) %>
                         <%}else{%>
-                            <p>No Chat Initiated Yet !!!</p>
+                            <p class="p-2 text-primary fs-5">No Chat Initiated Yet !!!</p>
                         <%}%>
                     </div>
 
@@ -53,8 +65,9 @@
 
                         <p class="text-center fs-5">Initiate A New Chat</p>
                         <p class="">Enter the user's registered email</p>
-                        <input type="text" name="email" id="email" class="form-control py-3 mb-3">
-                        <button class="btn btn-primary w-100 mybtn2" type="submit" id="start-chat-btn" >
+                        <input type="text" name="email" id="email" class="form-control py-3 ">
+                        <i id="email-error" class="px-2"></i>
+                        <button class="btn btn-primary w-100 mybtn2 mt-3" type="submit" id="start-chat-btn" >
                             <span id="text">Continue</span>
                             <div class="spinner" id="loader" style="display: none;"></div>
                         </button>
@@ -92,10 +105,52 @@
    <%- include ('../scripts')%>
 
 <script type="module">
+
+
     import {handleFormSubmission} from '/js/DataUploader.js'
 
-    const chatForm = document.getElementById('chatForm');
-    handleFormSubmission(chatForm, '/chats/startNewChat');
+    function validateEmail(){
+        const email = document.getElementById("email")
+        const emailError= document.getElementById("email-error")
+        const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+         if(!email.value){
+             emailError.textContent="Email Required"
+             email.classList.add('input-error')
+             emailError.classList.add('error')
+             return false
+         }else if(!email.value.match(emailFormat)){
+             emailError.textContent="Email Format Invalid"
+             email.classList.add('input-error')
+             emailError.classList.add('error')
+             return false
+         }else{
+             email.classList.remove('input-error')
+             emailError.classList.remove('error')
+             emailError.textContent= null
+             
+             return true
+         }
+
+     }
+     const chatForm = document.getElementById('chatForm');
+     function startSubmission(form, url){
+       
+        let emailValid = validateEmail()
+        if(emailValid ){
+            
+            handleFormSubmission(form,url );
+
+        }
+    }
+
+    chatForm.addEventListener('submit',(e)=>{
+        e.preventDefault()
+        startSubmission(e.target,'/chats/startNewChat')
+    })
+
+
+    
 
 </script>
 

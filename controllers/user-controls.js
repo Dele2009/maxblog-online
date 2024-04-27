@@ -180,7 +180,18 @@ const log_in = async (req, res) => {
 
         if (!user.isVerified) {
             console.log('Account not verified ');
-            return res.json({ message: 'Error: Account not verified ', error: true });
+            // return res.json({ message: 'Error: Account not verified ', error: true });
+            const newToken = generateToken(); // Generate a new token
+            const tokenSent = await sendVerificationEmail(user.name, user.email, newToken); // Send verification email with new token
+            if (!tokenSent) {
+                return res.json({ message: 'Error sending new verification email, try again', error: true });
+            }
+            // Update user with new token and expiration time
+            user.verificationToken = newToken;
+            user.verificationTokenExpiration = new Date().getTime() + (5 * 60 * 1000); // 5 minutes expiration
+            await user.save();
+
+            return res.json({ redirectTo: '/user/verify', message: 'Account not verified: New OTP sent', error: true });
         }
 
         console.log('User logged in:', user);

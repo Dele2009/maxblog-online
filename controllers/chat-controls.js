@@ -3,7 +3,7 @@ const Newblogs = require('../models/newblogs')
 const Message = require('../models/message')
 const {generateConversationId} = require('../middleware/generatechatid')
 
-let chatUsers
+let chatUsers;
 
 
 const chats = async (req, res) => {
@@ -38,7 +38,18 @@ const chats = async (req, res) => {
 const startnewchat =  async (req, res) => {
     try {
         const {email} = req.body
+        const user = req.session.user
+        if(email===user.email){
+            return res.json({ message: "Can't initiate chat with yourself",error: true });
+        }
         console.log(chatUsers)
+        const Recipient = await Newuser.findOne({email})
+        if(!Recipient){
+            return res.json({ message: "Selected user doesn't exist",error: true });
+        }
+        if(!Recipient.isVerified){
+            return res.json({ message: 'Selected user is not Authorized to chat',error: true });
+        }
         let proceed = true;
         chatUsers.forEach(user=>{
             if(user.email=== email) proceed=false
@@ -49,7 +60,6 @@ const startnewchat =  async (req, res) => {
         }
 
         //console.log('process started')
-        const Recipient = await Newuser.findOne({email})
         const id = Recipient._id
 
         //res.redirect(`/chats/${id}`)

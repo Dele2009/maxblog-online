@@ -1,163 +1,186 @@
-
 <!DOCTYPE html>
 <html lang="en">
-    <%- include ('../main_app_head') %>
+<%- include ('../main_app_head') %>
 
     <style>
-        :root{
-            --error-color:rgb(252, 73, 73);
+        :root {
+            --error-color: rgb(252, 73, 73);
         }
-        .error{
-            color:var(--error-color);
+
+        .error {
+            color: var(--error-color);
             font-size: 13px;
             border: none !important;
         }
-        .input-error{
-            border: 2px solid var(--error-color) ;
+
+        .input-error {
+            border: 2px solid var(--error-color);
         }
     </style>
-<body id="">
-      <%- include ('../main_app_header') %>
-      <%-include('../Alertbox')%>
 
-    <!-- Page Wrapper -->
-    <div id="">
+    <body id="">
+        <%- include ('../main_app_header') %>
+            <%- include('../Alertbox') %>
 
-        <!-- Sidebar -->
-       
-        <!-- End of Sidebar -->
+            <a href="/user/dashboard" style="position: fixed;top: 90px; left: 20px;" class="btn bg-gradient-primary fs-4 text-light"><i class="fas fa-arrow-left"></i> Back</a>
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column justify-content-center align-items-center ">
-
-            <!-- Main Content -->
-            <div id="" class="col-12 col-lg-7" >
-                <div class="bg-white py-2 collapse-inner rounded">
+                <!-- Page Wrapper -->
+                <div id="">
 
 
-                    <p class="text-center fs-5 ">Recent Chats</p>
-                    <div class=" col-12 d-flex flex-column justify-content-center align-items-center mb-5">
-                        <%if(users.length > 0){%>
-                            <% users.map( user => { %>
-                                <a class="btn btn-link rounded text-light text-decoration-none" href="/chats/<%=user._id%>">
-                                                
+                    <!-- Sidebar -->
+
+                    <!-- End of Sidebar -->
+
+                    <!-- Content Wrapper -->
+                    <div id="content-wrapper" class="d-flex flex-column justify-content-center align-items-center ">
+
+                        <!-- Main Content -->
+                        <div id="" class="col-12 col-lg-7">
+                            <div class="bg-white py-2 collapse-inner rounded">
+
+
+                                <p class="text-center fs-3 m-auto text-primary" >Recent Chats <i class="fas fa-comments ms-2"></i></p>
+                                <div class=" col-12 d-flex flex-column justify-content-center align-items-center my-2">
+                                    <%if(users.length> 0){%>
+                                        <% users.map( user=> { %>
+                                            <a class="btn btn-link rounded text-light text-decoration-none"
+                                                href="/chats/<%=user._id%>">
+
+
+                                                <div class="w-100 d-flex justify-content-center align-items-center">
+                                                    <div class="m-auto mb-4 bg-gradient-primary rounded p-2">
+                                                        <!-- <span class="btn btn-link rounded-circle mr-3"> -->
+
+                                                        <!-- </span> -->
+                                                        <img class="img-profile rounded-circle mr-4 ms-2 "
+                                                            src="<%=user.avatar_info.url%>" width="35" height="35">
+                                                        <span class="text-light text-capitalize">
+                                                            <%= user.name %>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <% }) %>
+                                                <%}else{%>
+                                                    <p class="p-2 text-gray-400 fs-5">No Chat Initiated Yet <i class="fas fa-comment-slash ms-2"></i></p>
+                                                    <%}%>
+                                </div>
+
+                                <hr style="border: 1px solid;" class="border-dark">
+
+                                <div class="col-12 col-lg-7 m-auto" id="chatto">
+                                    <a class="btn bg-gradient-primary m-auto nav-link collapsed text-center fs-5 text-light" data-toggle="collapse"
+                                        data-target="#collapseTwo" style="width: fit-content;">
+                                        Initiate A New Chat <i class="fas fa-comment ms-2"></i>
+                                    </a>
+                                    <div id="collapseTwo" class="collapse mt-3 " aria-labelledby="headingTwo"
+                                        data-parent="#chatto">
                                         
-                                    <div class="w-100 d-flex justify-content-center align-items-center" >
-                                        <div class="m-auto mb-4 bg-gradient-primary rounded p-2">
-                                            <!-- <span class="btn btn-link rounded-circle mr-3"> -->
-                                                
-                                            <!-- </span> -->
-                                            <img class="img-profile rounded-circle mr-4 ms-2 " src="<%=user.avatar_info.url%>" width="35" height="35">
-                                            <span class="text-light text-capitalize"><%= user.name %></span>
-                                        </div>
+                                    
+                                        <form class="bg-light shadow p-5 rounded" id="chatForm">
+
+
+                                            <p class="">Enter the user's registered email</p>
+                                            <input type="text" name="email" id="email" class="form-control py-3 ">
+                                            <i id="email-error" class="px-2"></i>
+                                            <button class="btn btn-primary w-100 mybtn2 mt-3" type="submit"
+                                                id="start-chat-btn">
+                                                <span id="text">Continue</span>
+                                                <div class="spinner" id="loader" style="display: none;"></div>
+                                            </button>
+
+                                        </form>
                                     </div>
-                                </a>
-                            <% }) %>
-                        <%}else{%>
-                            <p class="p-2 text-primary fs-5">No Chat Initiated Yet !!!</p>
-                        <%}%>
+                                </div>
+
+
+
+
+
+
+                            </div>
+                        </div>
+
+                        <!-- End of Main Content -->
+                        <%- include ('./modal')%>
+                            <!-- Footer -->
+                            <%- include ('./footer')%>
+
+                                <!-- End of Footer -->
+
                     </div>
+                    <!-- End of Content Wrapper -->
 
-                    <hr style="border: 1px solid;" class="border-dark">
-
-                    
-                    <form class=" col-12 col-lg-7 m-auto" id="chatForm">
-
-                        <p class="text-center fs-5">Initiate A New Chat</p>
-                        <p class="">Enter the user's registered email</p>
-                        <input type="text" name="email" id="email" class="form-control py-3 ">
-                        <i id="email-error" class="px-2"></i>
-                        <button class="btn btn-primary w-100 mybtn2 mt-3" type="submit" id="start-chat-btn" >
-                            <span id="text">Continue</span>
-                            <div class="spinner" id="loader" style="display: none;"></div>
-                        </button>
-                        
-                    </form>
-
-
-                    
                 </div>
-            </div>
+                <!-- End of Page Wrapper -->
 
-            <!-- End of Main Content -->
-            <%- include ('./modal')%>
-            <!-- Footer -->
-            <%- include ('./footer')%>
+                <!-- Scroll to Top Button-->
+                <a class="scroll-to-top rounded" href="#page-top">
+                    <i class="fas fa-angle-up"></i>
+                </a>
 
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-   
-    
-
-   
-   <%- include ('../scripts')%>
-
-<script type="module">
-
-
-    import {handleFormSubmission} from '/js/DataUploader.js'
-
-    function validateEmail(){
-        const email = document.getElementById("email")
-        const emailError= document.getElementById("email-error")
-        const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-         if(!email.value){
-             emailError.textContent="Email Required"
-             email.classList.add('input-error')
-             emailError.classList.add('error')
-             return false
-         }else if(!email.value.match(emailFormat)){
-             emailError.textContent="Email Format Invalid"
-             email.classList.add('input-error')
-             emailError.classList.add('error')
-             return false
-         }else{
-             email.classList.remove('input-error')
-             emailError.classList.remove('error')
-             emailError.textContent= null
-             
-             return true
-         }
-
-     }
-     const chatForm = document.getElementById('chatForm');
-     function startSubmission(form, url){
-       
-        let emailValid = validateEmail()
-        if(emailValid ){
-            
-            handleFormSubmission(form,url );
-
-        }
-    }
-
-    chatForm.addEventListener('submit',(e)=>{
-        e.preventDefault()
-        startSubmission(e.target,'/chats/startNewChat')
-    })
-
-
-    
-
-</script>
+                <!-- Logout Modal-->
 
 
 
 
-<!-- <script>
+                <%- include ('../scripts')%>
+
+                    <script type="module">
+
+
+                        import { handleFormSubmission } from '/js/DataUploader.js'
+
+                        function validateEmail() {
+                            const email = document.getElementById("email")
+                            const emailError = document.getElementById("email-error")
+                            const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+                            if (!email.value) {
+                                emailError.textContent = "Email Required"
+                                email.classList.add('input-error')
+                                emailError.classList.add('error')
+                                return false
+                            } else if (!email.value.match(emailFormat)) {
+                                emailError.textContent = "Email Format Invalid"
+                                email.classList.add('input-error')
+                                emailError.classList.add('error')
+                                return false
+                            } else {
+                                email.classList.remove('input-error')
+                                emailError.classList.remove('error')
+                                emailError.textContent = null
+
+                                return true
+                            }
+
+                        }
+                        const chatForm = document.getElementById('chatForm');
+                        function startSubmission(form, url) {
+
+                            let emailValid = validateEmail()
+                            if (emailValid) {
+
+                                handleFormSubmission(form, url);
+
+                            }
+                        }
+
+                        chatForm.addEventListener('submit', (e) => {
+                            e.preventDefault()
+                            startSubmission(e.target, '/chats/startNewChat')
+                        })
+
+
+
+
+                    </script>
+
+
+
+
+                    <!-- <script>
          
     const startChatBtn = document.getElementById('start-chat-btn');
     const userId = "<%=User._id%>"
@@ -174,8 +197,8 @@
     });
 </script> -->
 
-  
 
-</body>
+
+    </body>
 
 </html>

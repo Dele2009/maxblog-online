@@ -199,7 +199,8 @@ const log_in = async (req, res) => {
             _id: user._id,
             name: user.name,
             avatar_info: user.avatar_info,
-            email: user.email
+            email: user.email,
+            isVerified: user.isVerified
         };
 
         // Set session user data

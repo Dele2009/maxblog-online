@@ -15,10 +15,10 @@ const { chat_router } = require('./routes/chatRoutes')
 
 const port = process.env.App_Port || 4000;
 //deployment key
-const mongo_url = process.env.Mongo_Url
+//const mongo_url = process.env.Mongo_Url
 //teting phase
 
-//const mongo_url = 'mongodb://localhost:27017'
+const mongo_url = 'mongodb://localhost:27017'
 //Production key
 
 
@@ -68,19 +68,7 @@ io.on('connection', (socket) => {
     console.log(userSockets)
   });
 
-  // socket.on('sendMessage', async ({ senderId, receiverId, content }) => {
-  //   try {
-  //     // Save message to database
-  //     const message = new Message({ sender: senderId, receiver: receiverId, content });
-  //     await message.save();
-
-  //     // Emit the message to the receiver
-  //     io.to(receiverId).emit('newMessage', { senderId, content });
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // });
-
+ 
   socket.on('sendMessage', async (messageData) => {
     try {
       console.log('Message received:', messageData);

@@ -110,7 +110,7 @@
     import {handleFormSubmission} from '/js/DataUploader.js'
 
     const blogForm = document.getElementById('BlogForm');
-    blogForm.addEventListener("click", (e)=>{
+    blogForm.addEventListener("submit", (e)=>{
         handleFormSubmission(e.target, '/user/dashboard/create-blog');
     })
 

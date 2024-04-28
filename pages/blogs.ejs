@@ -110,7 +110,9 @@
     import {handleFormSubmission} from '/js/DataUploader.js'
 
     const blogForm = document.getElementById('BlogForm');
-    handleFormSubmission(blogForm, '/user/dashboard/create-blog');
+    blogForm.addEventListener("click", (e)=>{
+        handleFormSubmission(e.target, '/user/dashboard/create-blog');
+    })
 
    </script>
 
@@ -134,97 +136,4 @@
 
 
 
-                <!-- <script>
-
-                    
-
-
-                    let form = document.getElementById('BlogForm')
-                    form.addEventListener('submit', async (event) => {
-                        event.preventDefault(); // Prevent form submission
-
-                        // // Form data
-                        const author = document.getElementById('author');
-                        const category = document.getElementById('category');
-                        const title = document.getElementById('title');
-                        const heroimage = document.getElementById('heroimage');
-                        const blog = document.getElementById('my-blog');
-                        const blogcontent = tinymce.get('my-blog').getContent()
-
-                        // const isValid = validateFormFields()
-                        const submitBtnText = document.getElementById('text')
-                        const loader = document.getElementById('loader')
-                        const mainalert = document.getElementById('alert')
-                        const useElement = document.getElementById('infoIcon');
-                        const message = document.getElementById('Message');
-
-
-                        // Make AJAX request
-                        if (form.checkValidity()) {
-
-
-                            const formData = new FormData();
-                            formData.append('author', author.value);
-                            formData.append('category', category.value);
-                            formData.append('title', title.value);
-                            formData.append('heroimage', heroimage.files[0]);
-                            formData.append('blog', blogcontent);
-
-                            console.log(blogcontent)
-
-                            // Send form data to server using Fetch API
-                            try {
-                                const response = await fetch('/user/dashboard/create-blog', {
-                                    method: 'POST',
-                                    body: formData
-                                })
-
-                                if (!response.ok) {
-                                    throw new Error('Network response was not ok');
-                                }
-                                // return response.json(); // assuming server responds with text
-                                const data = await response.json()
-
-                                // Handle success response from server
-                                console.log('Success:', data);
-
-
-                                submitBtnText.style.display = 'none';
-                                loader.style.display = 'block';
-                                let count = 0
-                                let k = setInterval(() => {
-                                    if (count === 5) {
-                                        clearInterval(k)
-                                        loader.style.display = 'none'
-                                        submitBtnText.style.display = 'inline'
-                                        mainalert.style.visibility = 'visible'
-                                        message.textContent = data.message
-                                        if (data.error === true) {
-                                            mainalert.classList.add('alert-danger')
-                                            useElement.setAttribute('xlink:href', '#exclamation-triangle-fill');
-                                        } else {
-                                            mainalert.classList.remove('alert-danger')
-                                            mainalert.classList.add('alert-success')
-                                            useElement.setAttribute('xlink:href', '#check-circle-fill');
-                                        }
-
-                                    }
-                                    count++
-                                }, 1000)
-
-
-                                if (data.error === false) {
-
-                                    setTimeout(() => {
-                                        window.location.href = data.redirectTo;
-                                    }, 8000);
-                                }
-                            } catch (error) {
-                                console.log(error)
-                            }
-
-
-
-                        }
-                    });
-                </script> -->
+   

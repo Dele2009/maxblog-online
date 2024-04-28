@@ -27,14 +27,22 @@
                         <h1 class="h3 mb-3 fw-normal text-center">Register to Become a writer</h1>
 
                         <div class=" my-3">
-                            <input type="text" class="form-control ps-4 py-3 rounded" id="name" name="name" placeholder="Name *">
-                            
+                            <div class="input-group rounded " id="namecont">
+                                <span class="input-group-text px-3" >
+                                    <i class="fas fa-user"></i>
+                                </span>
+                            <input type="text" class="form-control ps-4 py-3 rounded-end" id="name" name="name" placeholder="Name *">
+                            </div>
                             <i id="name-error" class="px-2"></i>
                         </div>
 
                         <div class="my-3">
-                            <input type="email" class="form-control ps-4 py-3 rounded" id="email" name="email" placeholder="Email Address *">
-                           
+                            <div class="input-group rounded " id="emailcont">
+                                <span class="input-group-text px-3" >
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                            <input type="email" class="form-control ps-4 py-3 rounded-end" id="email" name="email" placeholder="Email Address *">
+                           </div>
                             <i id="email-error" class="px-2"></i>
                         </div>
 
@@ -50,10 +58,12 @@
 
                         <div class="mb-3">
                            
-                            <div class="input-group rounded" id="passcont">
-                                
-                              <input type="password" class="form-control ps-4 py-3 rounded-start" id="password" name="password" placeholder="Password *">
-                              <span class="input-group-text rounded-end px-3 " onclick="togglePasswordVisibility()">
+                            <div class="input-group rounded " id="passcont">
+                                <span class="input-group-text px-3" >
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                              <input type="password" class="form-control ps-4 py-3 border-end-0" id="password" name="password" placeholder="Password *">
+                              <span class="input-group-text rounded-end px-3 border-start-0 bg-white" onclick="togglePasswordVisibility()">
                                 <img id="eyeIcon" class="eye-icon" src="/assects/icons/eye-closed-svgrepo-com (1).svg" width="25" height="25">
                               </span>
 
@@ -124,19 +134,20 @@
                 function validateName(){
                    const name = document.getElementById("name")
                    const nameError= document.getElementById("name-error")
+                   const nameCon = document.getElementById('namecont')
 
                     if(!name.value){
                         nameError.textContent="Name Required"
-                        name.classList.add('input-error')
+                        nameCon.classList.add('input-error')
                         nameError.classList.add('error')
                         return false
                     }else if(name.value.trim().length < 5){
                         nameError.textContent="Name must be greater than 5 characters"
-                        name.classList.add('input-error')
+                        nameCon.classList.add('input-error')
                         nameError.classList.add('error')
                         return false
                     }else{
-                        name.classList.remove('input-error')
+                        nameCon.classList.remove('input-error')
                         nameError.classList.remove('error')
                         nameError.textContent= null
                         
@@ -147,20 +158,21 @@
                 function validateEmail(){
                    const email = document.getElementById("email")
                    const emailError= document.getElementById("email-error")
+                   const emailCon = document.getElementById('emailcont')
                    const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
                     if(!email.value){
                         emailError.textContent="Email Required"
-                        email.classList.add('input-error')
+                        emailCon.classList.add('input-error')
                         emailError.classList.add('error')
                         return false
                     }else if(!email.value.match(emailFormat)){
                         emailError.textContent="Email Format Invalid"
-                        email.classList.add('input-error')
+                        emailCon.classList.add('input-error')
                         emailError.classList.add('error')
                         return false
                     }else{
-                        email.classList.remove('input-error')
+                        emailCon.classList.remove('input-error')
                         emailError.classList.remove('error')
                         emailError.textContent= null
                         

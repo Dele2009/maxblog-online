@@ -30,24 +30,31 @@
 
 
                         <div class="my-3">
-                            <input type="text" class="form-control py-3 ps-4 rounded" id="email" name="email" placeholder="Email Address *">
+                            <div class="input-group rounded " id="emailcont">
+                                <span class="input-group-text px-3" >
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                            <input type="email" class="form-control ps-4 py-3 rounded-end" id="email" name="email" placeholder="Email Address *">
+                           </div>
                             <i id="email-error" class="px-2"></i>
                         </div>
 
 
-                        <div class=" mb-3">
+                        <div class="mb-3">
                            
-                            <div class="input-group rounded" id="passcont">
-                                
-                              <input type="password" class="form-control py-3 ps-4 rounded-start" id="password" name="password" placeholder="Password *">
-                              
-                              <span class="input-group-text rounded-end px-3" onclick="togglePasswordVisibility()" style="cursor: pointer;">
+                            <div class="input-group rounded " id="passcont">
+                                <span class="input-group-text px-3" >
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                              <input type="password" class="form-control  ps-4 py-3 border-end-0" id="password" name="password" placeholder="Password *">
+                              <span class="input-group-text  rounded-end px-3 border-start-0 bg-white" onclick="togglePasswordVisibility()">
                                 <img id="eyeIcon" class="eye-icon" src="/assects/icons/eye-closed-svgrepo-com (1).svg" width="25" height="25">
                               </span>
 
+
                             </div>
                             <i id="password-error" class="px-2"></i>
-                            
+
                             
                             <!-- <i id="passwordError" class="error-message"></i> -->
                         </div>
@@ -97,20 +104,21 @@
                 function validateEmail(){
                    const email = document.getElementById("email")
                    const emailError= document.getElementById("email-error")
+                   const emailCon = document.getElementById('emailcont')
                    const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
                     if(!email.value){
                         emailError.textContent="Email Required"
-                        email.classList.add('input-error')
+                        emailCon.classList.add('input-error')
                         emailError.classList.add('error')
                         return false
                     }else if(!email.value.match(emailFormat)){
                         emailError.textContent="Email Format Invalid"
-                        email.classList.add('input-error')
+                        emailCon.classList.add('input-error')
                         emailError.classList.add('error')
                         return false
                     }else{
-                        email.classList.remove('input-error')
+                        emailCon.classList.remove('input-error')
                         emailError.classList.remove('error')
                         emailError.textContent= null
                         

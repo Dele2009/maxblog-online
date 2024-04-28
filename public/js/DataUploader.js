@@ -49,11 +49,9 @@ export const handleFormSubmission = async (form, url) => {
         }
         else if(form.id==="ResetForm"){
             const email = form.querySelector('#email').value;
-            const currentPassword = form.querySelector('#currentPassword').value;
             const newPassword = form.querySelector('#newPassword').value;
             const Body = {
-                email: email,
-                currentPassword,
+                email,
                 newPassword
             };
             transferInfo = {

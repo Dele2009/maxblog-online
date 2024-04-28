@@ -79,7 +79,7 @@ const sign_up = async (req, res) => {
             const filePath = req.file.path;
             result = await cloudinary.uploader.upload(filePath, { folder: 'UserAvatars' });
         }
-        const hashpassword = await bcrypt.hash(password, 15);
+        const hashpassword = await bcrypt.hash(password, 10);
         const token = generateToken();
         const _user_account_info = new Newuser({
             name,
@@ -100,7 +100,7 @@ const sign_up = async (req, res) => {
 
         const tokenSent = await sendVerificationEmail(name, email, token)
         if (!tokenSent) {
-            return res.json({ message: 'Error sending verification token, try again', error: true })
+            return res.json({ message: 'Error sending verification OTP, try again', error: true })
 
         }
 
@@ -112,7 +112,7 @@ const sign_up = async (req, res) => {
         // return res.render("verify",{title:"verification"})
         await _user_account_info.save()
         console.log(_user_account_info)
-        return res.json({ redirectTo: '/user/verify', message: 'successful redirecting', error: false })
+        return res.json({ redirectTo: '/user/verify', message: 'Successful redirecting....', error: false })
 
     } catch (error) {
         console.log(error)
@@ -127,7 +127,7 @@ const tokenVerify = async (req, res) => {
         const user = await Newuser.findOne({ verificationToken: token });
         if (!user) {
             console.log("user does not exist")
-            return res.json({ message: 'Error: token invalid', error: true });
+            return res.json({ message: 'Error: OTP invalid', error: true });
         }
 
         const tokenExpiration = user.verificationTokenExpiration;
@@ -136,14 +136,14 @@ const tokenVerify = async (req, res) => {
             const newToken = generateToken(); // Generate a new token
             const tokenSent = await sendVerificationEmail(user.name, user.email, newToken); // Send verification email with new token
             if (!tokenSent) {
-                return res.json({ message: 'Error sending new verification email, try again', error: true });
+                return res.json({ message: 'Error sending verification OTP, try again', error: true });
             }
             // Update user with new token and expiration time
             user.verificationToken = newToken;
             user.verificationTokenExpiration = new Date().getTime() + (5 * 60 * 1000); // 5 minutes expiration
             await user.save();
 
-            return res.json({ message: 'Token Expired: New verification token sent successfully', error: true });
+            return res.json({ message: 'OTP Expired: New verification OTP sent', error: true });
         }
         console.log(user)
 
@@ -184,7 +184,7 @@ const log_in = async (req, res) => {
             const newToken = generateToken(); // Generate a new token
             const tokenSent = await sendVerificationEmail(user.name, user.email, newToken); // Send verification email with new token
             if (!tokenSent) {
-                return res.json({ message: 'Error sending new verification email, try again', error: true });
+                return res.json({ message: 'Error sending new verification OTP, try again', error: true });
             }
             // Update user with new token and expiration time
             user.verificationToken = newToken;
@@ -219,7 +219,7 @@ const log_in = async (req, res) => {
 };
 
 const updatePassword = async (req, res) => {
-    const { email, currentPassword, newPassword } = req.body
+    const { email, newPassword } = req.body
 
     try {
         const user = await Newuser.findOne({ email });
@@ -227,18 +227,31 @@ const updatePassword = async (req, res) => {
             res.json({ message: 'User not found', error: true })
         }
 
-        const passwordMatch = await bcrypt.compare(currentPassword, user.password);
-        if (!passwordMatch) {
-            return res.json({ message: 'Invalid Credentials: email/password error', error: true });
+        const passwordMatch = await bcrypt.compare(newPassword, user.password);
+        if (passwordMatch) {
+            return res.json({ message: 'Pls create a new password', error: true });
         }
 
-        const hashedPassword = await bcrypt.hash(newPassword, 15)
+        const hashedPassword = await bcrypt.hash(newPassword, 10)
+        const token = generateToken();
 
         user.password = hashedPassword;
+        user.isVerified = false;
+        user.verificationToken = token;
+        user.verificationTokenExpiration = new Date().getTime() + (5 * 60 * 1000)
+
+        const tokenSent = await sendVerificationEmail(user.name, email, token)
+        if (!tokenSent) {
+            return res.json({ message: 'Error sending verification token, try again', error: true })
+
+        }
+
+
+
         await user.save();
 
         // Send a success response
-        res.json({ redirectTo: '/user/log-in', message: 'Password updated successfully', error: false });
+        res.json({ redirectTo: '/user/verify', message: 'Password updated successfully', error: false });
 
     } catch (error) {
         console.log(error)

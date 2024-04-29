@@ -67,13 +67,15 @@
                         </div>
                         <div class="my-3">
 
-                            <textarea id="my-blog" cols="30" rows="30" name="blog" required></textarea>
+                            <textarea id="my-blog" cols="30" rows="30" name="blog"></textarea>
+
+                            <i class="text-danger" id="blogerror"></i>
 
                         </div>
 
 
 
-                        <button class="btn btn-dark mt-5 mybtn w-100" type="submit">
+                        <button class="btn btn-dark mt-5 mybtn w-100" type="submit" >
                             <span id="text">Publish blog</span>
                             <div class="spinner" id="loader" style="display: none;"></div>
                         </button>
@@ -108,12 +110,41 @@
 
    <script type="module">
     import {handleFormSubmission} from '/js/DataUploader.js'
+   function validateBlogPost(){
+      const editior = tinymce.get('my-blog')
+      const blogpost = editior.getContent().toString();
+      const Chars =  blogpost.replace(/<[^>]*>/g , "")
+      const textAreaError = document.getElementById('blogerror')
+      ///(&[a-zA-Z]+;)|(<\/?[^>]+>)/g  
+      const BlogChars = Chars.replace(" ", "")
+      console.log("Before strip =>"," ",blogpost)
+      console.log("After strip =>"," ",BlogChars)
 
-    const blogForm = document.getElementById('BlogForm');
-    blogForm.addEventListener("submit", (e)=>{
+      if(BlogChars.length < 3000){
+        textAreaError.textContent = "Blog must not be less than 500 - 600 Words"
+        console.log("less chars", " ", BlogChars.length)
+        return false
+      }
+      textArea.style.border = "none"
+      return true
+   }
+
+//    document.querySelector(".mybtn").onclick = ()=>{
+//      validateBlogPost()
+//    }
+    
+    function startSubmission(e){
         e.preventDefault()
-        handleFormSubmission(blogForm, '/user/dashboard/create-blog');
-    })
+
+        const blogValid = validateBlogPost()
+        if(blogValid){
+            const blogForm = document.getElementById('BlogForm');
+            handleFormSubmission(blogForm, '/user/dashboard/create-blog');
+        }
+       
+    }
+
+    document.getElementById('BlogForm').addEventListener("submit", startSubmission)
 
     
 

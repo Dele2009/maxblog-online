@@ -67,7 +67,7 @@
                         </div>
                         <div class="my-3">
 
-                            <textarea id="my-blog" cols="30" rows="30" name="blog"></textarea>
+                            <textarea id="my-blog" cols="30" rows="30" name="blog" required></textarea>
 
                         </div>
 
@@ -111,8 +111,11 @@
 
     const blogForm = document.getElementById('BlogForm');
     blogForm.addEventListener("submit", (e)=>{
-        handleFormSubmission(e.target, '/user/dashboard/create-blog');
+        e.preventDefault()
+        handleFormSubmission(blogForm, '/user/dashboard/create-blog');
     })
+
+    
 
    </script>
 

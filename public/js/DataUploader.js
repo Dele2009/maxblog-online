@@ -21,16 +21,9 @@ export const handleFormSubmission = async (form, url) => {
 
 
         
-        if (form.id === 'BlogForm') {
-            formData.delete('blog')
-            const blogContent = tinymce.get('my-blog').getContent().toString();
-
-            formData.append('blog', blogContent);
-
-        }
+       
 
         let transferInfo;
-
         if (form.id === 'LoginForm') {
             const email = form.querySelector('#email').value;
             const password = form.querySelector('#password').value;
@@ -92,13 +85,21 @@ export const handleFormSubmission = async (form, url) => {
                 },
                 body: JSON.stringify(Body)
             }
-        }
-        else{
+        }else if (form.id === 'BlogForm') {
+            formData.delete('blog')
+            const blogContent = tinymce.get('my-blog').getContent().toString();
+
+            formData.append('blog', blogContent);
+
+            
+
+        }else{
             transferInfo = {
                 method: 'POST',
                 body: formData
             }
         }
+        
 
         
 

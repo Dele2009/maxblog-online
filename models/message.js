@@ -30,5 +30,21 @@ const messageSchema = new Schema({
     }
 });
 
+const keySchema = new Schema({
+    userId: { 
+        type:String,
+        required:true
+    },
+    publicKey: { 
+        type:String,
+        required:true
+    }
+});
+
 const Messages = mongoose.model('Message', messageSchema);
-module.exports = Messages
+const keys = mongoose.model('key', keySchema);
+
+module.exports = { 
+    Messages,
+    keys
+}

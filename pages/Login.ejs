@@ -32,7 +32,7 @@
                         <div class="my-3">
                             <div class="input-group rounded " id="emailcont">
                                 <span class="input-group-text px-3" >
-                                    <i class="fas fa-envelope"></i>
+                                    <i class="fas fa-envelope text-primary"></i>
                                 </span>
                             <input type="email" class="form-control ps-4 py-3 rounded-end" id="email" name="email" placeholder="Email Address *">
                            </div>
@@ -44,7 +44,7 @@
                            
                             <div class="input-group rounded " id="passcont">
                                 <span class="input-group-text px-3" >
-                                    <i class="fas fa-lock"></i>
+                                    <i class="fas fa-lock text-primary"></i>
                                 </span>
                               <input type="password" class="form-control  ps-4 py-3 border-end-0" id="password" name="password" placeholder="Password *">
                               <span class="input-group-text  rounded-end px-3 border-start-0 bg-white" onclick="togglePasswordVisibility()">
@@ -53,7 +53,9 @@
 
 
                             </div>
-                            <i id="password-error" class="px-2"></i>
+                            <p style="text-align: justify;" class="px-2">
+                                <i id="password-error" ></i>
+                            </p>        
 
                             
                             <!-- <i id="passwordError" class="error-message"></i> -->
@@ -148,7 +150,7 @@
                     }else if(!password.value.match(passworformat)){
                         passwordCon.classList.add('input-error')
                         passwordError.classList.add('error')
-                        passwordError.textContent="Password must contain at least one special character and digit"
+                        passwordError.textContent="Password must contain at least one alphabet, onee special character and a digit"
                         return false
                     }else{
                         passwordCon.classList.remove('input-error')

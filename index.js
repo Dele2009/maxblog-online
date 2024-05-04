@@ -6,7 +6,15 @@ const socketIo = require('socket.io');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 require('dotenv').config()
-const Message = require('./models/message')
+const {
+  generateSharedKey,
+  encryptMessage,
+  decryptMessage
+} = require("./middleware/encryption")
+const {
+  Messages
+} = require('./models/message')
+const Newuser = require('./models/User')
 const { generateConversationId } = require('./middleware/generatechatid')
 
 const { router } = require('./routes/routes')
@@ -15,10 +23,10 @@ const { chat_router } = require('./routes/chatRoutes')
 
 const port = process.env.App_Port || 4000;
 //deployment key
-const mongo_url = process.env.Mongo_Url
+//const mongo_url = process.env.Mongo_Url
 //teting phase
 
-//const mongo_url = 'mongodb://localhost:27017'
+const mongo_url = 'mongodb://localhost:27017/maxblogs'
 //Production key
 
 
@@ -58,23 +66,50 @@ app.use(morgan('dev'))
 
 
 
+
+
+
+
+
 const userSockets = {};
+let userid,recieverid;
 io.on('connection', (socket) => {
   console.log('New WebSocket connection');
+
+  // socket.on('saveKeys',async ({userId , publicKey})=>{
+  //    const userkey = new keys({userId , publicKey})
+  //    await userkey.save()
+  // })
+
   socket.on('setUser', (userId) => {
     // Associate username with socket
     userSockets[userId] = socket.id;
     console.log(`User ${userId} connected`);
     console.log(userSockets)
+    // const recipient = keys.findOne({userId:receiverId })
+    // if(recipient){
+    //   const recipientPublicKey = recipient.publicKey;
+    //   socket.emit("keyTransferProtocol", recipientPublicKey)
+    // }
+
   });
+
+  
+
+
 
  
   socket.on('sendMessage', async (messageData) => {
     try {
       console.log('Message received:', messageData);
       const { senderId, receiverId, message, time } = messageData;
+      userid = senderId
+      recieverid = receiverId
+      const SU_EK_0 = generateSharedKey(senderId, receiverId)
+      const encryptedMessage = encryptMessage(message, SU_EK_0);
+
       const conversationId = generateConversationId(senderId, receiverId);
-      const newMessage = new Message({ senderId, receiverId, message, conversationId, time });
+      const newMessage = new Messages({ senderId, receiverId, message:encryptedMessage, conversationId, time });
       await newMessage.save();
       console.log(newMessage)
       // Emit the message only to the sockets of the recipients
@@ -82,7 +117,7 @@ io.on('connection', (socket) => {
       io.to(userSockets[receiverId]).emit('receiveMessage', newMessage);
 
 
-      io.to(userSockets[senderId]).emit('receiveMessage', newMessage);
+      // io.to(userSockets[senderId]).emit('receiveMessage', newMessage);
 
 
       // Emit the message to the receiver's socket
@@ -92,7 +127,23 @@ io.on('connection', (socket) => {
       console.error(err);
     }
   })
+
+  socket.on('decryptMessage', (data) => {
+    const messageData = data
+    const SU_EK_0 = generateSharedKey(messageData.senderId, messageData.receiverId)
+
+    const decryptedMessage = decryptMessage(messageData.message, SU_EK_0);
+    messageData.message = decryptedMessage
+
+      io.to(userSockets[data.receiverId]).emit('decryptedMessage', messageData);
+
+
+      // io.to(userSockets[data.senderId]).emit('decryptedMessage', messageData);
+    // io.emit('decryptedMessage', messageData);
+  });
 });
+
+
 
 
 
@@ -136,5 +187,7 @@ app.use((req,res,next)=>{
 server.listen(port, () => {
   console.log('App running on localhost:', port)
 })
+
+
 
 

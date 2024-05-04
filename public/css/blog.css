@@ -83,6 +83,10 @@
     height: 40dvh !important;
 }
 
+#Message{
+    font-size: clamp(1em, 2vw,2em) !important;
+}
+
 @media (min-width:992px) {
     .h-p{
         height: 60dvh !important;

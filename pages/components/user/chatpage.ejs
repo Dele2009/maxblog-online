@@ -145,96 +145,354 @@
 <!-- End of Page Wrapper -->
 
 
-
 <script src="/socket.io/socket.io.js"></script>
 <script>
     // In the frontend JavaScript
     const socket = io();
 
     const userId = "<%= User._id %>";
+    // let recipientKey;
     const receiverId = "<%= Recipient._id %>"
+    // let key;
+    // async function writeKey(){
+    //     key = await generateSharedKey(userId, receiverId)
+    // }
+    // writeKey()
+    // const storedUserPublicKey = ;
+    // const storedUserPrivateKey = ;
+
+
     socket.emit('setUser', userId);
 
+    // socket.on("keyTransferProtocol", (recipientPublicKey)=>{
+    //     recipientKey = `${recipientPublicKey}`
+    // })
+
     function startSocket(){
-       const messageInput = document.getElementById('message-input');
-        const content = messageInput.value.trim();
-        const date = new Date()
-        const hour = date.getHours()
-        const minute = date.getMinutes()
-        const newMinute = minute < 10 ? "0" + minute : minute
-        const md = hour < 12 ? "am" : "pm";
-        const newHour = hour > 12 ? hour - 12 : hour
-        if (content !== '') {
-            socket.emit('sendMessage', {
-                senderId: userId,
-                receiverId: receiverId,
-                message: content,
-                time: `${newHour}:${newMinute}${md}`
-            });
-            messageInput.value = '';
+        try {
+            const messageInput = document.getElementById('message-input');
+            const content = messageInput.value.trim();
+            const date = new Date()
+            const hour = date.getHours()
+            const minute = date.getMinutes()
+            const newMinute = minute < 10 ? "0" + minute : minute
+            const md = hour < 12 ? "AM" : "PM";
+            const newHour = hour > 12 ? hour - 12 : hour
+            if (content !== '') {
+                // const key = generateSymmetricKey()
+                // const encryptedMessage = await encryptMessage(content,key)
+                // const symKey = encryptWithPublicKey(data, publicKey)
+                // const message1 = {
+                //     senderId: userId,
+                //     receiverId: receiverId,
+                //     message: encryptedMessage,
+                //     time: `${newHour}:${newMinute}${md}`
+                // }
+                const message = {
+                    senderId: userId,
+                    receiverId: receiverId,
+                    message: content,
+                    time: `${newHour}:${newMinute}${md}`
+                }
+                socket.emit('sendMessage', message);
+                // if(encryptedMessage){
+                displayMessage(message)
+                messageInput.value = '';
+                // }
+                
+            }
+
+        } catch (error) {
+            console.error(error)
         }
     }
 
+    document.getElementById('send-btn').addEventListener('click',startSocket);
+
+
     window.addEventListener("keydown", (e) => {
-        if (e.key == "Enter") {
+        if (e.key === "Enter") {
             startSocket();
         }
     })
 
-    document.getElementById('send-btn').addEventListener('click', () => startSocket());
 
     const messageContainer = document.querySelector('.message-container');
     messageContainer.scrollTop = messageContainer.scrollHeight
 
 
     socket.on('receiveMessage', (message) => {
-        if (message.senderId === receiverId || message.senderId === userId) {            
-            
-            const messageDiv = document.createElement('div');
-            messageDiv.className = message.senderId === userId ? 'own-message ms-auto bg-primary text-light' : 'message bg-primary text-light';
-            const messageText = document.createElement('div');
-            // const date = new Date()
-            // const hour = date.getHours()
-            // const minute = date.getMinutes()
-            // const newMinute = minute < 10 ? "0" + minute : minute
-            // const md = hour < 12 ? "am" : "pm";
-            // const newHour = hour > 12 ? hour - 12 : hour
-
-            // const timeElement = `<span class="ms-auto me-3">${newHour}:${newMinute} ${md}</span>`
-
-            messageText.innerHTML = message.senderId===userId ? `
-                <div class="message-sender d-flex justify-content-between">
-                    <span>You</span> <span class="ms-2">${message.time}</span>
-                </div> 
-                <div class="message-text">
-                    ${message.message}
-                </div>
-
-                `:`
-                
-                <div class="message-sender d-flex justify-content-between">
-                    <span><%= Recipient.name %></span> <span class="ms-2">${message.time}</span>
-                </div> 
-                <div class="message-text">
-                    ${message.message}
-                </div>`
-            ;
-            
-                
-        
-            messageDiv.appendChild(messageText);
-            messageContainer.appendChild(messageDiv);
-            messageContainer.scrollTop = messageContainer.scrollHeight
+        try {
+            // if (message.receiverId === userId) { 
+                // let receivedMessage = message
+                // const mesge = await decryptMessage(receivedMessage.message, key)
+                // receivedMessage.message = mesge 
+                // displayMessage(receivedMessage)
+               socket.emit('decryptMessage', message)
+            // }
+        } catch (error) {
+            console.error(error)
         }
-
-
-    //     if (message.sender === receiverId || message.sender === userId) {
-    //     const messageElement = document.createElement('div');
-    //     messageElement.innerHTML = `<strong>${message.sender}</strong>: ${message.message}`;
-    //     document.getElementById('messages').appendChild(messageElement);
-    //   }
+       
     });
+
+    socket.on('decryptedMessage', (message) => {
+        if (message.receiverId === userId) { 
+            displayMessage(message)
+
+        }           
+                   
+            
+    });
+
+    function displayMessage(message){
+        const messageDiv = document.createElement('div');
+        messageDiv.className = message.senderId === userId ? 'own-message ms-auto bg-primary text-light' : 'message bg-primary text-light';
+        const messageText = document.createElement('div');
+        // const date = new Date()
+        // const hour = date.getHours()
+        // const minute = date.getMinutes()
+        // const newMinute = minute < 10 ? "0" + minute : minute
+        // const md = hour < 12 ? "am" : "pm";
+        // const newHour = hour > 12 ? hour - 12 : hour
+
+        // const timeElement = `<span class="ms-auto me-3">${newHour}:${newMinute} ${md}</span>`
+
+        messageText.innerHTML = message.senderId===userId ? `
+            <div class="message-sender d-flex justify-content-between">
+                <span>You</span> <span class="ms-2">${message.time}</span>
+            </div> 
+            <div class="message-text">
+                ${message.message}
+            </div>
+
+            `:`
+            
+            <div class="message-sender d-flex justify-content-between">
+                <span><%= Recipient.name %></span> <span class="ms-2">${message.time}</span>
+            </div> 
+            <div class="message-text">
+                ${message.message}
+            </div>`
+        ;
+
+            
+
+        messageDiv.appendChild(messageText);
+        messageContainer.appendChild(messageDiv);
+        messageContainer.scrollTop = messageContainer.scrollHeight
+
+
+    }
+
+
+     
+
+  // Function to generate a shared key based on sender and receiver IDs
+//   async function generateSharedKey(senderId, receiverId) {
+//     // Concatenate sender and receiver IDs
+//     const combinedId = [senderId, receiverId].sort()
+//     const keys = combinedId.join('*')
+
+//     console.log("key produced", keys)
+//     // Use a secure hash function (e.g., SHA-256) to generate a key from the combined ID
+//     const encoder = new TextEncoder();
+//     const data = encoder.encode(keys);
+//     const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+//     console.table({
+//         encoder,
+//         data,
+//         hashBuffer
+//     })
+
+//     // Import the hash buffer as a CryptoKey
+//     const sharedKey = await window.crypto.subtle.importKey(
+//         'raw',
+//         hashBuffer,
+//         { name: 'AES-GCM' },
+//         false,
+//         ['encrypt', 'decrypt']
+//     );
+//     console.log("SHARD KEY =>", sharedKey)
+
+//     return sharedKey;
+// }
+
+// // Function to encrypt a message using the shared key
+// async function encryptMessage(message, sharedKey) {
+//     // Convert the message to a Uint8Array
+//     const encoder = new TextEncoder();
+//     const messageBuffer = encoder.encode(message);
+
+//     // Encrypt the message using AES-GCM algorithm
+//     const iv = window.crypto.getRandomValues(new Uint8Array(12)); // Initialization Vector
+//     const encryptedBuffer = await window.crypto.subtle.encrypt(
+//         { name: 'AES-GCM', iv: iv },
+//         sharedKey,
+//         messageBuffer
+//     );
+
+//     // Combine IV and encrypted data into a single Uint8Array
+//     const combinedBuffer = new Uint8Array(iv.length + encryptedBuffer.byteLength);
+//     combinedBuffer.set(iv);
+//     combinedBuffer.set(new Uint8Array(encryptedBuffer), iv.length);
+
+//     // Convert the combined buffer to Base64
+//     const encryptedMessage = btoa(String.fromCharCode.apply(null, combinedBuffer));
+//     console.log("ENCRYTED MESSAGE =>  ", encryptedMessage)
+//     return encryptedMessage;
+    
+// }
+
+// // Function to decrypt a message using the shared key
+// async function decryptMessage(encryptedMessage, sharedKey) {
+//     // Convert the Base64 encrypted message to a Uint8Array
+//     const combinedBuffer = new Uint8Array(atob(encryptedMessage).split('').map(char => char.charCodeAt(0)));
+
+//     // Extract IV and encrypted data
+//     const iv = combinedBuffer.slice(0, 12);
+//     const encryptedData = combinedBuffer.slice(12);
+
+//     // Decrypt the message using AES-GCM algorithm
+//     const decryptedBuffer = await window.crypto.subtle.decrypt(
+//         { name: 'AES-GCM', iv: iv },
+//         sharedKey,
+//         encryptedData
+//     );
+
+//     console.table({
+//         iv,
+//         encryptedData,
+//         decryptedBuffer
+//     })
+
+//     // Convert the decrypted buffer to a string
+//     const decoder = new TextDecoder();
+//     const decryptedMessage = decoder.decode(decryptedBuffer);
+//     console.log("DECRYPTED MESSAGE =>  ", decryptedMessage)
+//     return decryptedMessage;
+// }    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Function to generate a symmetric encryption key (AES)
+// async function generateSymmetricKey() {
+//     try {
+//         // Generate a random 256-bit key
+//         const key = await crypto.subtle.generateKey(
+//             {
+//                 name: 'AES-GCM',
+//                 length: 256
+//             },
+//             true,
+//             ['encrypt', 'decrypt']
+//         );
+//         return key;
+//     } catch (error) {
+//         console.error('Key generation error:', error);
+//         throw error;
+//     }
+// }
+
+// // Function to encrypt a message using a symmetric key (AES)
+// async function encryptMessage(message, key) {
+//     try {
+//         // Encode the message as UTF-8
+//         const encodedMessage = new TextEncoder().encode(message);
+//         // Encrypt the message using AES-GCM algorithm
+//         const encryptedMessage = await crypto.subtle.encrypt(
+//             {
+//                 name: 'AES-GCM',
+//                 iv: crypto.getRandomValues(new Uint8Array(12)) // Generate a random initialization vector
+//             },
+//             key,
+//             encodedMessage
+//         );
+//         return encryptedMessage;
+//     } catch (error) {
+//         console.error('Encryption error:', error);
+//         throw error;
+//     }
+// }
+
+// // Function to encrypt data with a public key (RSA-OAEP)
+// async function encryptWithPublicKey(data, publicKey) {
+//     try {
+//         // Encrypt the data using RSA-OAEP algorithm
+//         const encryptedData = await crypto.subtle.encrypt(
+//             {
+//                 name: 'RSA-OAEP'
+//             },
+//             publicKey,
+//             data
+//         );
+//         return encryptedData;
+//     } catch (error) {
+//         console.error('Encryption error:', error);
+//         throw error;
+//     }
+// }
+
+// // Function to decrypt data with a private key (RSA-OAEP)
+// async function decryptWithPrivateKey(data, privateKey) {
+//     try {
+//         // Decrypt the data using RSA-OAEP algorithm
+//         const decryptedData = await crypto.subtle.decrypt(
+//             {
+//                 name: 'RSA-OAEP'
+//             },
+//             privateKey,
+//             data
+//         );
+//         return decryptedData;
+//     } catch (error) {
+//         console.error('Decryption error:', error);
+//         throw error;
+//     }
+// }
+
+// // Function to decrypt a message using a symmetric key (AES)
+// async function decryptMessage(message, key) {
+//     try {
+//         // Decrypt the message using AES-GCM algorithm
+//         const decryptedMessage = await crypto.subtle.decrypt(
+//             {
+//                 name: 'AES-GCM',
+//                 iv: new Uint8Array(12) // The initialization vector should be provided if it wasn't included in the ciphertext
+//             },
+//             key,
+//             message
+//         );
+//         // Decode the decrypted message from UTF-8
+//         return new TextDecoder().decode(decryptedMessage);
+//     } catch (error) {
+//         console.error('Decryption error:', error);
+//         throw error;
+//     }
+// }
+
+
+    // Function to generate RSA key pair using Web Crypto API
+    
+    
 </script>
+<!-- <script src="https://sdk.virtru.com/js/latest/virtru-sdk.js"></script> -->
+
+
 <%- include ('../scripts')%>
 </body>
 </html>

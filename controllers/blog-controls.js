@@ -1,6 +1,10 @@
 //const Blog = require('../models/blog')
 const Newblogs = require('../models/newblogs')
 const cloudinary = require('../middleware/cloudinary')
+const {
+  getFolder,
+  uploadFile
+} = require('../middleware/googledrive')
 const { formatDistanceToNow } = require('date-fns')
 
 
@@ -37,11 +41,15 @@ const get_blogs = async (req, res) => {
 
 const get_a_blog = async (req, res) => {
   const id = req.params.id
+  let user;
+    if(req.session && req.session.user){
+      user = req.session.user
+    }
   console.log(id)
   try {
     // const result = await Blog.findById(id)
     const result = await Newblogs.findById(id)
-    res.render('blogView', { title: 'blog Details', Blog: result })
+    res.render('blogView', { title: 'blog Details', Blog: result, user })
   } catch (error) {
     console.log(error)
   }
@@ -51,11 +59,15 @@ const get_a_blog = async (req, res) => {
 
 const get_blog_category = async (req, res) => {
   const id = req.params.id
+  let user;
+    if(req.session && req.session.user){
+      user = req.session.user
+    }
   console.log(id)
   try {
     // const result = await Blog.findById(id)
     const result = await Newblogs.find({ category: id })
-    res.render('blogcategory', { title: `${id}`, Blogs: result, formatDistanceToNow })
+    res.render('blogcategory', { title: `${id}`, Blogs: result, user, formatDistanceToNow })
   } catch (error) {
     console.log(error)
   }

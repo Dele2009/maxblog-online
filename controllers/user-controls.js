@@ -1,13 +1,16 @@
 const Newuser = require('../models/User')
 const Newblogs = require('../models/newblogs')
-const cloudinary = require('../middleware/cloudinary')
+// const cloudinary = require('../middleware/cloudinary')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
 const { generateToken } = require('../middleware/token')
+const {
+    getFolder,
+    uploadFile
+} = require('../middleware/googledrive')
 
-let labels, data;
 
 let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -19,7 +22,7 @@ let transporter = nodemailer.createTransport({
 
 const sendVerificationEmail = async (name, email, token) => {
     try {
-        const templatePath = path.join(__dirname, '..', 'templates', 'email_template.html');
+        const templatePath = path.join(__dirname, '..', 'public', 'templates', 'email_template.html');
         const emailTemplate = fs.readFileSync(templatePath, 'utf8');
         const Token = token.split('').join('-')
         const html = emailTemplate
@@ -77,7 +80,10 @@ const sign_up = async (req, res) => {
         let result;
         if (req.file) {
             const filePath = req.file.path;
-            result = await cloudinary.uploader.upload(filePath, { folder: 'UserAvatars' });
+            const folder = await getFolder("User-Avatars")
+            result = await uploadFile(name, filePath, folder)
+            //Url = `https://drive.google.com/thumbnail?export=view&id=${result.id}`
+            // result = await cloudinary.uploader.upload(filePath, { folder: 'UserAvatars' });
         }
         const hashpassword = await bcrypt.hash(password, 10);
         const token = generateToken();
@@ -85,8 +91,8 @@ const sign_up = async (req, res) => {
             name,
             email,
             avatar_info: {
-                public_id: result ? result.public_id : null,
-                url: result ? result.secure_url : null
+                public_id: result ? result.id : null,
+                url: result ? result.viewLink : null
             },
             password: hashpassword,
             verificationToken: token,
@@ -101,11 +107,11 @@ const sign_up = async (req, res) => {
         const tokenSent = await sendVerificationEmail(name, email, token)
         if (!tokenSent) {
             return res.json({ message: 'Error sending verification OTP, try again', error: true })
-
         }
 
-        console.log(req.body, req.file)
-        console.log(token)
+        console.log("requset body =>  ", req.body)
+        console.log("request file =>", req.file)
+        console.log("requset Token =>", token)
         console.log(result)
 
 
@@ -263,43 +269,9 @@ const Show_user_dashboard = async (req, res) => {
 
         const user = req.session.user;
         // const lastMonthStartDate = moment().subtract(1, 'month').startOf('month').toDate();
-        const currentMonthStartDate = new Date(); // Get current date
-        currentMonthStartDate.setDate(1); // Set the date to the first day of the month
-
-        // Initialize an array to store the start dates of the previous five months
-        const startDates = [currentMonthStartDate];
-        // Calculate the start dates for the previous five months
-        for (let i = 1; i <= 5; i++) {
-            const startDate = new Date(currentMonthStartDate);
-            startDate.setMonth(currentMonthStartDate.getMonth() - i);
-            startDates.push(startDate);
-        }
-        // Group blogs by month and count the number of blogs for each month
-        const blogActivity = await Newblogs.aggregate([
-            {
-                $match: {
-                    createdAt: { $gte: startDates[5] },
-                    author_id: user._id // Filter blogs created since last month
-                }
-            },
-            {
-                $group: {
-                    _id: { $month: '$createdAt' },
-                    count: { $sum: 1 }
-                }
-            }
-        ]);
-
-        // Prepare data for Chart.js
-        // const labels = blogActivity.map(data => moment().month(data._id - 1).format('MMM')); // Format month labels
-        labels = blogActivity.map(data => {
-            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            return monthNames[data._id - 1];
-        });
-        data = blogActivity.map(data => data.count); // Blog counts
+        
         const authoredBlogs = await Newblogs.find({ author_id: user._id })
 
-        console.log(labels, data)
 
 
         // const user = await Newuser.findById(userId)
@@ -310,11 +282,53 @@ const Show_user_dashboard = async (req, res) => {
         // else {
         //     
         // }
-        res.render('user_dashboard', { title: 'account', User: user, labels, data, authoredBlogs });
+        res.render('user_dashboard', { title: 'account', User: user,authoredBlogs });
 
     } catch (error) {
         return res.status(500).send('Error fetching dashboard: ' + error.message);
     }
+}
+
+const get_user_blogInfo = async (req, res)=>{
+    const user = req.session.user;
+    const currentMonthStartDate = new Date(); // Get current date
+    currentMonthStartDate.setDate(1); // Set the date to the first day of the month
+
+    // Initialize an array to store the start dates of the previous five months
+    const startDates = [currentMonthStartDate];
+    // Calculate the start dates for the previous five months
+    for (let i = 1; i <= 5; i++) {
+        const startDate = new Date(currentMonthStartDate);
+        startDate.setMonth(currentMonthStartDate.getMonth() - i);
+        startDates.push(startDate);
+    }
+    // Group blogs by month and count the number of blogs for each month
+    const blogActivity = await Newblogs.aggregate([
+        {
+            $match: {
+                createdAt: { $gte: startDates[5] },
+                author_id: user._id // Filter blogs created since last month
+            }
+        },
+        {
+            $group: {
+                _id: { $month: '$createdAt' },
+                count: { $sum: 1 }
+            }
+        }
+    ]);
+
+    // Prepare data for Chart.js
+    // const labels = blogActivity.map(data => moment().month(data._id - 1).format('MMM')); // Format month labels
+    labels = blogActivity.map(data => {
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return monthNames[data._id - 1];
+    });
+    data = blogActivity.map(data => data.count); // Blog counts
+    console.log(labels, data)
+
+    return res.json({labels,data})
+
 }
 
 const load_blogCreate = async (req, res) => {
@@ -352,7 +366,9 @@ const create_blog = async (req, res) => {
 
         // Get the file path
         const filePath = req.file.path;
-        const result = await cloudinary.uploader.upload(filePath, { folder: 'blogphotos' });
+        //const result = await cloudinary.uploader.upload(filePath, { folder: 'blogphotos' });
+        const folderId = await getFolder('blogphotos')
+        const result = await uploadFile(title, filePath, folderId)
 
         const _blog = new Newblogs({
             author,
@@ -360,8 +376,8 @@ const create_blog = async (req, res) => {
             category,
             title,
             heroimage_info: {
-                public_id: result.public_id,
-                url: result.secure_url
+                public_id: result.id,
+                url: result.viewLink
             },
             blog
 
@@ -396,11 +412,10 @@ module.exports = {
     sign_up,
     log_in,
     Show_user_dashboard,
+    get_user_blogInfo,
     load_blogCreate,
     create_blog,
     log_out,
     updatePassword,
-    tokenVerify,
-    labels,
-    data
+    tokenVerify
 }

@@ -33,6 +33,8 @@ user_router.post('/log-in', usercontrols.log_in)
 
 user_router.get('/dashboard', requireLogin, usercontrols.Show_user_dashboard);
 
+user_router.get('/dashboard/getBloginfo', requireLogin, usercontrols.get_user_blogInfo)
+
 user_router.get('/dashboard/create-blog', requireLogin, usercontrols.load_blogCreate )
 
 user_router.post('/dashboard/create-blog',requireLogin, upload.single('heroimage'), usercontrols.create_blog)

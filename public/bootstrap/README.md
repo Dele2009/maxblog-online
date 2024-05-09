@@ -244,3 +244,189 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 ## Copyright and license
 
 Code and documentation copyright 2011–2024 the [Bootstrap Authors](https://github.com/twbs/bootstrap/graphs/contributors). Code released under the [MIT License](https://github.com/twbs/bootstrap/blob/main/LICENSE). Docs released under [Creative Commons](https://creativecommons.org/licenses/by/3.0/).
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"> -->
+    <style>
+        /* Reset CSS */
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Container styles */
+        .contain {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* image banner */
+        .img1-banner {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .img2-banner {
+            width: 100%;
+            height: 250px;
+            padding: 0px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .img-1 {
+
+            width: 50%;
+            height: 50%;
+        }
+
+        .img-2 {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+        }
+
+        .content-1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .row {
+            /* --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: 0; */
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: calc(-1 * 0);
+            margin-left: calc(-0.5 * 1.5rem);
+            margin-right: calc(-0.5 * 1.5rem);
+        }
+
+        .row>* {
+            box-sizing: border-box;
+            flex-shrink: 0;
+            width: 100%;
+            max-width: 100%;
+            padding-left: calc(1.5rem * 0.5);
+            padding-right: calc(1.5rem * 0.5);
+            margin-top: 0;
+        }
+
+        .col {
+            flex: 1 0 0%;
+        }
+
+        .col-12 {
+            flex: 0 0 auto;
+            width: 100%;
+        }
+
+        /* Heading styles */
+        h1 {
+            color: #007bff;
+            text-align: center;
+        }
+
+        /* Paragraph styles */
+        p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        /* Link styles */
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        /* Link hover styles */
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .code {
+            text-align: center;
+            font-size: 25px;
+            background-color: rgb(46, 46, 46);
+            color: white;
+            width: fit-content;
+            border-radius: 5px;
+            padding: 10px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contain">
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="img1-banner col-12" style="">
+                        <img src="https://lh3.googleusercontent.com/d/100C79Cetc1E35yIy1XG_moxdLry8Fsvs" alt=""
+                            class="img-1">
+                    </div>
+                    <div class="col-12 content-1">
+                        <h1>MaxBlog Authentication</h1>
+                        <p>Dear [NAME], You have Request OTP verification</p>
+                        <p>Enter the code below to verify ana continue</p>
+                        <p class="code">[TOKEN]</p>
+                        <p style="text-align: center; width: 100%;">or</p>
+                        <p>Click the following link to verify your email address:</p>
+                        <p><a href="[VERIFICATION_LINK]">Verify Email</a></p>
+                        <p style="text-align: center;color: red;"><strong>NOTE: </strong> This verification is valid for
+                            5min only</p>
+                    </div>
+
+                    <div class="img2-banner col-12">
+                        <img src="https://lh3.googleusercontent.com/d/1KdfrnV-8H11AubIfClQppPA_hPJ-zVtn" alt=""
+                            class="img-2">
+                    </div>
+                    <div class="col-12" style="width: 100%;">
+                        <p>Best regards,</p>
+                        <p>The Maxblog Team</p>
+                    </div>
+                </div>
+                <!-- https://drive.google.com/file/d/1KdfrnV-8H11AubIfClQppPA_hPJ-zVtn/view?usp=sharing -->
+
+                <!-- https://drive.google.com/file/d/100C79Cetc1E35yIy1XG_moxdLry8Fsvs/view?usp=sharing -->
+
+
+            </div>
+        </div>
+    </div>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+</body>
+
+</html>
+
+
+
+

@@ -29,7 +29,7 @@
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control py-3" id="author" name="author" required
                                     value="<%=User.name%>" placeholder="Blog author" readonly>
-                                <button class="btn btn-primary" type="button" id="button-addon2" >Edit Author</button>
+                                <button class="btn btn-primary" type="button" id="button-addon2" onclick="toggleName()">Edit Author</button>
                             </div>
 
 
@@ -142,6 +142,22 @@
 
    <script type="module">
     import {handleFormSubmission} from '/js/DataUploader.js'
+
+    function toggleName(){
+        const input = document.getElementById('author')
+        const btn = document.getElementById('button-addon2')
+
+        let set = true
+
+        if(set){
+            input.readOnly=false
+            btn.textContent= "Save changes"
+        }
+        else{
+            input.readOnly=true
+            btn.textContent= "Edit Author"
+        }
+    }
 
     document.getElementById('heroimage').addEventListener('change', (e)=>{
         const input = e.target;

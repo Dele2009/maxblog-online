@@ -29,7 +29,7 @@
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control py-3" id="author" name="author" required
                                     value="<%=User.name%>" placeholder="Blog author" readonly>
-                                <!-- <button class="btn btn-primary" type="button" id="button-addon2" >Edit Author</button> -->
+                                <button class="btn btn-primary" type="button" id="button-addon2" >Edit Author</button>
                             </div>
 
 
@@ -60,11 +60,42 @@
                             <label for="title">Title</label>
                         </div>
 
-                        <div class="form-floating my-3">
+                        <!-- <div class="form-floating my-3">
                             <input type="file" class="form-control" id="heroimage" name="heroimage" required
                                 placeholder="" accept="image/jpeg">
                             <label for="heroimage">Hero-Image</label>
+                        </div> -->
+
+                        <div class="mb-3 d-flex flex-column">
+                            <div style="width: fit-content;" class="d-flex justify-content-center align-items-center flex-column">
+                                
+                                <label 
+                                  for="heroimage" 
+                                  class="rounded d-flex justify-content-center align-items-center flex-column" 
+                                  style="width: 250px; height: 197px;cursor: pointer;border: 2px dashed #b1b1b1;"
+                                >
+                                    <img src="/assects/icons/image-upload-svgrepo-com.svg" alt="" class="w-75 h-75 rounded" id="profile-pic">
+                                    
+                                    <p id="inner-text">Click to upload</p>
+                                </label>
+                                <p style="font-size: 15px;">
+                                    <i>*Upload Hero-Image*</i>
+                                </p>
+                            </div>
+                            
+                            
+
+                            <input 
+                               type="file" 
+                               class="form-control ps-4 py-3 rounded-end" 
+                               id="heroimage" 
+                               name="heroimage" 
+                               accept=".jpg, .png, .jfif" 
+                               required
+                               hidden
+                            >
                         </div>
+
                         <div class="my-3">
 
                             <textarea id="my-blog" cols="30" rows="30" name="blog"></textarea>
@@ -111,6 +142,28 @@
 
    <script type="module">
     import {handleFormSubmission} from '/js/DataUploader.js'
+
+    document.getElementById('heroimage').addEventListener('change', (e)=>{
+        const input = e.target;
+        console.log(e.target)
+
+        const reader = new FileReader()
+        
+        reader.readAsDataURL(input.files[0])
+        reader.onload = function (e){
+            const img = document.getElementById('profile-pic')
+            const text = document.getElementById('inner-text')
+            text.style.display = "none"
+            img.src = reader.result;
+            img.classList.remove('w-75', 'h-75')
+            img.classList.add('w-100', 'h-100')
+            console.log(reader.result)
+        }
+                    
+
+     })
+
+
    function validateBlogPost(){
       const editior = tinymce.get('my-blog')
       const blogpost = editior.getContent().toString();

@@ -1,36 +1,38 @@
-const express = require('express')
-const morgan = require('morgan')
-const mongoose = require('mongoose')
+const express = require('express');
+const morgan = require('morgan');
+const mongoose = require('mongoose');
 const http = require('http');
 const socketIo = require('socket.io');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-require('dotenv').config()
+require('dotenv').config();
 const {
   generateSharedKey,
   encryptMessage,
   decryptMessage
-} = require("./middleware/encryption")
+} = require("./middleware/encryption");
+
 const {
   Messages
-} = require('./models/message')
-const Newuser = require('./models/User')
-const { generateConversationId } = require('./middleware/generatechatid')
+} = require('./models/message');
 
-const { router } = require('./routes/routes')
-const { user_router } = require('./routes/userRoutes')
-const { chat_router } = require('./routes/chatRoutes')
+const Newuser = require('./models/User');
+const { generateConversationId } = require('./middleware/generatechatid');
+
+const { router } = require('./routes/routes');
+const { user_router } = require('./routes/userRoutes');
+const { chat_router } = require('./routes/chatRoutes');
 
 const port = process.env.App_Port || 4000;
 //deployment key
-const mongo_url = process.env.Mongo_Url
+//const mongo_url = process.env.Mongo_Url;
 //teting phase
 
-//const mongo_url = 'mongodb://localhost:27017/maxblogs'
+const mongo_url = 'mongodb://localhost:27017/maxblogs'
 //Production key
 
 
-const app = express()
+const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
@@ -38,7 +40,7 @@ const io = socketIo(server);
 mongoose
   .connect(mongo_url)
   .then(result => console.log('database connected'))
-  .catch(err => console.log('Error Detected' + ' => ' + err))
+  .catch(err => console.log('Error Detected' + ' => ' + err));
 
 const store = new MongoDBStore({
   uri: mongo_url,
@@ -82,7 +84,7 @@ io.on('connection', (socket) => {
   // })
 
   socket.on('setUser', (userId) => {
-    // Associate username with socket
+    // Associate userId with socket
     userSockets[userId] = socket.id;
     console.log(`User ${userId} connected`);
     console.log(userSockets)
@@ -109,7 +111,15 @@ io.on('connection', (socket) => {
       const encryptedMessage = encryptMessage(message, SU_EK_0);
 
       const conversationId = generateConversationId(senderId, receiverId);
-      const newMessage = new Messages({ senderId, receiverId, message:encryptedMessage, conversationId, time });
+      const newMessage = new Messages(
+        { 
+          senderId, 
+          receiverId, 
+          message:encryptedMessage, 
+          conversationId, 
+          time 
+        }
+      );
       await newMessage.save();
       console.log(newMessage)
       // Emit the message only to the sockets of the recipients

@@ -3,28 +3,26 @@
   "version": "1.0.0",
   "description": "This project is for learning node.js for my backend/future projects",
   "main": "index.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "node index.js"
   },
   "author": "Aminu Bamidele",
   "license": "ISC",
   "dependencies": {
-    "@seald-io/sdk": "^0.29.1",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.0.3",
     "connect-mongodb-session": "^5.0.0",
     "crypto": "^1.0.1",
-    "csurf": "^1.11.0",
     "date-fns": "^3.6.0",
-    "dompurify": "^3.0.11",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
     "express": "^4.18.3",
-    "express-fileupload": "^1.5.0",
     "express-session": "^1.18.0",
     "googleapis": "^136.0.0",
-    "jsdom": "^24.0.0",
     "lodash": "^4.17.21",
     "mongodb": "4.0",
     "mongoose": "^8.2.2",
@@ -32,7 +30,6 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
-    "socket.io": "^4.7.5",
-    "string-strip-html": "^13.4.6"
+    "socket.io": "^4.7.5"
   }
 }

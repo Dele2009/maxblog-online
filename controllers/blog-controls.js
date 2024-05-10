@@ -26,7 +26,7 @@ const get_blogs = async (req, res) => {
     }
     const result = await Newblogs.find().sort({ createdAt: -1 })
 
-    res.render('test', { 
+    res.render('index', { 
       title: 'Home', 
       Blogs: result,
       formatDistanceToNow, 

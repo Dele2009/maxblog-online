@@ -56,7 +56,7 @@ app.use(session({
 
 //using the ejs template to render
 app.set('view engine', 'ejs')
-app.set('views', 'pages')
+// app.set('views', 'pages')
 
 //serving static documents
 

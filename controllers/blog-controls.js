@@ -20,17 +20,26 @@ const { formatDistanceToNow } = require('date-fns')
 const get_blogs = async (req, res) => {
   try {
     // const result = await Blog.find()
+    const page = parseInt(req.query.page) || 1; // Current page number, default to 1 if not provided
+    const perPage = 2; // Number of blogs per page
     let user;
     if(req.session && req.session.user){
       user = req.session.user
     }
-    const result = await Newblogs.find().sort({ createdAt: -1 })
+    const totalCount = await Newblogs.countDocuments();
+    
+    // Calculate total number of pages
+    const totalPages = Math.ceil(totalCount / perPage);
+    const result = await Newblogs.find().sort({ createdAt: -1 }).skip((page - 1) * perPage)
+      .limit(perPage);
 
     res.render('index', { 
       title: 'Home', 
       Blogs: result,
       formatDistanceToNow, 
-      user 
+      user,
+      currentPage: page,
+      totalPages: totalPages
     })
 
   } catch (error) {

@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -56,7 +57,8 @@ app.use(session({
 
 //using the ejs template to render
 app.set('view engine', 'ejs')
-// app.set('views', 'pages')
+app.set('views', path.join(__dirname, 'views'));
+console.log(__dirname)
 
 //serving static documents
 

@@ -20,26 +20,24 @@ const { formatDistanceToNow } = require('date-fns')
 const get_blogs = async (req, res) => {
   try {
     // const result = await Blog.find()
-    const page = parseInt(req.query.page) || 1; // Current page number, default to 1 if not provided
-    const perPage = 2; // Number of blogs per page
+
     let user;
-    if(req.session && req.session.user){
+    if (req.session && req.session.user) {
       user = req.session.user
     }
-    const totalCount = await Newblogs.countDocuments();
-    
-    // Calculate total number of pages
-    const totalPages = Math.ceil(totalCount / perPage);
-    const result = await Newblogs.find().sort({ createdAt: -1 }).skip((page - 1) * perPage)
-      .limit(perPage);
+    // const totalCount = await Newblogs.countDocuments();
 
-    res.render('index', { 
-      title: 'Home', 
+    // // Calculate total number of pages
+    // const totalPages = Math.ceil(totalCount / perPage);
+    const result = await Newblogs.find().sort({ createdAt: 1 })
+
+    res.render('index', {
+      title: 'Home',
       Blogs: result,
-      formatDistanceToNow, 
+      formatDistanceToNow,
       user,
-      currentPage: page,
-      totalPages: totalPages
+      // currentPage: page,
+      // totalPages: totalPages
     })
 
   } catch (error) {
@@ -51,9 +49,9 @@ const get_blogs = async (req, res) => {
 const get_a_blog = async (req, res) => {
   const id = req.params.id
   let user;
-    if(req.session && req.session.user){
-      user = req.session.user
-    }
+  if (req.session && req.session.user) {
+    user = req.session.user
+  }
   console.log(id)
   try {
     // const result = await Blog.findById(id)
@@ -68,15 +66,33 @@ const get_a_blog = async (req, res) => {
 
 const get_blog_category = async (req, res) => {
   const id = req.params.id
+  const page = parseInt(req.query.page) || 1; // Current page number, default to 1 if not provided
+  const perPage = 10; // Number of blogs per page
   let user;
-    if(req.session && req.session.user){
-      user = req.session.user
-    }
+  if (req.session && req.session.user) {
+    user = req.session.user
+  }
   console.log(id)
   try {
     // const result = await Blog.findById(id)
-    const result = await Newblogs.find({ category: id })
-    res.render('blogcategory', { title: `${id}`, Blogs: result, user, formatDistanceToNow })
+    const totalCount = await Newblogs.countDocuments({ category: id });
+
+    // Calculate total number of pages
+    const totalPages = Math.ceil(totalCount / perPage);
+    const result = await Newblogs.find({ category: id }).sort({ createdAt: -1 })
+    .skip((page - 1) * perPage)
+    .limit(perPage);
+    res.render('blogcategory',
+      {
+        title: `${id}`,
+        Blogs: result,
+        user,
+        formatDistanceToNow,
+        currentPage: page,
+        totalPages: totalPages,
+        contentPerPage: perPage
+      }
+    )
   } catch (error) {
     console.log(error)
   }

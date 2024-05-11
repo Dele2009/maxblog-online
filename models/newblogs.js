@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 // const htmlpurify = dompurifier(new JSDOM().window)
 
 
-const stripHtml = import('string-strip-html')
+// const stripHtml = import('string-strip-html')
 
 
 const blogschema = new Schema(

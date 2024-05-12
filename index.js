@@ -64,7 +64,7 @@ console.log(__dirname)
 
 app.use(express.json({ limit: '100mb' }))//Adjust limit as need
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')))
 // app.use('/uploads',express.static('uploads'))
 app.use(morgan('dev'))
 

@@ -140,25 +140,32 @@
    
    <%- include ('./components/scripts')%>
 
-   <script type="module">
-    import {handleFormSubmission} from '/js/DataUploader.js'
-
-    function toggleName(){
+   <script>
+  function toggleName(){
         const input = document.getElementById('author')
         const btn = document.getElementById('button-addon2')
 
-        let set = true
+        
 
-        if(set){
-            input.readOnly=false
-            btn.textContent= "Save changes"
-        }
-        else{
-            input.readOnly=true
-            btn.textContent= "Edit Author"
+        if(input.readOnly===true){
+            input.readOnly=false;
+           
+            btn.textContent= "Save changes";
+            
+        }else{
+            input.readOnly=true;
+            
+            btn.textContent= "Edit Author";
+            
         }
     }
 
+   </script>
+
+   <script type="module">
+    import {handleFormSubmission} from '/js/DataUploader.js'
+
+  
     document.getElementById('heroimage').addEventListener('change', (e)=>{
         const input = e.target;
         console.log(e.target)

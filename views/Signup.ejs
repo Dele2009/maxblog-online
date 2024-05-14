@@ -68,12 +68,15 @@
                         </div>
 
                         <div class="mb-3 d-flex justify-content-center align-items-center flex-column">
-                            <p style="font-size: 15px;">Profile Picture</p>
-                            <label for="avatar" class="border rounded d-flex justify-content-center align-items-center" style="width: 170px; height: 150px;cursor: pointer;">
+                           
+                            <label for="avatar" class="rounded d-flex flex-column justify-content-center align-items-center" style="width: 200px; height: 170px;cursor: pointer;border: 2px dashed #b1b1b1;">
                                 <img src="/assects/icons/image-upload-svgrepo-com.svg" alt="" class="w-75 h-75 rounded" id="profile-pic">
                                 
-
+                                <p id="inner-text">Click to upload</p>
                             </label>
+                            <p style="font-size: 15px;">
+                                <i>*Upload Profile Picture*</i>
+                            </p>
                             
 
                             <input 
@@ -133,6 +136,8 @@
                     reader.readAsDataURL(input.files[0])
                     reader.onload = function (e){
                         const img = document.getElementById('profile-pic')
+                        const text = document.getElementById('inner-text')
+                        text.style.display = "none"
                         img.src = reader.result;
                         img.classList.remove('w-75', 'h-75')
                         img.classList.add('w-100', 'h-100')

@@ -12,7 +12,7 @@
                 <div class="py-3 mb-4 rounded-3">
                     <div class="container-fluid">
                         <div class="m-auto w-100" style="height: 400px;">
-                            <img class="w-100 h-100" src="<%=Blog.heroimage_info.url%>" alt="<%=Blog.title%>-img">
+                            <img class="w-100 h-100" src="<%=Blog.heroimage_info.url%>" alt="<%=Blog.title%>-img" onerror="this.src='/assects/images/max-blog-placeholder.jpg'">
                         </div>
                         <div class="row">
                             <div class="col-lg-8">
@@ -26,7 +26,9 @@
                                     <%=Blog.title%>
                                 </h1>
                                 <div class="w-100">
-                                    <%-Blog.blog%>
+                                    <div class="w-100">
+                                        <%-Blog.blog%>
+                                    </div>
                                 </div>
                                 <!-- <a data-route="<%=Blog._id%>" class="btn btn-primary btn-lg" id="delete-key"
                                     type="button">Delete Blog</a> -->

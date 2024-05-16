@@ -16,8 +16,9 @@
 
         /* Container styles */
         .contain {
-            max-width: 600px;
+            /* max-width: 600px; */
             margin: 0 auto;
+            width: fit-content;
             padding: 20px;
             background-color: #f9f9f9;
             border-radius: 10px;
@@ -79,16 +80,25 @@
         a:hover {
             text-decoration: underline;
         }
-
-        .code {
-            text-align: center;
+        .code-con{
+            width: fit-content;
             font-size: 25px;
             background-color: rgb(46, 46, 46);
-            color: white;
-            width: fit-content;
+            
             border-radius: 5px;
             padding: 10px;
             margin: auto;
+        }
+
+        .code {
+            text-align: center;
+            color: transparent;
+            width: fit-content;
+            margin: auto;
+            background: linear-gradient(to left , #035AC1, #08E2B0, #FD8CAA);
+            background-clip: text;
+            -webkit-background-clip: text;
+            font-weight: 600;
         }
         
     </style>
@@ -98,24 +108,28 @@
     <div class="contain">
         <div class="row">
             <div class="col">
-                <div class="img1-banner" style="">
-                    <img src="https://lh3.googleusercontent.com/d/100C79Cetc1E35yIy1XG_moxdLry8Fsvs" alt=""
+                <!-- <div class="img1-banner" style=""> -->
+                    <center>
+                        <img src="https://lh3.googleusercontent.com/d/100C79Cetc1E35yIy1XG_moxdLry8Fsvs" alt=""
                         class="img-1" width="300" height="300">
-                </div>
+                    </center>
+                <!-- </div> -->
                 <div>
                     <h1>MaxBlog Authentication</h1>
                     <p>Dear [NAME], You have Request OTP verification, enter the code below to verify and continue</p>
-                    <p class="code">[TOKEN]</p>
+                    <div class="code-con">
+                        <p class="code">[TOKEN]</p>
+                    </div>
                     <p style="text-align: center; width: 100%;">or</p>
                     <p>Click the following link to verify your email address: <a href="[VERIFICATION_LINK]">Verify Email</a></p>
                     <p style="text-align: center;color: red;"><strong>NOTE: </strong> This verification is valid for
                         5min only</p>
                 </div>
 
-                <div class="img2-banner">
+                <center class="img2-banner">
                     <img src="https://lh3.googleusercontent.com/d/1KdfrnV-8H11AubIfClQppPA_hPJ-zVtn" alt=""
                         class="img-2" height="300">
-                </div>
+                </center>
                 <div class="w-100">
                     <p>Best regards,</p>
                     <p>The Maxblog Team</p>

@@ -6,179 +6,194 @@
     <body>
         <%-include('./components/header')%>
 
-        <%-include('./components/Alertbox')%>
-         <style>
-            :root{
-                --error-color:rgb(252, 73, 73);
-            }
-            .error{
-                color:var(--error-color);
-                font-size: 13px;
-                border: none !important;
-            }
-            .input-error{
-                border: 2px solid var(--error-color) ;
-            }
-         </style>
+            <%-include('./components/Alertbox')%>
+                <style>
+                    :root {
+                        --error-color: rgb(252, 73, 73);
+                    }
 
-            <main class="row justify-content-center align-items-center mb-3">
+                    .error {
+                        color: var(--error-color);
+                        font-size: 13px;
+                        border: none !important;
+                    }
 
-                <div class="col-11 col-md-8 col-lg-4 bg-light rounded shadow p-2 p-lg-5">
-                    <form id="LoginForm">
+                    .input-error {
+                        border: 2px solid var(--error-color);
+                    }
 
-                        <h1 class="h3 mb-3 fw-normal text-center mb-5">Login To Your Account</h1>
+                    .btn-inactive:hover {
+                        cursor: not-allowed !important;
+                    }
+                </style>
 
+                <main class="row justify-content-center align-items-center mb-3">
 
-                        <div class="my-3">
-                            <div class="input-group rounded " id="emailcont">
-                                <span class="input-group-text px-3" >
-                                    <i class="fas fa-envelope text-primary"></i>
-                                </span>
-                            <input type="email" class="form-control ps-4 py-3 rounded-end" id="email" name="email" placeholder="Email Address *">
-                           </div>
-                            <i id="email-error" class="px-2"></i>
-                        </div>
+                    <div class="col-11 col-md-8 col-lg-4 bg-light rounded shadow p-2 p-lg-5">
+                        <form id="LoginForm">
+                            <div style="width: 120px; height: 120px;" class="m-auto mb-3">
+                                <img src="/assects/images/maxblogs-logo-main.png" alt="" class="w-100 h-100">
+                            </div>
+                            <h1 class="h3 fw-normal text-center mb-5">Login To Your Account</h1>
 
 
-                        <div class="mb-3">
-                           
-                            <div class="input-group rounded " id="passcont">
-                                <span class="input-group-text px-3" >
-                                    <i class="fas fa-lock text-primary"></i>
-                                </span>
-                              <input type="password" class="form-control  ps-4 py-3 border-end-0" id="password" name="password" placeholder="Password *">
-                              <span class="input-group-text  rounded-end px-3 border-start-0 bg-white" onclick="togglePasswordVisibility()">
-                                <img id="eyeIcon" class="eye-icon" src="/assects/icons/eye-closed-svgrepo-com (1).svg" width="25" height="25">
-                              </span>
+                            <div class="my-3">
+                                <div class="input-group rounded " id="emailcont">
+                                    <span class="input-group-text px-3">
+                                        <i class="fas fa-envelope text-primary"></i>
+                                    </span>
+                                    <input type="email" class="form-control ps-4 py-3 rounded-end" id="email"
+                                        name="email" placeholder="Email Address *">
+                                </div>
+                                <i id="email-error" class="px-2"></i>
+                            </div>
 
+
+                            <div class="mb-3">
+
+                                <div class="input-group rounded " id="passcont">
+                                    <span class="input-group-text px-3">
+                                        <i class="fas fa-lock text-primary"></i>
+                                    </span>
+                                    <input type="password" class="form-control  ps-4 py-3 border-end-0" id="password"
+                                        name="password" placeholder="Password *">
+                                    <span class="input-group-text  rounded-end px-3 border-start-0 bg-white"
+                                        onclick="togglePasswordVisibility()">
+                                        <img id="eyeIcon" class="eye-icon"
+                                            src="/assects/icons/eye-closed-svgrepo-com (1).svg" width="25" height="25">
+                                    </span>
+
+
+                                </div>
+                                <p style="text-align: justify;" class="px-2">
+                                    <i id="password-error"></i>
+                                </p>
+
+
+                                <!-- <i id="passwordError" class="error-message"></i> -->
+                            </div>
+                            <div class="w-100 d-flex justify-content-end" style="font-size: 13px;">
+                                <a href="/user/reset-password">Forgot Password ?</a>
 
                             </div>
-                            <p style="text-align: justify;" class="px-2">
-                                <i id="password-error" ></i>
-                            </p>        
 
+
+
+                         
+                            <button class="btn btn-primary w-100 mybtn rounded" type="submit" id="form-Btn">
+                                <span id="text">Login</span>
+                                <div class="spinner" id="loader" style="display: none;"></div>
+                            </button>
+                          
                             
-                            <!-- <i id="passwordError" class="error-message"></i> -->
+
+
+
+                        </form>
+                        <div class="mt-5 fs-5">
+                            <p class="text-center">Don't have an account? <a href="/user/sign-up"
+                                    class="text-primary"><i>Sign up</i></a></p>
                         </div>
-                        <div class="w-100 d-flex justify-content-end" style="font-size: 13px;">
-                            <a href="/user/reset-password">Forgot Password ?</a>
-
-                        </div>
-
-
-
-
-                        <button class="btn btn-primary w-100 mybtn rounded" type="submit">
-                            <span id="text">Login</span>
-                            <div class="spinner" id="loader" style="display: none;"></div>
-                        </button>
-
-                        
-
-                    </form>
-                    <div class="mt-3 fs-5">
-                        <p class="text-center">Don't have an account? <a href="/user/sign-up" class="text-primary"><i>Sign up</i></a></p>
                     </div>
-                </div>
-            </main>
-            <script>
-                function togglePasswordVisibility() {
-                    const passwordInput = document.getElementById('password');
-                    const eyeIcon = document.getElementById('eyeIcon');
+                </main>
+                <script>
+                    function togglePasswordVisibility() {
+                        const passwordInput = document.getElementById('password');
+                        const eyeIcon = document.getElementById('eyeIcon');
 
-                    // Toggle the type of the password input between 'password' and 'text'
-                    if (passwordInput.type === 'password') {
-                        passwordInput.type = 'text';
-                        eyeIcon.src = '/assects/icons/eye-open-svgrepo-com (1).svg'; // Closed eye icon
-                    } else {
-                        passwordInput.type = 'password';
-                        eyeIcon.src = '/assects/icons/eye-closed-svgrepo-com (1).svg'; // Open eye icon
-                    }
-                }
-
-
-            </script>
-
-
-            <script type="module">
-                import {handleFormSubmission} from '/js/DataUploader.js'
-
-                function validateEmail(){
-                   const email = document.getElementById("email")
-                   const emailError= document.getElementById("email-error")
-                   const emailCon = document.getElementById('emailcont')
-                   const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-                    if(!email.value){
-                        emailError.textContent="Email Required"
-                        emailCon.classList.add('input-error')
-                        emailError.classList.add('error')
-                        return false
-                    }else if(!email.value.match(emailFormat)){
-                        emailError.textContent="Email Format Invalid"
-                        emailCon.classList.add('input-error')
-                        emailError.classList.add('error')
-                        return false
-                    }else{
-                        emailCon.classList.remove('input-error')
-                        emailError.classList.remove('error')
-                        emailError.textContent= null
-                        
-                        return true
+                        // Toggle the type of the password input between 'password' and 'text'
+                        if (passwordInput.type === 'password') {
+                            passwordInput.type = 'text';
+                            eyeIcon.src = '/assects/icons/eye-open-svgrepo-com (1).svg'; // Closed eye icon
+                        } else {
+                            passwordInput.type = 'password';
+                            eyeIcon.src = '/assects/icons/eye-closed-svgrepo-com (1).svg'; // Open eye icon
+                        }
                     }
 
-                }
 
-                function validatePassowrd(){
-                    const password = document.getElementById('password')
-                    const passwordError= document.getElementById("password-error")
-                    const passwordCon = document.getElementById('passcont')
-                    
-                    const passworformat = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#\$%\^&])[a-zA-Z0-9!@#\$%\^&]{3,20}$/;
+                </script>
 
 
-                    if(!password.value){
-                        passwordCon.classList.add('input-error')
-                        passwordError.classList.add('error')
-                        passwordError.textContent="Password Required"
-                        return false
-                    }else if(password.value.length < 8){
-                        passwordCon.classList.add('input-error')
-                        passwordError.classList.add('error')
-                        passwordError.textContent="Password shouldn't be less than 8 characters"
-                        return false
-                    }else if(!password.value.match(passworformat)){
-                        passwordCon.classList.add('input-error')
-                        passwordError.classList.add('error')
-                        passwordError.textContent="Password must contain at least one alphabet, onee special character and a digit"
-                        return false
-                    }else{
-                        passwordCon.classList.remove('input-error')
-                        passwordError.classList.remove('error')
-                        passwordError.textContent= null
-                        return true
-                    }
-                }
+                <script type="module">
+                    import { handleFormSubmission } from '/js/DataUploader.js'
 
-                function startSubmission(e){
-                    e.preventDefault()
-                    let emailValid = validateEmail()
-                    let passwordValid = validatePassowrd()
-                    if(emailValid && passwordValid){
-                        const loginForm = document.getElementById('LoginForm');
-                        handleFormSubmission(loginForm, '/user/log-in');
+                    function validateEmail() {
+                        const email = document.getElementById("email")
+                        const emailError = document.getElementById("email-error")
+                        const emailCon = document.getElementById('emailcont')
+                        const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+                        if (!email.value) {
+                            emailError.textContent = "Email Required"
+                            emailCon.classList.add('input-error')
+                            emailError.classList.add('error')
+                            return false
+                        } else if (!email.value.match(emailFormat)) {
+                            emailError.textContent = "Email Format Invalid"
+                            emailCon.classList.add('input-error')
+                            emailError.classList.add('error')
+                            return false
+                        } else {
+                            emailCon.classList.remove('input-error')
+                            emailError.classList.remove('error')
+                            emailError.textContent = null
+
+                            return true
+                        }
 
                     }
-                }
 
-                document.getElementById('LoginForm').addEventListener('submit',startSubmission)
+                    function validatePassowrd() {
+                        const password = document.getElementById('password')
+                        const passwordError = document.getElementById("password-error")
+                        const passwordCon = document.getElementById('passcont')
 
-                
-            </script>
+                        const passworformat = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#\$%\^&])[a-zA-Z0-9!@#\$%\^&]{3,20}$/;
+
+
+                        if (!password.value) {
+                            passwordCon.classList.add('input-error')
+                            passwordError.classList.add('error')
+                            passwordError.textContent = "Password Required"
+                            return false
+                        } else if (password.value.length < 8) {
+                            passwordCon.classList.add('input-error')
+                            passwordError.classList.add('error')
+                            passwordError.textContent = "Password shouldn't be less than 8 characters"
+                            return false
+                        } else if (!password.value.match(passworformat)) {
+                            passwordCon.classList.add('input-error')
+                            passwordError.classList.add('error')
+                            passwordError.textContent = "Password must contain at least one alphabet, onee special character and a digit"
+                            return false
+                        } else {
+                            passwordCon.classList.remove('input-error')
+                            passwordError.classList.remove('error')
+                            passwordError.textContent = null
+                            return true
+                        }
+                    }
+
+                    function startSubmission(e) {
+                        e.preventDefault()
+                        let emailValid = validateEmail()
+                        let passwordValid = validatePassowrd()
+                        if (emailValid && passwordValid) {
+                            const loginForm = document.getElementById('LoginForm');
+                            handleFormSubmission(loginForm, '/user/log-in');
+
+                        }
+                    }
+
+                    document.getElementById('LoginForm').addEventListener('submit', startSubmission)
+
+
+                </script>
 
 
 
-            <!-- <script>
+                <!-- <script>
                 let btnText = document.getElementById('text')
                 let loader = document.getElementById('loader')
                 const mainalert = document.getElementById('alert')

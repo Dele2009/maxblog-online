@@ -30,13 +30,15 @@ const get_blogs = async (req, res) => {
     // // Calculate total number of pages
     // const totalPages = Math.ceil(totalCount / perPage);
     const result = await Newblogs.find()
-    const allresults = result.slice().sort((a, b) => a.createdAt - b.createdAt)
+    const sliderBlogs = result.slice(0, 4).sort((a, b) => a.createdAt - b.createdAt)
+    const allresults = result.slice(0, 6).sort((a, b) => a.createdAt - b.createdAt)
     const newresults = result.slice().sort((a, b) => b.createdAt - a.createdAt)
 
     res.render('index', {
       title: 'Home',
       Blogs: allresults,
       newBlogs: newresults,
+      slideBlogs: sliderBlogs,
       formatDistanceToNow,
       user,
       // currentPage: page,

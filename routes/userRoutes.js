@@ -14,7 +14,8 @@ user_router.get('/sign-up', (req, res) => {
 user_router.post('/sign-up',upload.single('avatar'), usercontrols.sign_up )
 
 user_router.get('/verify', (req, res) => {
-    res.render('verify', { title: 'verification' })
+    const {email} = req.query
+    res.render('verify', { title: 'verification', email })
 })
 
 user_router.put("/verify", usercontrols.tokenVerify)

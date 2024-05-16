@@ -40,7 +40,7 @@ const sendVerificationEmail = async (name, email, token) => {
 
         const info = await transporter.sendMail(mailOptions);
         if (info.response) {
-            console.log("Verfication email sent successfully:", info.response)
+            console.table("Verfication email sent successfully:", info.response)
             return true
         }
 
@@ -71,7 +71,6 @@ const sign_up = async (req, res) => {
         if (exist) {
             console.log('User Already Exists')
             return res.json({ message: 'User Already Exists', error: true })
-
         }
         if (!name || !email || !password) {
             console.log('no file')
@@ -109,16 +108,16 @@ const sign_up = async (req, res) => {
             return res.json({ message: 'Error sending verification OTP, try again', error: true })
         }
 
-        console.log("requset body =>  ", req.body)
-        console.log("request file =>", req.file)
+        console.table("requset body =>  ", req.body)
+        console.table("request file =>", req.file)
         console.log("requset Token =>", token)
-        console.log(result)
+        console.table(result)
 
 
         // return res.render("verify",{title:"verification"})
         await _user_account_info.save()
         console.log(_user_account_info)
-        return res.json({ redirectTo: '/user/verify', message: 'Successful redirecting....', error: false })
+        return res.json({ redirectTo: `/user/verify?email=${email}`, message: 'Successful redirecting....', error: false })
 
     } catch (error) {
         console.log(error)
@@ -157,7 +156,7 @@ const tokenVerify = async (req, res) => {
         user.verificationToken = null;
         user.verificationTokenExpiration = null;
         await user.save();
-        console.log(user)
+        console.table(user)
 
         return res.json({ redirectTo: '/user/log-in', message: 'Email verified successfully', error: false })
     } catch (error) {
@@ -212,7 +211,7 @@ const log_in = async (req, res) => {
         // Set session user data
         req.session.user = serializedUser;
 
-        console.log(req.session);
+        console.table(req.session);
 
         return res.json({ redirectTo: '/user/dashboard', message: 'Login successful', error: false });
 
@@ -255,6 +254,7 @@ const updatePassword = async (req, res) => {
 
 
         await user.save();
+        console.table(user)
 
         // Send a success response
         res.json({ redirectTo: '/user/verify', message: 'Password updated successfully', error: false });
@@ -384,9 +384,9 @@ const create_blog = async (req, res) => {
         })
 
         await _blog.save()
-        console.log(req.body)
-        console.log(result)
-        console.log(_blog)
+        console.table(req.body)
+        console.table(result)
+        console.table(_blog)
         return res.json({ redirectTo: '/', message: 'Blog created successfully', error: false });
 
 

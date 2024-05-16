@@ -95,7 +95,7 @@
     }
 </style>
 <%const User = typeof user !== 'undefined' ? user : "" %>
-<div class="position-sticky bg-light" style="top: 0; z-index: 9999;">
+<div class="position-sticky bg-light" style="top: 0; z-index: 999999;">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="sidebar-brand d-flex align-items-center justify-content-center text-decoration-none text-uppercase" href="/">
@@ -103,9 +103,9 @@
             </a>
             <div class="d-flex align-items-center">
                 <div>
-                    <a class="nav-link d-block d-lg-none" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                    <a class="<%=User!==''? 'd-block' : 'd-none'%> d-lg-none nav-link " href="#" id="userDropdown" role="button" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
-                        <%if(!User.avatar_info.url){%>
+                        <%if(User===''&&!User.avatar_info){%>
                             <i class="fas fa-user text-light me-2"></i>
 
                         <%}else{%>

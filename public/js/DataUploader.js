@@ -8,11 +8,12 @@ export const handleFormSubmission = async (form, url) => {
         //event.preventDefault(); // Prevent form submission
         // Show loader
         const submitBtnText = document.getElementById('text')
+        const Btn = document.getElementById('form-Btn')
         const loader = document.getElementById('loader')
         const mainAlert = document.getElementById('alert')
         const useElement = document.getElementById('infoIcon');
         const message = document.getElementById('Message');
-
+        Btn.disabled= true
         submitBtnText.style.display = 'none';
         loader.style.display = 'block';
 
@@ -121,8 +122,9 @@ export const handleFormSubmission = async (form, url) => {
 
             let count = 0;
             let k = setInterval(() => {
-                if (count === 5) {
+                if (count === 3) {
                     clearInterval(k);
+                    Btn.disabled= false
                     loader.style.display = 'none';
                     submitBtnText.style.display = 'inline';
                     mainAlert.style.visibility = 'visible';
@@ -151,7 +153,7 @@ export const handleFormSubmission = async (form, url) => {
             if (data.redirectTo) {
                 setTimeout(() => {
                     window.location.href = data.redirectTo;
-                }, 8000);
+                }, 2000);
             }
         } catch (error) {
             console.log(error);

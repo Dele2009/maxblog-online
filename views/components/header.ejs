@@ -282,17 +282,17 @@
     <div class="container">
         <div class="nav-scroller py-1 mb-3 border-bottom">
             <nav class="nav nav-underline justify-content-between">
-                <a class="nav-item nav-link link-body-emphasis active" href="/">World</a>
-                <a class="nav-item nav-link link-body-emphasis" href="/blogs/category/Technology">Technology</a>
-                <a class="nav-item nav-link link-body-emphasis" href="/blogs/category/Design">Design</a>
-                <a class="nav-item nav-link link-body-emphasis" href="/blogs/category/Culture">Culture</a>
-                <a class="nav-item nav-link link-body-emphasis" href="/blogs/category/Business">Business</a>
-                <a class="nav-item nav-link link-body-emphasis" href="/blogs/category/Politics">Politics</a>
-                <a class="nav-item nav-link link-body-emphasis" href="/blogs/category/Opinion">Opinion</a>
-                <a class="nav-item nav-link link-body-emphasis" href="/blogs/category/Science">Science</a>
-                <a class="nav-item nav-link link-body-emphasis" href="/blogs/category/Health">Health</a>
-                <a class="nav-item nav-link link-body-emphasis" href="/blogs/category/Style">Style</a>
-                <a class="nav-item nav-link link-body-emphasis" href="/blogs/category/Travel">Travel</a>
+                <a class="nav-item nav-link link-body-emphasis <%= title==='Home' ? 'active':'' %>" href="/">Home</a>
+                <a class="nav-item nav-link link-body-emphasis <%= title=== 'Technology'? 'active':'' %>" href="/blogs/category/Technology">Technology</a>
+                <a class="nav-item nav-link link-body-emphasis <%= title==='Design' ? 'active':'' %>" href="/blogs/category/Design">Design</a>
+                <a class="nav-item nav-link link-body-emphasis <%= title==='Culture' ? 'active':'' %>" href="/blogs/category/Culture">Culture</a>
+                <a class="nav-item nav-link link-body-emphasis <%= title==='Business' ? 'active':'' %>" href="/blogs/category/Business">Business</a>
+                <a class="nav-item nav-link link-body-emphasis <%= title==='Politics' ? 'active':'' %>" href="/blogs/category/Politics">Politics</a>
+                <a class="nav-item nav-link link-body-emphasis <%= title==='Opinion' ? 'active':'' %>" href="/blogs/category/Opinion">Opinion</a>
+                <a class="nav-item nav-link link-body-emphasis <%= title==='Science' ? 'active':'' %>" href="/blogs/category/Science">Science</a>
+                <a class="nav-item nav-link link-body-emphasis <%= title==='Health' ? 'active':'' %>" href="/blogs/category/Health">Health</a>
+                <a class="nav-item nav-link link-body-emphasis <%= title==='Style' ? 'active':'' %>" href="/blogs/category/Style">Style</a>
+                <a class="nav-item nav-link link-body-emphasis <%= title==='Travel' ? 'active':'' %>" href="/blogs/category/Travel">Travel</a>
             </nav>
         </div>
     </div>

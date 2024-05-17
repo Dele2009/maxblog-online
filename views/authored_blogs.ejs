@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <%- include ('./components/main_app_head') %>
+
+    <style>
+        body{
+            overflow-y: hidden;
+        }
+        .wrp{
+            height: 100dvh;
+        }
+    </style>
+<body id="bo">
+   
+      <%- include ('./components/main_app_header') %>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper" class="wrp">
+
+        <!-- Sidebar -->
+        <%- include ('./components/sidebar')%>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex row p-5">
+
+            <!-- Main Content -->
+            <%- include ('./components/user/userBlogs')%>
+            <!-- End of Main Content -->
+
+            
+
+            <!-- Footer -->
+             
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <%- include ('./components/user/footer')%>
+    
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    
+
+    <!-- Logout Modal-->
+    <%- include ('./components/user/modal')%>
+
+   
+   <%- include ('./components/scripts')%>
+   <script>
+    let deleteReq = document.querySelectorAll('.deleteReq')
+    const deleteBtn = document.getElementById('deleteAction')
+    let blogTitle;
+    console.log(deleteReq)
+    deleteReq.forEach(btn=>{
+        btn.addEventListener('click', (e)=>{
+          const id = e.target.dataset.mxRoute
+          console.log(id)
+          blogTitle = e.target.dataset.mxTitle
+          deleteBtn.dataset.delete = id
+          console.log(deleteBtn.dataset.delete)
+          document.getElementById('blog-name').textContent= blogTitle
+
+        })
+    })
+
+    const inputListener = (e)=>{
+       const btn = document.getElementById('deleteAction')
+       const input = e.target
+       if(input.value === blogTitle ){
+        return btn.disabled = false
+       }
+       btn.disabled = true
+    }
+    document.getElementById('delete-input').addEventListener('input', inputListener)
+    //actionBtn
+    deleteBtn.addEventListener('click', async (e) => {
+        // e.preventDefault()
+        let url_endpoint = `/blogs/${e.target.dataset.delete}`;
+
+
+
+        try {
+            const response = await fetch(url_endpoint, {
+                method: 'DELETE',
+            })
+            const data = await response.json()
+            window.location.href = data.redirect;
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        }
+
+    })
+</script>
+
+</body>
+
+</html>

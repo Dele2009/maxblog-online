@@ -41,6 +41,7 @@ const get_blogs = async (req, res) => {
       slideBlogs: sliderBlogs,
       formatDistanceToNow,
       user,
+      row: "6"
       // currentPage: page,
       // totalPages: totalPages
     })
@@ -104,7 +105,8 @@ const get_blog_category = async (req, res) => {
         formatDistanceToNow,
         currentPage: page,
         totalPages: totalPages,
-        contentPerPage: perPage
+        contentPerPage: perPage,
+        row: "4"
       }
     )
   } catch (error) {

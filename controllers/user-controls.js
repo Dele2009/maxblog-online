@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
+const { formatDistanceToNow } = require('date-fns')
 const { generateToken } = require('../middleware/token')
 const {
     getFolder,
@@ -269,7 +270,7 @@ const Show_user_dashboard = async (req, res) => {
 
         const user = req.session.user;
         // const lastMonthStartDate = moment().subtract(1, 'month').startOf('month').toDate();
-        
+
         const authoredBlogs = await Newblogs.find({ author_id: user._id })
 
 
@@ -282,14 +283,14 @@ const Show_user_dashboard = async (req, res) => {
         // else {
         //     
         // }
-        res.render('user_dashboard', { title: 'account', User: user,authoredBlogs });
+        res.render('user_dashboard', { title: 'account', User: user, authoredBlogs });
 
     } catch (error) {
         return res.status(500).send('Error fetching dashboard: ' + error.message);
     }
 }
 
-const get_user_blogInfo = async (req, res)=>{
+const get_user_blogInfo = async (req, res) => {
     const user = req.session.user;
     const currentMonthStartDate = new Date(); // Get current date
     currentMonthStartDate.setDate(1); // Set the date to the first day of the month
@@ -327,7 +328,7 @@ const get_user_blogInfo = async (req, res)=>{
     data = blogActivity.map(data => data.count); // Blog counts
     console.log(labels, data)
 
-    return res.json({labels,data})
+    return res.json({ labels, data })
 
 }
 
@@ -396,6 +397,26 @@ const create_blog = async (req, res) => {
     }
 }
 
+const user_Authored_blogs = async (req, res) => {
+    try {
+        const user = req.session.user
+        const authored_blogs = await Newblogs.find({ author_id: user._id }).sort({ createdAt: -1 })
+        console.table({
+            BlogLength: authored_blogs.length,
+            blogs: authored_blogs
+        })
+        return res.render('authored_blogs', {
+            title: "Your Authored blogs",
+            Blogs: authored_blogs,
+            formatDistanceToNow,
+            User:user
+        })
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
 
 
 const log_out = async (req, res) => {
@@ -415,7 +436,8 @@ module.exports = {
     get_user_blogInfo,
     load_blogCreate,
     create_blog,
-    log_out,
+    user_Authored_blogs,
     updatePassword,
-    tokenVerify
+    tokenVerify,
+    log_out,
 }

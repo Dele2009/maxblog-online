@@ -14,14 +14,15 @@
                         <div class="m-auto w-100" style="height: 400px;">
                             <img class="w-100 h-100" src="<%=Blog.heroimage_info.url%>" alt="<%=Blog.title%>-img" onerror="this.src='/assects/images/max-blog-placeholder.jpg'">
                         </div>
+                        <div class="pb-3 my-4 border-bottom">
+                            <a class="d-flex align-items-start justify-content-start gap-3 text-body-emphasis text-decoration-none">
+                                <span class="fs-5 text-capitalize "><b>Author</b>: <%=Blog.author%></span>
+                                <span class="fs-5 text-capitalize "><b>category</b>: <%=Blog.category%></span>
+                            </a>
+                        </div>
                         <div class="row">
                             <div class="col-lg-8">
-                                <div class="pb-3 my-4 border-top">
-                                    <a class="d-flex flex-column  align-items-start text-body-emphasis text-decoration-none">
-                                        <span class="fs-4 text-capitalize "><b>Blog Author</b>: <%=Blog.author%></span>
-                                        <span class="fs-4 text-capitalize "><b>Blog category</b>: <%=Blog.category%></span>
-                                    </a>
-                                </div>
+                                
                                 <h1 class="display-5 fw-bold text-capitalize text-center py-5">
                                     <%=Blog.title%>
                                 </h1>
@@ -42,27 +43,7 @@
                 </div>
             </div>
 
-            <script>
-                let deleteblog = document.getElementById('delete-key')
-                deleteblog.addEventListener('click', async (e) => {
-                    // e.preventDefault()
-                    let url_endpoint = `/blogs/${deleteblog.dataset.route}`;
-
-
-
-                    try {
-                        const response = await fetch(url_endpoint, {
-                            method: 'DELETE',
-                        })
-                        const data = await response.json()
-                        window.location.href = data.redirect;
-                        console.log(data)
-                    } catch (error) {
-                        console.log(error)
-                    }
-
-                })
-            </script>
+            
     </body>
 
 </html>

@@ -1,4 +1,11 @@
-<ul style="" class="trs navbar-nav navbar-lg-expand bg-gradient-primary sidebar sidebar-dark accordion"
+<style>
+.mln{
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+</style>
+
+<ul style="" class="trs navbar-nav navbar-lg-expand bg-gradient-primary sidebar sidebar-dark accordion p-1 mln"
     id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
@@ -13,7 +20,8 @@
     <li class="nav-item active">
         <a class="nav-link" href="/user/dashboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
+            <span>Dashboard</span>
+        </a>
     </li>
 
     <!-- Divider -->
@@ -26,25 +34,24 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+        <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
             aria-controls="collapseTwo">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Your Blogs</span>
+            <i class="fas fa-fw fa-book"></i>
+            <span style="font-size: 15px;">Blog</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Blogs</h6>
+                <h6 class="collapse-header">Your blogs</h6>
                 <a class="collapse-item" href='/user/dashboard/create-blog'>Write A New Blog</a>
-                <a class="collapse-item" href="">Blogs activity</a>
+                <a class="collapse-item" href="/user/dashboard/Authored-blogs">Authored blogs</a>
             </div>
         </div>
     </li>
     <li class="nav-item">
         <a class="nav-link collapsed" href="/chats" >
             <i class="fas fa-fw fa-comments"></i>
-            <span>chats</span>
+            <span style="font-size: 15px;">chats</span>
         </a>
-        
     </li>
     
 

@@ -40,6 +40,8 @@ user_router.get('/dashboard/create-blog', requireLogin, usercontrols.load_blogCr
 
 user_router.post('/dashboard/create-blog',requireLogin, upload.single('heroimage'), usercontrols.create_blog)
 
+user_router.get('/dashboard/Authored-blogs',requireLogin,usercontrols.user_Authored_blogs)
+
 user_router.get('/log-out', usercontrols.log_out)
 
 

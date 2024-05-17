@@ -10988,7 +10988,7 @@ a:focus {
 
 #wrapper {
     display: flex;
-    max-height: 100dvh;
+    
    
     
 }
@@ -10998,7 +10998,7 @@ a:focus {
     width: 100%;
     /* height: 900px; */
     overflow-x: hidden;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     /* padding-top: 70px;
     padding-bottom: 70px; */
 }

@@ -41,7 +41,7 @@ const sendVerificationEmail = async (name, email, token) => {
 
         const info = await transporter.sendMail(mailOptions);
         if (info.response) {
-            console.table("Verfication email sent successfully:", info.response)
+            console.log("Verfication email sent successfully:", info.response)
             return true
         }
 
@@ -109,10 +109,10 @@ const sign_up = async (req, res) => {
             return res.json({ message: 'Error sending verification OTP, try again', error: true })
         }
 
-        console.table("requset body =>  ", req.body)
-        console.table("request file =>", req.file)
+        console.log("requset body =>  ", req.body)
+        console.log("request file =>", req.file)
         console.log("requset Token =>", token)
-        console.table(result)
+        console.log(result)
 
 
         // return res.render("verify",{title:"verification"})
@@ -157,7 +157,7 @@ const tokenVerify = async (req, res) => {
         user.verificationToken = null;
         user.verificationTokenExpiration = null;
         await user.save();
-        console.table(user)
+        console.log(user)
 
         return res.json({ redirectTo: '/user/log-in', message: 'Email verified successfully', error: false })
     } catch (error) {
@@ -212,7 +212,7 @@ const log_in = async (req, res) => {
         // Set session user data
         req.session.user = serializedUser;
 
-        console.table(req.session);
+        console.log(req.session);
 
         return res.json({ redirectTo: '/user/dashboard', message: 'Login successful', error: false });
 
@@ -255,7 +255,7 @@ const updatePassword = async (req, res) => {
 
 
         await user.save();
-        console.table(user)
+        console.log(user)
 
         // Send a success response
         res.json({ redirectTo: '/user/verify', message: 'Password updated successfully', error: false });
@@ -385,9 +385,9 @@ const create_blog = async (req, res) => {
         })
 
         await _blog.save()
-        console.table(req.body)
-        console.table(result)
-        console.table(_blog)
+        console.log(req.body)
+        console.log(result)
+        console.log(_blog)
         return res.json({ redirectTo: '/', message: 'Blog created successfully', error: false });
 
 
@@ -401,7 +401,7 @@ const user_Authored_blogs = async (req, res) => {
     try {
         const user = req.session.user
         const authored_blogs = await Newblogs.find({ author_id: user._id }).sort({ createdAt: -1 })
-        console.table({
+        console.log({
             BlogLength: authored_blogs.length,
             blogs: authored_blogs
         })

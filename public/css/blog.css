@@ -97,15 +97,18 @@
     height: 40dvh !important;
     position: relative;
 }
-
+.swiper-pagination-bullet{
+    background:  #035AC1  !important;
+    margin: 0 10px !important;
+}
 @media (min-width:992px) {
     .h-p {
         height: 80dvh !important;
         position: relative;
     }
-    .swiper-pagination{
-        width: 30px !important;
-        height: 30px !important;
+    .swiper-pagination-bullet{
+        width: 15px !important;
+        height: 15px !important;
     }
 }
 .cd-tlte{

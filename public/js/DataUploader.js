@@ -13,7 +13,8 @@ export const handleFormSubmission = async (form, url) => {
         const mainAlert = document.getElementById('alert')
         const useElement = document.getElementById('infoIcon');
         const message = document.getElementById('Message');
-        Btn.disabled= true
+        Btn.classList.add('btn-Disabled')
+       
         submitBtnText.style.display = 'none';
         loader.style.display = 'block';
 
@@ -124,7 +125,7 @@ export const handleFormSubmission = async (form, url) => {
             let k = setInterval(() => {
                 if (count === 3) {
                     clearInterval(k);
-                    Btn.disabled= false
+                    Btn.classList.remove('btn-Disabled')
                     loader.style.display = 'none';
                     submitBtnText.style.display = 'inline';
                     mainAlert.style.visibility = 'visible';

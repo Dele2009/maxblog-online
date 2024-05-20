@@ -85,6 +85,12 @@
     font-size: clamp(1em, 2vw, 2em) !important;
 }
 
+.btn-Disabled{
+    opacity: 0.8 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
 .h-p {
     height: 50dvh !important;
     position: relative;

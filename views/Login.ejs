@@ -22,9 +22,11 @@
                         border: 2px solid var(--error-color);
                     }
 
-                    .btn-inactive:hover {
-                        cursor: not-allowed !important;
-                    }
+                    /* .btn-Disabled{
+    opacity: 0.8 !important;
+                        cursor: not-allowed
+    pointer-events: ;
+} */
                 </style>
 
                 <main class="row justify-content-center align-items-center mb-3">
@@ -80,7 +82,7 @@
 
 
                          
-                            <button class="btn btn-primary w-100 mybtn rounded" type="submit" id="form-Btn">
+                            <button class="btn btn-primary w-100 mybtn rounded " type="submit" id="form-Btn" style="cursor: not-allowed;pointer-events: none;">
                                 <span id="text">Login</span>
                                 <div class="spinner" id="loader" style="display: none;"></div>
                             </button>

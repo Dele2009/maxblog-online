@@ -33,7 +33,8 @@ const get_blogs = async (req, res) => {
     const skip = Number((page - 1) * perPage)
     const limit = Number(perPage)
     const result = await Newblogs.find()
-    const sliderBlogs = result.slice(0, 4).sort((a, b) => b.createdAt - a.createdAt)
+    // const sliderResult = await Newblogs.find()
+    const sliderBlogs = result.sort((a, b) => b.createdAt - a.createdAt).slice(0, 4)
     const allresults = result.sort((a, b) => a.createdAt - b.createdAt)
                               .slice(skip, skip + limit)
 

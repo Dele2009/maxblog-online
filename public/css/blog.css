@@ -96,7 +96,9 @@
         position: relative;
     }
 }
-
+.cd-tlte{
+    font-size: clamp(0.8em, 2vw, 1.2em) !important;
+}
 .title{
     font-size: clamp(1em, 2vw, 2em) !important;
 }

@@ -39,11 +39,7 @@
     <%}%> -->
 
 <style>
-  .vh{
-    height: 80dvh;
-    position: relative;
-
-  }
+  
   .Smacks{
     width: 100%;
     height: 100%;
@@ -55,7 +51,7 @@
 </style>
 
 <% if(slideBlogs.length>0){ %>
-  <div class="swiper w-100 vh mb-5 rounded">
+  <div class="swiper w-100 vh h-p mb-5 rounded">
     
     <!-- Additional required wrapper -->
     <div class="swiper-wrapper">
@@ -68,24 +64,20 @@
             <div class="Smacks"></div>
             <img src="<%=blog.heroimage_info.url%>" class="w-100 h-100 position-absolute" alt="<%=blog.title%>-image" onerror="this.src='/assects/images/max-blog-placeholder.jpg'">
             <div class="position-absolute bottom-0 end-0 carousel-caption text-start " style="z-index: 99999 !important;">
-              <h3>
+              <h3 class="title">
                 <em>
                   <%=blog.title%>
                 </em>
               </h3>
-              <p>
-                <em>
-                  <%=blog.header%>
-                </em>
-              </p>
+              
               <small>
                 <em>
                   <%const createdAt = new Date( blog.createdAt )%>
                   <%const relativeTime = formatDistanceToNow(createdAt, { addSuffix: true })%>
-                  <%=relativeTime.replace('about ', '')%>
+                  <%=relativeTime.replace('about', '')%>
                 </em>
               </small>
-              <p class="lead mb-0"><a href="/blogs/<%=blog._id%>" class="text-body-emphasis fw-bold">Continue
+              <p class="lead mb-0 cont-read"><a href="/blogs/<%=blog._id%>" class="text-body-emphasis fw-bold">Continue
                   Reading.....</a></p>
             </div>
 

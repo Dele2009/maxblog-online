@@ -79,27 +79,39 @@
 
 
 
-.h-p{
-    height: 300px !important;
+
+
+#Message {
+    font-size: clamp(1em, 2vw, 2em) !important;
 }
 
-#Message{
-    font-size: clamp(1em, 2vw,2em) !important;
+.h-p {
+    height: 50dvh !important;
+    position: relative;
 }
 
 @media (min-width:992px) {
-    .h-p{
-        height: 60dvh !important;
+    .h-p {
+        height: 80dvh !important;
+        position: relative;
     }
 }
 
-.mess{
-    transform: translate(-10px,100px);
+.title{
+    font-size: clamp(1em, 2vw, 2em) !important;
+}
+.cont-read{
+    font-size: clamp(0.8em, 2vw, 1.5em) !important;
+}
+
+.mess {
+    transform: translate(-10px, 100px);
 }
 
 .error {
     border: 1px solid red !important;
 }
+
 .spinner {
     width: 30px;
     height: 30px;
@@ -127,7 +139,7 @@
     margin-top: 40px !important;
 }
 
-.mybtn2{
+.mybtn2 {
     display: grid !important;
     place-items: center;
 }
@@ -136,15 +148,16 @@
 
 
 
-.alert-wd{
+.alert-wd {
     width: fit-content;
 }
 
-.alert-dismissed{
+.alert-dismissed {
     visibility: hidden !important;
     transition: all 0s 300ms ease !important;
 }
-#Message{
+
+#Message {
     font-size: 25px;
     padding: 0px 30px;
 }

@@ -61,13 +61,15 @@
    <script>
     let deleteReq = document.querySelectorAll('.deleteReq')
     const deleteBtn = document.getElementById('deleteAction')
+    let input;
     let blogTitle;
     console.log(deleteReq)
     deleteReq.forEach(btn=>{
         btn.addEventListener('click', (e)=>{
           const id = e.target.dataset.mxRoute
           console.log(id)
-          blogTitle = e.target.dataset.mxTitle
+          const parent = e.target.closest('.card-body')
+          blogTitle = parent.querySelector('.card-title').textContent
           deleteBtn.dataset.delete = id
           console.log(deleteBtn.dataset.delete)
           document.getElementById('blog-name').textContent= blogTitle
@@ -77,7 +79,7 @@
 
     const inputListener = (e)=>{
        const btn = document.getElementById('deleteAction')
-       const input = e.target
+       input = e.target
        if(input.value === blogTitle ){
         return btn.disabled = false
        }
@@ -85,6 +87,10 @@
     }
     document.getElementById('delete-input').addEventListener('input', inputListener)
     //actionBtn
+
+    document.getElementById('clear').addEventListener('click',()=>{
+      input.value = ""
+    })
     deleteBtn.addEventListener('click', async (e) => {
         // e.preventDefault()
         let url_endpoint = `/blogs/${e.target.dataset.delete}`;

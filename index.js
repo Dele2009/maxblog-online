@@ -48,16 +48,22 @@ mongoose
   )
   .catch(err => console.log('Error Detected' + ' => ' + err));
 
+const expiration =   process.env.Session_expiration
+console.log(expiration)
 const store = new MongoDBStore({
   uri: mongo_url,
-  collection: 'sessions'
+  collection: 'sessions',
+  expires: expiration
 });
 
 app.use(session({
-  secret: 'secret',
+  secret: process.env.Session_secret,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: true,  
   store: store,
+  cookie: {
+    maxAge: expiration
+  }
 }));
 
 //using the ejs template to render

@@ -26,10 +26,10 @@ const { chat_router } = require('./routes/chatRoutes');
 
 const port = process.env.App_Port || 4000;
 //deployment key
-//const mongo_url = process.env.Mongo_Url;
+const mongo_url = process.env.Mongo_Url;
 //teting phase
 
-const mongo_url = 'mongodb://localhost:27017/maxblogs'
+//const mongo_url = 'mongodb://localhost:27017/maxblogs'
 //Production key
 
 
@@ -53,7 +53,7 @@ console.log(expiration)
 const store = new MongoDBStore({
   uri: mongo_url,
   collection: 'sessions',
-  expires: expiration
+  expires: (24*3)*60*60*1000
 });
 
 app.use(session({
@@ -62,7 +62,7 @@ app.use(session({
   saveUninitialized: true,  
   store: store,
   cookie: {
-    maxAge: expiration
+    maxAge: (24*3)*60*60*1000
   }
 }));
 

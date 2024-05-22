@@ -38,7 +38,7 @@ const get_blogs = async (req, res) => {
     const allresults = result.sort((a, b) => a.createdAt - b.createdAt)
                               .slice(skip, skip + limit)
 
-    const newresults = result.slice().sort((a, b) => b.createdAt - a.createdAt)
+    const newresults = result.sort((a, b) => b.createdAt - a.createdAt).slice(0,10)
 
     res.render('index', {
       title: 'Home',

@@ -32,12 +32,17 @@ const get_blogs = async (req, res) => {
     const totalPages = Math.ceil(totalCount / perPage);
     const skip = Number((page - 1) * perPage)
     const limit = Number(perPage)
-    let start = 1,
-      end = 3
+    let start,
+    end,
+    calc
 
-    if (page > 2) {
-      start = page - 1
-      end = page + 1
+    if (totalPages >= 3 && page >= 3) {
+      calc = page + 1
+      start = calc > totalPages ? page - 2 : page - 1
+      end = calc > totalPages ? page : calc
+    }else{
+      start = 1
+      end = totalPages < 3 ? 2 : 3
     }
     const result = await Newblogs.find()
     // const sliderResult = await Newblogs.find()
@@ -45,7 +50,7 @@ const get_blogs = async (req, res) => {
     const allresults = result.sort((a, b) => a.createdAt - b.createdAt)
       .slice(skip, skip + limit)
 
-    const newresults = result.sort((a, b) => b.createdAt - a.createdAt).slice(0, 10)
+    const newresults = result.sort((a, b) => b.createdAt - a.createdAt).slice(0, 6)
 
     res.render('index', {
       title: 'Home',
@@ -84,7 +89,7 @@ const get_a_blog = async (req, res) => {
     // const result = await Blog.findById(id)
     const requestedBlog = await Newblogs.findById(id)
     const result = await Newblogs.find()
-    const newresults = result.slice().sort((a, b) => b.createdAt - a.createdAt)
+    const newresults = result.sort((a, b) => b.createdAt - a.createdAt).slice(0,6)
     res.render('blogView',
       {
         title: 'blog Details',
@@ -115,13 +120,18 @@ const get_blog_category = async (req, res) => {
 
     // Calculate total number of pages
     const totalPages = Math.ceil(totalCount / perPage);
-    let start = 1,
-      end = 3
+    let start,
+      end,
+      calc
 
-    if (page > 2) {
-      start = page - 1
-      end = page + 1
-    }
+      if (totalPages >= 3) {
+        calc = page + 1
+        start = calc > totalPages ? page - 2 : page - 1
+        end = calc > totalPages ? page : calc
+      }else{
+        start = 1
+        end = 3
+      }
     const result = await Newblogs.find({ category: id }).sort({ createdAt: -1 })
       .skip((page - 1) * perPage)
       .limit(perPage);

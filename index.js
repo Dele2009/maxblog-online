@@ -29,7 +29,9 @@ const port = process.env.App_Port || 4000;
 const mongo_url = process.env.Mongo_Url;
 //teting phase
 
-// const mongo_url = 'mongodb://localhost:27017/maxblogs'
+//const mongo_url = 'mongodb://localhost:27017/maxblogs'
+//const mongo_url = 'mongodb://localhost:27017/'
+
 //Production key
 
 

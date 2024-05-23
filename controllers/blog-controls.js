@@ -32,13 +32,20 @@ const get_blogs = async (req, res) => {
     const totalPages = Math.ceil(totalCount / perPage);
     const skip = Number((page - 1) * perPage)
     const limit = Number(perPage)
+    let start = 1,
+      end = 3
+
+    if (page > 2) {
+      start = page - 1
+      end = page + 1
+    }
     const result = await Newblogs.find()
     // const sliderResult = await Newblogs.find()
     const sliderBlogs = result.sort((a, b) => b.createdAt - a.createdAt).slice(0, 4)
     const allresults = result.sort((a, b) => a.createdAt - b.createdAt)
-                              .slice(skip, skip + limit)
+      .slice(skip, skip + limit)
 
-    const newresults = result.sort((a, b) => b.createdAt - a.createdAt).slice(0,10)
+    const newresults = result.sort((a, b) => b.createdAt - a.createdAt).slice(0, 10)
 
     res.render('index', {
       title: 'Home',
@@ -48,6 +55,8 @@ const get_blogs = async (req, res) => {
       currentPage: page,
       totalPages,
       contentPerPage: perPage,
+      start,
+      end,
 
       newBlogs: newresults,
       slideBlogs: sliderBlogs,
@@ -106,6 +115,13 @@ const get_blog_category = async (req, res) => {
 
     // Calculate total number of pages
     const totalPages = Math.ceil(totalCount / perPage);
+    let start = 1,
+      end = 3
+
+    if (page > 2) {
+      start = page - 1
+      end = page + 1
+    }
     const result = await Newblogs.find({ category: id }).sort({ createdAt: -1 })
       .skip((page - 1) * perPage)
       .limit(perPage);
@@ -119,6 +135,8 @@ const get_blog_category = async (req, res) => {
         currentPage: page,
         totalPages: totalPages,
         contentPerPage: perPage,
+        start,
+        end,
         row: "4"
       }
     )

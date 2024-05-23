@@ -4,8 +4,8 @@
         <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
             <a class="page-link" href="?page=<%= currentPage - 1 %>" tabindex="-1" aria-disabled="true">Newer</a>
         </li>
-        <%const paglength = totalPages >= 5 ? 5 : totalPages%>
-        <% for(let i = 1; i <= paglength; i++) { %>
+        
+        <% for(let i = start; i <= end; i++) { %>
             <li class="page-item <%= currentPage === i ? 'active' : '' %>">
                 <a class="page-link" href="?page=<%= i %>"><%= i %></a>
             </li>

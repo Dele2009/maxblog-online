@@ -1,9 +1,14 @@
-const express = require('express')
+import express from 'express'
 
-const upload = require('../middleware/upload')
-const blogcontrols = require('../controllers/blog-controls')
+import {upload} from '../middleware/upload.js'
+import {
+  get_blogs,
+  get_a_blog,
+  get_blog_category,
+  delete_blog
+} from '../controllers/blog-controls.js'
 
-const router = express.Router()
+export const router = express.Router()
 
 router.get('/about', (req, res) => {
   res.render('about', { title: 'About Us' })
@@ -11,13 +16,13 @@ router.get('/about', (req, res) => {
 
 
 //get all blogs
-router.get('/all-blogs', blogcontrols.get_blogs)
+router.get('/all-blogs', get_blogs)
 
 //get blog by id
-router.get('/:id', blogcontrols.get_a_blog)
+router.get('/:id', get_a_blog)
 
-router.get('/category/:id', blogcontrols.get_blog_category)
+router.get('/category/:id', get_blog_category)
 
-router.delete('/:id', blogcontrols.delete_blog)
+router.delete('/:id', delete_blog)
 
-module.exports = { router }
+

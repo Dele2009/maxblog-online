@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose  from 'mongoose'
 const Schema = mongoose.Schema
 // const dompurifier = require('dompurify')
 // const { JSDOM } = require('jsdom')
@@ -55,6 +55,6 @@ const blogschema = new Schema(
 //   }
 //   next()
 // })
-const Newblogs = mongoose.model('newblog', blogschema)
+export const Newblogs = mongoose.model('newblog', blogschema)
 
-module.exports = Newblogs
+

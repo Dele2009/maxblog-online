@@ -1,16 +1,16 @@
-const Newuser = require('../models/User')
-const Newblogs = require('../models/newblogs')
+import {Newuser} from '../models/User.js'
+import {Newblogs} from '../models/newblogs.js'
 // const cloudinary = require('../middleware/cloudinary')
-const bcrypt = require('bcrypt')
-const nodemailer = require('nodemailer');
-const fs = require('fs');
-const path = require('path');
-const { formatDistanceToNow } = require('date-fns')
-const { generateToken } = require('../middleware/token')
-const {
+import bcrypt from 'bcrypt'
+import nodemailer from 'nodemailer'
+import fs from 'fs'
+import path from 'path'
+import { formatDistanceToNow } from 'date-fns'
+import { generateToken } from '../middleware/token.js'
+import {
     getFolder,
     uploadFile
-} = require('../middleware/googledrive')
+} from '../middleware/googledrive.js'
 
 
 let transporter = nodemailer.createTransport({
@@ -51,7 +51,7 @@ const sendVerificationEmail = async (name, email, token) => {
     }
 }
 
-const sign_up = async (req, res) => {
+export const sign_up = async (req, res) => {
     try {
         const { name, email, password } = req.body
 
@@ -127,7 +127,7 @@ const sign_up = async (req, res) => {
 
 
 
-const tokenVerify = async (req, res) => {
+export const tokenVerify = async (req, res) => {
     try {
         const { token } = req.body
         const user = await Newuser.findOne({ verificationToken: token });
@@ -167,7 +167,7 @@ const tokenVerify = async (req, res) => {
 
 }
 
-const log_in = async (req, res) => {
+export const log_in = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await Newuser.findOne({ email });
@@ -224,7 +224,7 @@ const log_in = async (req, res) => {
     }
 };
 
-const updatePassword = async (req, res) => {
+export const updatePassword = async (req, res) => {
     const { email, newPassword } = req.body
 
     try {
@@ -265,7 +265,7 @@ const updatePassword = async (req, res) => {
     }
 }
 
-const Show_user_dashboard = async (req, res) => {
+export const Show_user_dashboard = async (req, res) => {
     try {
 
         const user = req.session.user;
@@ -290,7 +290,7 @@ const Show_user_dashboard = async (req, res) => {
     }
 }
 
-const get_user_blogInfo = async (req, res) => {
+export const get_user_blogInfo = async (req, res) => {
     const user = req.session.user;
     const currentMonthStartDate = new Date(); // Get current date
     currentMonthStartDate.setDate(1); // Set the date to the first day of the month
@@ -332,7 +332,7 @@ const get_user_blogInfo = async (req, res) => {
 
 }
 
-const load_blogCreate = async (req, res) => {
+export const load_blogCreate = async (req, res) => {
     try {
 
         const user = req.session.user;
@@ -347,7 +347,7 @@ const load_blogCreate = async (req, res) => {
 
 
 
-const create_blog = async (req, res) => {
+export const create_blog = async (req, res) => {
 
 
     try {
@@ -397,7 +397,7 @@ const create_blog = async (req, res) => {
     }
 }
 
-const user_Authored_blogs = async (req, res) => {
+export const user_Authored_blogs = async (req, res) => {
     try {
         const user = req.session.user
         const authored_blogs = await Newblogs.find({ author_id: user._id }).sort({ createdAt: -1 })
@@ -419,7 +419,7 @@ const user_Authored_blogs = async (req, res) => {
 
 
 
-const log_out = async (req, res) => {
+export const log_out = async (req, res) => {
     try {
         await req.session.destroy(); // Async operation to destroy the session
         return res.redirect('/user/log-in'); // Redirect to login page after logout
@@ -429,15 +429,3 @@ const log_out = async (req, res) => {
     }
 };
 
-module.exports = {
-    sign_up,
-    log_in,
-    Show_user_dashboard,
-    get_user_blogInfo,
-    load_blogCreate,
-    create_blog,
-    user_Authored_blogs,
-    updatePassword,
-    tokenVerify,
-    log_out,
-}

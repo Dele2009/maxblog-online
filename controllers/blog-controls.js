@@ -1,11 +1,11 @@
 //const Blog = require('../models/blog')
-const Newblogs = require('../models/newblogs')
-const cloudinary = require('../middleware/cloudinary')
-const {
+import {Newblogs} from '../models/newblogs.js'
+import cloudinary from '../middleware/cloudinary.js'
+import {
   getFolder,
   uploadFile
-} = require('../middleware/googledrive')
-const { formatDistanceToNow } = require('date-fns')
+} from '../middleware/googledrive.js'
+import { formatDistanceToNow } from 'date-fns'
 
 
 
@@ -17,7 +17,7 @@ const { formatDistanceToNow } = require('date-fns')
 
 
 
-const get_blogs = async (req, res) => {
+export const get_blogs = async (req, res) => {
   try {
     // const result = await Blog.find()
     const page = parseInt(req.query.page) || 1; // Current page number, default to 1 if not provided
@@ -78,7 +78,7 @@ const get_blogs = async (req, res) => {
 }
 
 
-const get_a_blog = async (req, res) => {
+export const get_a_blog = async (req, res) => {
   const id = req.params.id
   let user;
   if (req.session && req.session.user) {
@@ -105,7 +105,7 @@ const get_a_blog = async (req, res) => {
 
 
 
-const get_blog_category = async (req, res) => {
+export const get_blog_category = async (req, res) => {
   const id = req.params.id
   const page = parseInt(req.query.page) || 1; // Current page number, default to 1 if not provided
   const perPage = 9; // Number of blogs per page
@@ -157,7 +157,7 @@ const get_blog_category = async (req, res) => {
 }
 
 
-const delete_blog = async (req, res) => {
+export const delete_blog = async (req, res) => {
   const id = req.params.id
   console.log(id)
   try {
@@ -167,11 +167,4 @@ const delete_blog = async (req, res) => {
   } catch (error) {
     console.log(error)
   }
-}
-
-module.exports = {
-  get_blogs,
-  get_a_blog,
-  get_blog_category,
-  delete_blog
 }

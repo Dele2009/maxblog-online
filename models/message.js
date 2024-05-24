@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose  from 'mongoose'
 const Schema = mongoose.Schema
 
 
@@ -30,21 +30,17 @@ const messageSchema = new Schema({
     }
 });
 
-const keySchema = new Schema({
-    userId: { 
-        type:String,
-        required:true
-    },
-    publicKey: { 
-        type:String,
-        required:true
-    }
-});
+// const keySchema = new Schema({
+//     userId: { 
+//         type:String,
+//         required:true
+//     },
+//     publicKey: { 
+//         type:String,
+//         required:true
+//     }
+// });
 
-const Messages = mongoose.model('Message', messageSchema);
-const keys = mongoose.model('key', keySchema);
+export const Messages = mongoose.model('Message', messageSchema);
+// export const keys = mongoose.model('key', keySchema);
 
-module.exports = { 
-    Messages,
-    keys
-}

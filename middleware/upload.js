@@ -1,10 +1,9 @@
-const path = require('path')
-const multer = require('multer')
+import path from 'path'
+import multer from 'multer'
 
 const storage = multer.diskStorage({})
 
-const upload = multer({
+export const upload = multer({
     storage:storage,
 })
 
-module.exports=upload

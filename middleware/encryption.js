@@ -1,8 +1,8 @@
-const crypto = require('crypto');
+import  crypto  from 'crypto'
 
 
 // Function to generate a shared key based on sender and receiver IDs
-function generateSharedKey(senderId, receiverId) {
+export const generateSharedKey = (senderId, receiverId) => {
     // Concatenate sender and receiver IDs
     const Ids = [senderId, receiverId].sort()
 
@@ -17,7 +17,7 @@ function generateSharedKey(senderId, receiverId) {
 }
 
 // Function to encrypt a message using the shared key
-function encryptMessage(message, sharedKey) {
+export const encryptMessage = (message, sharedKey) => {
     try {
         // Generate a random initialization vector
         const iv = crypto.randomBytes(16);
@@ -43,7 +43,7 @@ function encryptMessage(message, sharedKey) {
 }
 
 // Function to decrypt a message using the shared key
-function decryptMessage(encryptedMessage, sharedKey) {
+export const decryptMessage = (encryptedMessage, sharedKey)=> {
     try {
         // Parse the encrypted message string
         const iv = Buffer.from(encryptedMessage.slice(0, 32), 'hex');
@@ -67,8 +67,3 @@ function decryptMessage(encryptedMessage, sharedKey) {
     }
 }
 
-module.exports = {
-    generateSharedKey,
-    encryptMessage,
-    decryptMessage
-};

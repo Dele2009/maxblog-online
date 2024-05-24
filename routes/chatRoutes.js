@@ -1,15 +1,18 @@
-const express = require('express')
+import express from 'express'
 
 // const upload = require('../middleware/upload')
-const chatcontrols = require('../controllers/chat-controls')
-const requireLogin = require('../middleware/requirelogin')
+import {
+    chats,
+    startnewchat,
+    startchat
+} from '../controllers/chat-controls.js'
+import { requireLogin } from '../middleware/requirelogin.js'
 
-const chat_router = express.Router()
+export const chat_router = express.Router()
 
 
-chat_router.get('/',requireLogin, chatcontrols.chats );
-chat_router.post('/startNewChat', requireLogin, chatcontrols.startnewchat)
-chat_router.get('/:id',requireLogin, chatcontrols.startchat );
+chat_router.get('/', requireLogin, chats);
+chat_router.post('/startNewChat', requireLogin, startnewchat)
+chat_router.get('/:id', requireLogin, startchat);
 
-    
-module.exports= {chat_router}
+

@@ -1,6 +1,8 @@
-const { google } = require('googleapis')
-const fs = require('fs'),
-    path = require('path')
+import { google } from 'googleapis'
+import fs from 'fs'
+import   path from 'path'
+import dotenv from "dotenv"
+dotenv.config()
 // CLIENT_ID = process.env.GOOGLE_ID,
 //     CLIENT_SECRET = process.env.GOOGLE_SECRET,
 //     REDIRECT_URI = process.env.GOOGLE_REDIRECT;
@@ -24,45 +26,45 @@ const fs = require('fs'),
 // });
 
 
-async function shareRootFolderWithServiceAccount() {
-    try {
+// async function shareRootFolderWithServiceAccount() {
+//     try {
        
-        const jwtClient = new google.auth.JWT(
-            process.env.GOOGLE_CLIENT_EMAIL,
-            null,
-            process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-            ['https://www.googleapis.com/auth/drive'],
-            null
-        );
+//         const jwtClient = new google.auth.JWT(
+//             process.env.GOOGLE_CLIENT_EMAIL,
+//             null,
+//             process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+//             ['https://www.googleapis.com/auth/drive'],
+//             null
+//         );
 
-        await jwtClient.authorize();
+//         await jwtClient.authorize();
 
-        const drive = google.drive({ version: 'v3', auth: jwtClient });
+//         const drive = google.drive({ version: 'v3', auth: jwtClient });
 
-        await drive.permissions.create({
-            resource: {
-                type: 'user',
-                role: 'writer',
-                emailAddress: process.env.GOOGLE_CLIENT_EMAIL,
-            },
-            fileId: 'root',
-        });
+//         await drive.permissions.create({
+//             resource: {
+//                 type: 'user',
+//                 role: 'writer',
+//                 emailAddress: process.env.GOOGLE_CLIENT_EMAIL,
+//             },
+//             fileId: 'root',
+//         });
 
-        console.log('Root folder shared successfully with the service account.');
-    } catch (error) {
-        console.error('Error sharing root folder:', error);
-    }
-}
-
-
+//         console.log('Root folder shared successfully with the service account.');
+//     } catch (error) {
+//         console.error('Error sharing root folder:', error);
+//     }
+// }
 
 
+
+    const privateKey = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n')
     const auth = new google.auth.GoogleAuth({
         credentials: {
             type: process.env.GOOGLE_SERVICE_ACCOUNT_TYPE,
             project_id: process.env.GOOGLE_PROJECT_ID,
             private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
-            private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+            private_key: privateKey,
             client_email: process.env.GOOGLE_CLIENT_EMAIL,
             client_id: process.env.GOOGLE_CLIENT_ID,
             auth_uri: process.env.GOOGLE_AUTH_URI,
@@ -95,7 +97,7 @@ async function shareRootFolderWithServiceAccount() {
 //     }
 // }
 
-async function getFolder(foldername) {
+export const  getFolder = async (foldername)=> {
     try {
         
         const folderName = foldername;
@@ -147,7 +149,7 @@ async function getFolder(foldername) {
 }
 
 
-async function uploadFile(namestring, filePath, folderId) {
+export const uploadFile = async (namestring, filePath, folderId)=> {
 
     // const fileMetadata = {
     //     name: namestring + "-profile-image.jpg",
@@ -206,7 +208,4 @@ async function uploadFile(namestring, filePath, folderId) {
     }
 }
 
-module.exports = {
-    getFolder,
-    uploadFile
-}
+

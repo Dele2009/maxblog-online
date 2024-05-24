@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "This project is for learning node.js for my backend/future projects",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",

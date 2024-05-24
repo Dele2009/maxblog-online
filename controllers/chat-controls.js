@@ -1,16 +1,16 @@
-const Newuser = require('../models/User')
-const Newblogs = require('../models/newblogs')
-const {Messages} = require('../models/message')
-const { generateConversationId } = require('../middleware/generatechatid')
-const {
+import {Newuser} from '../models/User.js'
+import {Newblogs} from '../models/newblogs.js'
+import {Messages} from '../models/message.js'
+import { generateConversationId } from '../middleware/generatechatid.js'
+import {
     generateSharedKey,
     decryptMessage
-} = require("../middleware/encryption")
+} from "../middleware/encryption.js"
 
 let chatUsers;
 
 
-const chats = async (req, res) => {
+export const chats = async (req, res) => {
     try {
 
         const user = req.session.user;
@@ -39,7 +39,7 @@ const chats = async (req, res) => {
     }
 }
 
-const startnewchat = async (req, res) => {
+export const startnewchat = async (req, res) => {
     try {
         const { email } = req.body
         const user = req.session.user
@@ -91,7 +91,7 @@ const startnewchat = async (req, res) => {
     }
 }
 
-const startchat = async (req, res) => {
+export const startchat = async (req, res) => {
     try {
 
         const user = req.session.user;
@@ -143,8 +143,3 @@ const startchat = async (req, res) => {
 
 
 
-module.exports = {
-    chats,
-    startchat,
-    startnewchat
-}

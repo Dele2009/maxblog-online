@@ -1,7 +1,7 @@
-const crypto = require('crypto');
+import crypto from 'crypto'
 
 // Generate a random token
-const generateToken = () => {
+export const generateToken = () => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
     // Generate a random buffer
@@ -21,6 +21,3 @@ const generateToken = () => {
 
 }
 
-module.exports = {
-    generateToken
-}

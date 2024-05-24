@@ -1,4 +1,4 @@
-const requireLogin = (req, res, next) => {
+export const requireLogin = (req, res, next) => {
     // Check if user is authenticated
     if (req.session.user) {
         // User is authenticated, proceed to next middleware
@@ -9,4 +9,3 @@ const requireLogin = (req, res, next) => {
     }
 };
 
-module.exports = requireLogin

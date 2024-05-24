@@ -1,35 +1,40 @@
-const path = require('path');
-const express = require('express');
-const morgan = require('morgan');
-const mongoose = require('mongoose');
-const http = require('http');
-const socketIo = require('socket.io');
-const session = require('express-session');
-const MongoDBStore = require('connect-mongodb-session')(session);
-require('dotenv').config();
-const {
+import './dirname.js
+import path from 'path'
+import express from 'express'
+import morgan from 'morgan'
+import mongoose from 'mongoose'
+import http from 'http'
+import {Server} from 'socket.io'
+import session from 'express-session'
+
+import MongoDBSessionStore from  'connect-mongodb-session'
+
+import dotenv from "dotenv"
+dotenv.config();
+
+import {
   generateSharedKey,
   encryptMessage,
   decryptMessage
-} = require("./middleware/encryption");
+} from "./middleware/encryption.js"
 
-const {
+import {
   Messages
-} = require('./models/message');
+} from './models/message.js'
 
-const Newuser = require('./models/User');
-const { generateConversationId } = require('./middleware/generatechatid');
+import {Newuser} from './models/User.js'
+import { generateConversationId } from './middleware/generatechatid.js'
 
-const { router } = require('./routes/routes');
-const { user_router } = require('./routes/userRoutes');
-const { chat_router } = require('./routes/chatRoutes');
+import { router } from './routes/routes.js'
+import { user_router } from './routes/userRoutes.js'
+import { chat_router } from './routes/chatRoutes.js'
 
 const port = process.env.App_Port || 4000;
 //deployment key
-const mongo_url = process.env.Mongo_Url;
+//const mongo_url = process.env.Mongo_Url;
 //teting phase
 
-//const mongo_url = 'mongodb://localhost:27017/maxblogs'
+const mongo_url = 'mongodb://localhost:27017/maxblogs'
 //const mongo_url = 'mongodb://localhost:27017/'
 
 //Production key
@@ -37,7 +42,7 @@ const mongo_url = process.env.Mongo_Url;
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = new Server(server);
 
 
 mongoose
@@ -52,6 +57,9 @@ mongoose
 
 const expiration =   process.env.Session_expiration
 console.log(expiration)
+
+
+const MongoDBStore = MongoDBSessionStore(session);
 const store = new MongoDBStore({
   uri: mongo_url,
   collection: 'sessions',

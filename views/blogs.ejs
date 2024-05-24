@@ -140,20 +140,13 @@
    <%- include ('./components/scripts')%>
 
    <script>
-    function toggleName(){
-        const input = document.getElementById('author')
-        const btn = document.getElementById('button-addon2')
-        input.readOnly=input.readOnly===true? false : true;
-        btn.textContent=input.readOnly===true?  "Edit Author":"Save changes";
-    }
-
-   </script>
-
-   <script type="module">
-    import {handleFormSubmission} from '/js/DataUploader.js'
-
-  
-    document.getElementById('heroimage').addEventListener('change', (e)=>{
+        function toggleName(){
+            const input = document.getElementById('author')
+            const btn = document.getElementById('button-addon2')
+            input.readOnly=input.readOnly===true? false : true;
+            btn.textContent=input.readOnly===true?  "Edit Author":"Save changes";
+        }
+        document.getElementById('heroimage').addEventListener('change', (e)=>{
         const input = e.target;
         console.log(e.target)
 
@@ -198,6 +191,14 @@
       }
    }
 
+
+   </script>
+
+   <script type="module">
+    import {handleFormSubmission} from '/js/DataUploader.js'
+
+  
+    
 //    document.querySelector(".mybtn").onclick = ()=>{
 //      validateBlogPost()
 //    }

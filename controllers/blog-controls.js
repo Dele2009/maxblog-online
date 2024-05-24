@@ -108,7 +108,7 @@ const get_a_blog = async (req, res) => {
 const get_blog_category = async (req, res) => {
   const id = req.params.id
   const page = parseInt(req.query.page) || 1; // Current page number, default to 1 if not provided
-  const perPage = 10; // Number of blogs per page
+  const perPage = 9; // Number of blogs per page
   let user;
   if (req.session && req.session.user) {
     user = req.session.user
@@ -124,14 +124,15 @@ const get_blog_category = async (req, res) => {
       end,
       calc
 
-      if (totalPages >= 3) {
-        calc = page + 1
-        start = calc > totalPages ? page - 2 : page - 1
-        end = calc > totalPages ? page : calc
-      }else{
-        start = 1
-        end = 3
-      }
+     
+    if (totalPages >= 3 && page >= 3) {
+      calc = page + 1
+      start = calc > totalPages ? page - 2 : page - 1
+      end = calc > totalPages ? page : calc
+    }else{
+      start = 1
+      end = totalPages < 3 ? 2 : 3
+    }
     const result = await Newblogs.find({ category: id }).sort({ createdAt: -1 })
       .skip((page - 1) * perPage)
       .limit(perPage);

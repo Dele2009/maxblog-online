@@ -20,13 +20,16 @@
             }
          </style>
 
-            <main class="row justify-content-center align-items-center mb-5">
-                <div class="col-11 col-md-8 col-lg-4 bg-light rounded shadow p-2 p-lg-5">
+            <main class="col-10 m-auto row justify-content-center align-items-center mb-5 ">
+                <div class="col-lg-7 d-none d-md-flex justify-content-center align-items-center">
+                    <img src="/assects/images/sign-up-form.svg" alt="" class="w-100 h-100">
+                </div> 
+                <div class="col-lg-5 rounded shadow p-2 p-lg-5">
                     <form id="SignUpForm" enctype="multipart/form-data">
                         <div style="width: 120px; height: 120px;" class="m-auto mb-3">
                             <img src="/assects/images/maxblogs-logo-main.png" alt="" class="w-100 h-100">
                         </div>
-                        <h1 class="h3 mb-5 fw-normal text-center">Register to Become a writer</h1>
+                        <h1 class="h3 mb-5 fw-normal text-center">Sign up to Become a writer</h1>
 
                         <div class=" my-3">
                             <div class="input-group rounded " id="namecont">
@@ -98,7 +101,7 @@
 
 
                         <button class="btn btn-primary w-100 mybtn rounded" type="submit" id="form-Btn">
-                            <span id="text">Register</span>
+                            <span id="text">Sign up</span>
                             <div class="spinner" id="loader" style="display: none;"></div>
                         </button>
 
@@ -106,7 +109,7 @@
 
                     </form>
                     <div class="mt-5 fs-5">
-                        <p class="text-center">Already have an account? <a href="/user/log-in" class="text-primary"><i>login</i></a></p>
+                        <p class="text-center">Already have an account? <a href="/user/log-in" class="text-primary"><i>Sign in</i></a></p>
                     </div>
                 </div>
             </main>
@@ -148,29 +151,6 @@
                     
 
                 })
-
-
-            </script>
-
-            <script type="module">
-
-                
-                import {handleFormSubmission} from '/js/DataUploader.js'
-
-
-                function startSubmission(e){
-                    e.preventDefault()
-                    const nameValid = validateName()
-                    const emailValid = validateEmail()
-                    const passwordValid = validatePassowrd()
-                    if(nameValid && emailValid && passwordValid){
-                        const signUpForm = document.getElementById('SignUpForm');
-                        handleFormSubmission(signUpForm, '/user/sign-up');
-
-                    }
-                }
-
-                document.getElementById('SignUpForm').addEventListener('submit',startSubmission)
 
                 function validateName(){
                    const name = document.getElementById("name")
@@ -254,6 +234,31 @@
                 }
 
                 
+
+                
+
+
+            </script>
+
+            <script type="module">
+
+                
+                import {handleFormSubmission} from '/js/DataUploader.js'
+
+
+                function startSubmission(e){
+                    e.preventDefault()
+                    const nameValid = validateName()
+                    const emailValid = validateEmail()
+                    const passwordValid = validatePassowrd()
+                    if(nameValid && emailValid && passwordValid){
+                        const signUpForm = document.getElementById('SignUpForm');
+                        handleFormSubmission(signUpForm, '/user/sign-up');
+
+                    }
+                }
+
+                document.getElementById('SignUpForm').addEventListener('submit',startSubmission)
 
                 
 

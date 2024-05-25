@@ -11,6 +11,7 @@ import {
     getFolder,
     uploadFile
 } from '../middleware/googledrive.js'
+console.log("user-controls",__dirname)
 
 
 let transporter = nodemailer.createTransport({
@@ -23,7 +24,7 @@ let transporter = nodemailer.createTransport({
 
 const sendVerificationEmail = async (name, email, token) => {
     try {
-        const templatePath = path.join(__dirname, '..', 'public', 'templates', 'email_template.html');
+        const templatePath = path.join(__dirname,  'public', 'templates', 'email_template.html');
         const emailTemplate = fs.readFileSync(templatePath, 'utf8');
         const Token = token.split('').join('-')
         const html = emailTemplate

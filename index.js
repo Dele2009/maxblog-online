@@ -200,7 +200,7 @@ app.get('/', (req, res) => {
 app.use('/blogs', router)
 app.use('/user', user_router)
 app.use('/chats', chat_router)
-app.use((req,res,next)=>{
+app.use((req,res)=>{
   res.render("404",{title:"Error: 404"})
 })
 

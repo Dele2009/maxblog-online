@@ -322,11 +322,11 @@ export const get_user_blogInfo = async (req, res) => {
 
     // Prepare data for Chart.js
     // const labels = blogActivity.map(data => moment().month(data._id - 1).format('MMM')); // Format month labels
-    labels = blogActivity.map(data => {
+    const labels = blogActivity.map(data => {
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         return monthNames[data._id - 1];
     });
-    data = blogActivity.map(data => data.count); // Blog counts
+    const data = blogActivity.map(data => data.count); // Blog counts
     console.log(labels, data)
 
     return res.json({ labels, data })

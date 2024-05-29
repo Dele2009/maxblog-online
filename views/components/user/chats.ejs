@@ -85,7 +85,7 @@
                                             <input type="text" name="email" id="email" class="form-control py-3 ">
                                             <i id="email-error" class="px-2"></i>
                                             <button class="btn btn-primary w-100 mybtn2 mt-3" type="submit"
-                                                id="start-chat-btn">
+                                                id="form-Btn">
                                                 <span id="text">Continue</span>
                                                 <div class="spinner" id="loader" style="display: none;"></div>
                                             </button>
@@ -126,12 +126,7 @@
 
 
                 <%- include ('../scripts')%>
-
-                    <script type="module">
-
-
-                        import { handleFormSubmission } from '/js/DataUploader.js'
-
+                    <script>
                         function validateEmail() {
                             const email = document.getElementById("email")
                             const emailError = document.getElementById("email-error")
@@ -156,21 +151,28 @@
                             }
 
                         }
-                        const chatForm = document.getElementById('chatForm');
-                        function startSubmission(form, url) {
+                    </script>
+
+                    <script type="module">
+
+
+                        import { handleFormSubmission } from '/js/DataUploader.js'
+
+                        
+                        
+                        function startSubmission(e) {
+                            
+                            e.preventDefault()
 
                             let emailValid = validateEmail()
                             if (emailValid) {
-
-                                handleFormSubmission(form, url);
+                                const chatForm = document.getElementById('chatForm');
+                                handleFormSubmission(chatForm, '/chats/startNewChat');
 
                             }
                         }
 
-                        chatForm.addEventListener('submit', (e) => {
-                            e.preventDefault()
-                            startSubmission(e.target, '/chats/startNewChat')
-                        })
+                        document.getElementById('chatForm').addEventListener('submit', startSubmission)
 
 
 

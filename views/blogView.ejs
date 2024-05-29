@@ -16,14 +16,21 @@
                         </div>
                         <div class="pb-3 my-4 border-bottom">
                             <a class="d-flex align-items-start justify-content-start gap-3 text-body-emphasis text-decoration-none">
-                                <span class="fs-5 text-capitalize "><b>Author</b>: <%=Blog.author%></span>
-                                <span class="fs-5 text-capitalize "><b>category</b>: <%=Blog.category%></span>
+                                <span class="text-capitalize " style="font-size: 13px;"><i class="fas fa-user"></i> <%=Blog.author%></span>
+                                <span class="text-capitalize " style="font-size: 13px;"><%=Blog.category%></span>
+                                <%const date = Blog.createdAt.toLocaleString('en-US',{
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                })%>
+                                <span class="text-capitalize " style="font-size: 13px;"><%=date%></span>
                             </a>
                         </div>
-                        <div class="row">
+                        <div class="row position-relative">
                             <div class="col-lg-8">
                                 
-                                <h1 class="display-5 fw-bold text-capitalize text-center py-5">
+                                <h1 class="display-5 fw-bold text-capitalize py-5">
                                     <%=Blog.title%>
                                 </h1>
                                 <div class="w-100">
@@ -34,7 +41,7 @@
                                 <!-- <a data-route="<%=Blog._id%>" class="btn btn-primary btn-lg" id="delete-key"
                                     type="button">Delete Blog</a> -->
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4" >
                                 <%-include('./components/side-widgets')%>
                             </div>
                         </div>

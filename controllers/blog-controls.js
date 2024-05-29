@@ -1,5 +1,6 @@
 //const Blog = require('../models/blog')
 import {Newblogs} from '../models/newblogs.js'
+import {Newuser} from '../models/User.js'
 import cloudinary from '../middleware/cloudinary.js'
 import {
   getFolder,
@@ -89,13 +90,16 @@ export const get_a_blog = async (req, res) => {
     // const result = await Blog.findById(id)
     const requestedBlog = await Newblogs.findById(id)
     const result = await Newblogs.find()
+    const userProfilePic = Newuser.findById(requestedBlog.author_id)
+    // const userPic = userProfilePic.avatar_info.url
     const newresults = result.sort((a, b) => b.createdAt - a.createdAt).slice(0,6)
     res.render('blogView',
       {
         title: 'blog Details',
         Blog: requestedBlog,
         newBlogs: newresults,
-        user
+        user,
+        // userPic
       }
     )
   } catch (error) {

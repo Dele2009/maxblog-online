@@ -1,4 +1,4 @@
-<div class="mt-5">
+<div class="mt-5" style="position: relative;">
     <div class="card mb-4">
         <div class="card-header">Search</div>
         <div class="card-body">
@@ -33,7 +33,7 @@
     </div>
 
 
-    <div class="position-sticky" style="top: 300px;">
+    <div class="position-sticky" style="top: 90px;">
         <h4 class="fst-italic">Recent posts</h4>
         <ul class="list-unstyled">
             <%newBlogs.forEach(blog=>{%>
@@ -49,7 +49,13 @@
                         <div class="col-8">
                             
                             <h6 class="mb-0"><%=blog.title%></h6>
-                            <small class="text-body-secondary">January 14, 2024</small>
+                            <%const date = blog.createdAt.toLocaleString('en-US',{
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })%>
+                            <small class="text-body-secondary"><%=date%></small>
                         </div>
                     </a>
                 </li>
@@ -63,3 +69,4 @@
             to use, and feature the Bootstrap 5 card component!</div>
     </div> -->
 </div>
+

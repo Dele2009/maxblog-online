@@ -31,11 +31,11 @@ import { chat_router } from './routes/chatRoutes.js'
 
 const port = process.env.App_Port || 4000;
 //deployment key
-//const mongo_url = process.env.Mongo_Url;
+const mongo_url = process.env.Mongo_Url;
 //teting phase
 
 //const mongo_url = 'mongodb://localhost:27017/maxblogs'
-const mongo_url = 'mongodb://localhost:27017/'
+//const mongo_url = 'mongodb://localhost:27017/'
 
 //Production key
 

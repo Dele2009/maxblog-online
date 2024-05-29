@@ -73,6 +73,11 @@
         cursor: pointer;
         
     }
+    .chatsbg{
+        background: url(/assects/images/chatsbg.png) no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+    }
 </style>
 <div class="w-100 position-fixed d-flex justify-content-center align-items-center" style="top: 0px;z-index: 88;">
     <div class=" col-12 col-md-10 m-auto mb-4 bg-gradient-primary rounded p-2">
@@ -96,41 +101,43 @@
     <div id="" class="d-flex flex-column w-100 justify-content-center align-items-center" style="background: white;">
 
         <!-- Main Content -->
-        
-        <div class="position-fixed bottom-0 w-100 m-auto left-0  col-12 col-md-10">
-            <div class="message-container h-100 w-100">
-                
+        <div class="chatsbg vh-100 m-auto col-12 col-md-10">
+            <div class=" position-fixed bottom-0 w-100 left-0 col-12 col-md-10 " style="background: transparent;">
+                <div class="message-container w-100 h-100" style="background: transparent;">
                     
-                        <% messages.map(message=> { %>
-                            <% if (message.senderId==User._id) { %>
-                                <div class="own-message ms-auto bg-primary text-light ">
-                                    <div class="message-sender d-flex justify-content-between">
-                                       <span> You</span> <span class="ms-2"><%= message.time %></span>
-                                    </div>
-                                    <div class="message-text">
-                                        <%= message.message %>
-                                    </div>
-                                </div>
-                            <% } else { %>
-                                    <div class="message bg-primary text-light">
+                        
+                            <% messages.map(message=> { %>
+                                <% if (message.senderId==User._id) { %>
+                                    <div class="own-message ms-auto bg-primary text-light ">
                                         <div class="message-sender d-flex justify-content-between">
-                                            <span><%= Recipient.name %></span> <span class="ms-2"><%= message.time %></span>
+                                           <span> You</span> <span class="ms-2"><%= message.time %></span>
                                         </div>
                                         <div class="message-text">
                                             <%= message.message %>
                                         </div>
                                     </div>
-                            <% } %>
-                        <% }) %>
-                    
+                                <% } else { %>
+                                        <div class="message bg-primary text-light">
+                                            <div class="message-sender d-flex justify-content-between">
+                                                <span><%= Recipient.name %></span> <span class="ms-2"><%= message.time %></span>
+                                            </div>
+                                            <div class="message-text">
+                                                <%= message.message %>
+                                            </div>
+                                        </div>
+                                <% } %>
+                            <% }) %>
+                        
+                </div>
+                
+                <div class="input-container mb-2">
+                    <input type="text" id="message-input" class="input-field" placeholder="Type your message...">
+                    <button id="send-btn" class="send-btn btn btn-primary"><i class="fa fa-paper-plane"></i></button>
+                </div>
+              
             </div>
-            
-            <div class="input-container mb-2">
-                <input type="text" id="message-input" class="input-field" placeholder="Type your message...">
-                <button id="send-btn" class="send-btn btn btn-primary"><i class="fa fa-paper-plane"></i></button>
-            </div>
-          
         </div>
+      
         <!-- End of Main Content -->
         <%- include ('./modal')%>
         <!-- Footer -->

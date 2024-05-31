@@ -4,10 +4,10 @@ import express from 'express'
 import morgan from 'morgan'
 import mongoose from 'mongoose'
 import http from 'http'
-import {Server} from 'socket.io'
+import { Server } from 'socket.io'
 import session from 'express-session'
 
-import MongoDBSessionStore from  'connect-mongodb-session'
+import MongoDBSessionStore from 'connect-mongodb-session'
 
 import dotenv from "dotenv"
 dotenv.config();
@@ -22,7 +22,7 @@ import {
   Messages
 } from './models/message.js'
 
-import {Newuser} from './models/User.js'
+import { Newuser } from './models/User.js'
 import { generateConversationId } from './middleware/generatechatid.js'
 
 import { router } from './routes/routes.js'
@@ -31,10 +31,10 @@ import { chat_router } from './routes/chatRoutes.js'
 
 const port = process.env.App_Port || 4000;
 //deployment key
-const mongo_url = process.env.Mongo_Url;
+//const mongo_url = process.env.Mongo_Url;
 //teting phase
 
-//const mongo_url = 'mongodb://localhost:27017/maxblogs'
+const mongo_url = 'mongodb://localhost:27017/maxblogs'
 //const mongo_url = 'mongodb://localhost:27017/'
 
 //Production key
@@ -47,15 +47,14 @@ const io = new Server(server);
 
 mongoose
   .connect(mongo_url)
-  .then((result) => 
-    {
-     console.log('database connected');
+  .then((result) => {
+    console.log('database connected');
     //  console.log(result)
-    }
+  }
   )
   .catch(err => console.log('Error Detected' + ' => ' + err));
 
-const expiration =   process.env.Session_expiration
+const expiration = process.env.Session_expiration
 console.log(expiration)
 
 
@@ -63,16 +62,16 @@ const MongoDBStore = MongoDBSessionStore(session);
 const store = new MongoDBStore({
   uri: mongo_url,
   collection: 'sessions',
-  expires: (24*3)*60*60*1000
+  expires: (24 * 3) * 60 * 60 * 1000
 });
 
 app.use(session({
   secret: process.env.Session_secret,
   resave: false,
-  saveUninitialized: true,  
+  saveUninitialized: true,
   store: store,
   cookie: {
-    maxAge: (24*3)*60*60*1000
+    maxAge: (24 * 3) * 60 * 60 * 1000
   }
 }));
 
@@ -97,7 +96,7 @@ app.use(morgan('dev'))
 
 
 const userSockets = {};
-let userid,recieverid;
+let userid, recieverid;
 io.on('connection', (socket) => {
   console.log('New WebSocket connection');
 
@@ -119,11 +118,11 @@ io.on('connection', (socket) => {
 
   });
 
-  
 
 
 
- 
+
+
   socket.on('sendMessage', async (messageData) => {
     try {
       console.log('Message received:', messageData);
@@ -135,12 +134,12 @@ io.on('connection', (socket) => {
 
       const conversationId = generateConversationId(senderId, receiverId);
       const newMessage = new Messages(
-        { 
-          senderId, 
-          receiverId, 
-          message:encryptedMessage, 
-          conversationId, 
-          time 
+        {
+          senderId,
+          receiverId,
+          message: encryptedMessage,
+          conversationId,
+          time
         }
       );
       await newMessage.save();
@@ -168,10 +167,10 @@ io.on('connection', (socket) => {
     const decryptedMessage = decryptMessage(messageData.message, SU_EK_0);
     messageData.message = decryptedMessage
 
-      io.to(userSockets[data.receiverId]).emit('decryptedMessage', messageData);
+    io.to(userSockets[data.receiverId]).emit('decryptedMessage', messageData);
 
 
-      // io.to(userSockets[data.senderId]).emit('decryptedMessage', messageData);
+    // io.to(userSockets[data.senderId]).emit('decryptedMessage', messageData);
     // io.emit('decryptedMessage', messageData);
   });
 });
@@ -200,8 +199,8 @@ app.get('/', (req, res) => {
 app.use('/blogs', router)
 app.use('/user', user_router)
 app.use('/chats', chat_router)
-app.use((req,res)=>{
-  res.render("404",{title:"Error: 404"})
+app.use((req, res) => {
+  res.render("404", { title: "Error: 404" })
 })
 
 // app.use((error,req,res,next)=>{
@@ -217,7 +216,7 @@ app.use((req,res)=>{
 //   next();
 // });
 
-server.listen(port, () => {
+server.listen(port, "127.0.0.1", () => {
   console.log('App running on localhost:', port)
 })
 
